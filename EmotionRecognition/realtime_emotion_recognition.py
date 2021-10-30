@@ -21,9 +21,10 @@ vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
 # load models
-cnn1 = load_model('emotion-cnn1.hd5')
-##model2 = load_model('emotion-cnn2.hd5')
-svm_pipe = pickle.load(open('emotion-svm', 'rb'))
+model_path = 'trained_models/'
+cnn1 = load_model(model_path+'emotion-cnn1.hd5')
+##model2 = load_model(model_path+'emotion-cnn2.hd5')
+svm_pipe = pickle.load(open(model_path+'emotion-svm', 'rb'))
 emotion_classes = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
 
 # loop over the frames from the video stream
@@ -72,8 +73,6 @@ while True:
         # prediction
         vectors = np.array(vectors)
         vectors[:,0] = vectors[:,0] / max(vectors[:,0]) # normalize magnitudes
-        cnn3_input = vectors.reshape(-1)
-        cnn3_input = cnn3_input.reshape(1, len(cnn3_input), 1)
         vectors = vectors[:,0] * vectors[:,1]
         svm_input = vectors.reshape(1,-1)
         cnn_input = vectors.reshape(1, len(vectors), 1)
