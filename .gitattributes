@@ -1,1 +1,2 @@
+# add file paths of large files for LFS
 EmotionRecognition/shape_predictor_68_face_landmarks.dat filter=lfs diff=lfs merge=lfs -text
