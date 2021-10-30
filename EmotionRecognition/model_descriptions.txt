@@ -1,0 +1,41 @@
+emotion-cnn1 {
+    CNN,
+        Conv(32, 5x5)
+        Pooling(2,2)
+        Conv(64, 5x5)
+        Conv(128, 5x5)
+        Conv(64, 5x5)
+        Pool(2,2)
+        Flatten
+        Dense(1024)
+        Dropout(0.1)
+    Vectors (product),
+    Accuracy = 0.826,
+}
+
+emotion-cnn2 {
+    CNN,
+       Conv(64, 5x5)
+       Pool(2,2)
+       Conv(128, 3x3)
+       Pool(2,2)
+       Conv(512, 3x3)
+       Pool(2,2)
+       Conv(512, 3x3)
+       Pool(2,2)
+       Flatten
+       Dense(256)
+       Dense(512)
+       Dropout(0.1)
+    Vectors (product),
+    Accuracy = 0.842,
+}
+
+emotion-svm {
+    SVM,
+        C = 0.1
+        decision_function_shape = 'ovr'
+        kernel = 'linear'
+    Vectors (product),
+    Accuracy = 0.880,
+}
