@@ -1,5 +1,5 @@
 ## Description of files
-***realtime_emotion_recognition.py***: Main file to perform realtime emotion prediction using the default webcam and models trained from *model.ipynb*. For each detected face in the frame:
+***realtime_emotion_recognition.py***: Main file to perform realtime emotion prediction using the default webcam and models trained from *model.ipynb*. For each detected face in the frame, the following are displayed:
   - Bounding box in green
   - Facial landmarks markers as red dots
   - Center marker (COG) as cyan dot
