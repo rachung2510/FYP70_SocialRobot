@@ -6,11 +6,11 @@
   - Vectors of landamrks to COG as blue lines
   - Predicted emotion classes by different trained models
 
-***helper_function.py***: Functions to get the magnitude and angle of the vector of two points. Called by *realtime_emotion_recognition.py*.
+***helper_functions.py***: Defines helper functions to get the magnitude and angle of the vector of two points. Imported by *realtime_emotion_recognition.py* to not clutter the main file.
 
 ***shape_predictor_68_face_landmarks.dat***: Pretrained facial landmark detector from dlib. Used by *realtime_emotion_recognition.py* to find the coordinates of the facial landmarks.
 
-***model.ipynb***: Used for training and evaluation of different models. Satisfactory models are stored in *trained_model/* folder.
+***model.ipynb***: Used for training and evaluation of different models. Satisfactory models are saved in *trained_model/* folder.
 
 ***model_descriptions.txt***: Brief overview of the trained models, including model type, params, input features (vectors or coords?), and performance (accuracy/loss).
 
