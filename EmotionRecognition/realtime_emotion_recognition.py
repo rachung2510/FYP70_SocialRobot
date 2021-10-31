@@ -22,15 +22,17 @@ time.sleep(2.0)
 
 # load models
 model_path = 'trained_models/'
-cnn1 = load_model(model_path+'emotion-cnn1.hd5')
-##model2 = load_model(model_path+'emotion-cnn2.hd5')
-svm_pipe = pickle.load(open(model_path+'emotion-svm', 'rb'))
+##cnn1 = load_model(model_path+'emotion-cnn1.hd5')
+##cnn2 = load_model(model_path+'emotion-cnn2.hd5')
+cnn3 = load_model(model_path+'emotion-cnn3.hd5')
+svm1 = pickle.load(open(model_path+'emotion-svm', 'rb'))
+svm2 = pickle.load(open(model_path+'emotion-svm2', 'rb'))
 emotion_classes = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
 
 # loop over the frames from the video stream
 while True:
     # store vectors as input data for model prediction
-    vectors = []
+    vectors, coords = [], []
     classes = {} 
     
     # grab the frame from the threaded video stream, resize it to
@@ -59,6 +61,7 @@ while True:
             cv2.line(frame, (x,y), cog, (255,0,0), 1) # draw vector lines
             cv2.circle(frame, (x,y), 1, (0,0,255), -1) # draw markers
             vectors.append([mag(cog, (x,y)), angle(cog, (x,y))]) # get vector magnitude and direction
+            coords.append([x-cog[0], y-cog[1]])
         # draw center of gravity
         cv2.circle(frame, cog, 5, (255,255,0), -1)
 
@@ -72,14 +75,22 @@ while True:
 
         # prediction
         vectors = np.array(vectors)
-        vectors[:,0] = vectors[:,0] / max(vectors[:,0]) # normalize magnitudes
+        scale_factor = 1 / max(vectors[:,0])
+        vectors[:,0] = vectors[:,0] * scale_factor # normalize magnitudes
         vectors = vectors[:,0] * vectors[:,1]
-        svm_input = vectors.reshape(1,-1)
-        cnn_input = vectors.reshape(1, len(vectors), 1)
+        coords = (np.array(coords) * scale_factor).reshape(-1) # 1D array
         
-        classes['CNN1'] = emotion_classes[np.argmax(cnn1.predict(cnn_input))]
-#        classes['CNN2'] = emotion_classes[np.argmax(cnn2.predict(cnn_input))]
-        classes['SVM'] = emotion_classes[svm_pipe.predict(svm_input)[0]]
+        svm1_input = vectors.reshape(1,-1)
+        cnn1_input = vectors.reshape(1, len(vectors), 1)
+        svm2_input = np.r_[vectors, coords].reshape(1,-1)
+        cnn3_input = np.r_[vectors, coords].reshape(1, len(vectors)+len(coords), 1)
+#         print(svm_input.shape, cnn_input.shape)
+        
+##        classes['CNN1'] = emotion_classes[np.argmax(cnn1.predict(cnn1_input))]
+        classes['CNN3'] = emotion_classes[np.argmax(cnn3.predict(cnn3_input))]
+        classes['SVM1'] = emotion_classes[svm1.predict(svm1_input)[0]]
+        classes['SVM2'] = emotion_classes[svm2.predict(svm2_input)[0]]
+        
         i = 1
         for k,v in classes.items():
             cv2.putText(frame, '%s: %s' % (k,v), (x-20,y+h+20*i),
