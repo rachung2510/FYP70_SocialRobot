@@ -2,30 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-# ./yolov4.weights ./darknet-master/cfg/yolov4.cfg
-yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4.cfg')
-#yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4-tiny.cfg')
-classes = []
-with open("./coco.names","r") as f:
-    classes = f.read().splitlines()
-print((classes))
-
-cam = cv2.VideoCapture(0)
-if (cam.isOpened() == False):
-    print("Unable to read camera feed")
-width = int(cam.get(3))
-height = int(cam.get(4))
-#out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (width,height))
-
-while(True):
-    ret,frame = cam.read()
-    if ret == True:
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    if not frame.any():
-        print("Nothing")
-        break
+def get_objects(frame, width, height, yolo, classes):
     blob = cv2.dnn.blobFromImage(frame,1/255, (320,320), (0,0,0), swapRB=True, crop=False)
     yolo.setInput(blob)
     output_layer_names = yolo.getUnconnectedOutLayersNames()
@@ -55,7 +32,6 @@ while(True):
     #print(len(boxes))
     indexes = cv2.dnn.NMSBoxes(boxes,confidences,0.5,0.4)
 
-
     font = cv2.FONT_HERSHEY_PLAIN
     colors = np.random.uniform(0,255,size=(len(boxes),3))
     if len(indexes) >0:
@@ -72,9 +48,4 @@ while(True):
             #plt.imshow(img)
             #plt.show()
 
-    cv2.imshow("Video",frame)
-
-cam.release()
-#out.release()
-
-cv2.destroyAllWindows()
+    return frame
