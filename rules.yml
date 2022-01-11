@@ -1,0 +1,36 @@
+version: "3.0"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: initiate a specified game
+  steps:
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Word_of_the_day
+    - intent: play_Fun_fact
+  - action: utter_play_game
+  - action: action_play_game
+  - action: utter_play_again
+
+- rule: play again
+  steps:
+  - action: utter_play_again
+  - intent: affirm
+  - action: utter_play_game
+  - action: action_play_game
+
+- rule: play unspecified game
+  steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+

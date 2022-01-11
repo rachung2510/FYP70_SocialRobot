@@ -1,0 +1,132 @@
+version: "3.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - ok
+    - okay
+    - sure
+    - alright
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - nope
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+    - I don't want
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- intent: play_Simon_says
+  examples: |
+    - play Simon says
+    - Can we play Simon says?
+    - I want to play Simon says
+
+- intent: play_Word_of_the_day
+  examples: |
+    - play word of the day
+    - Can we play word of the day?
+    - I want to learn a new word
+
+- intent: play_Fun_fact
+  examples: |
+    - play fun fact
+    - Can you tell me a fun fact?
+    - I want to know a fun fact
+    - Tell me a fun fact
+
+- intent: play_unspecified_game
+  examples: |
+    - Can we play a game?
+    - I want to play a game
+    - Play a game
+    - Any game?
+    - What game do you have?
+
+- intent: ask_choose_game
+  examples: |
+    - You choose a game for me
+    - Choose a game for me
+    - I don't know what game to play
+    - I don't know which game to choose
+
