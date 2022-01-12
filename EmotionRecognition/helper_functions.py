@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 ## Functions for finding vector magnitude and direction
 def mag(pointA, pointB):
@@ -20,3 +21,12 @@ def angle(cog, point):
     elif x<0 and y<0: # 3rd quadrant
         angle -= math.pi
     return angle
+
+def getEmotionClass(probArr, emotion_classes):
+    prob = np.sum(probArr, axis=0)
+    pred = np.argmax(probArr, axis=1)
+    strs = ['CNN (vec)','SVM','CNN (px1)','CNN (px2)']
+    for i in range(len(strs)):
+        print('%s:' % strs[i], emotion_classes[pred[i]], end=", ")
+    print(emotion_classes[np.argmax(prob)].upper())        
+    return np.argmax(prob)
