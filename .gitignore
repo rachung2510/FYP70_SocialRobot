@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 EmotionRecognition/dataset/
+CasualConvoTTS/tts_model/data/
