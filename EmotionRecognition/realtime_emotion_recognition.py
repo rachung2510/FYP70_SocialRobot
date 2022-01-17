@@ -11,7 +11,7 @@ import numpy as np
 from helper_functions import mag, angle, getEmotionClass
 
 import os
-##os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
 
 # define constants
 model_path = 'trained_models/'
@@ -131,7 +131,7 @@ def start():
             svm2_prob = 2 * svm2.predict_proba(svm2_input)
             cnnA_prob = 0.5 * cnnA.predict(cnnA_input)
             cnnB_prob = 0.5 * cnnB.predict(cnnA_input)
-            emotion_class = emotion_classes[getEmotionClass(np.r_[cnn2_prob, svm2_prob, cnnA_prob, cnnB_prob], \
+            emotion_class = emotion_classes[getEmotionClass(np.r_[cnn2_prob, svm2_prob, cnnB_prob, cnnB_prob], \
                                                             emotion_classes)]
             classes['FINAL'] = emotion_class
             
