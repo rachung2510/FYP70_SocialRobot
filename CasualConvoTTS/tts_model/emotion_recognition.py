@@ -10,7 +10,7 @@ import numpy as np
 import math
 
 import os
-##os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
 # define constants
 model_path = 'emotion_data/'
 emotion_classes = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
@@ -19,7 +19,7 @@ dim = 50
 def init_emotion():
     print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor(model_path + 'shape_predictor_68_face_landmarks.dat')
+    predictor = dlib.shape_predictor('../../EmotionRecognition/' + 'shape_predictor_68_face_landmarks.dat')
 
     print("[INFO] loading models...")
     cnn2 = load_model(model_path+'emotion-cnn2.hd5')
@@ -122,11 +122,12 @@ def angle(cog, point):
         angle -= math.pi
     return angle
 
-##vs, detector, predictor, models = init_emotion()
-##while True:
-##    get_emotion_class(vs, detector, predictor, models)
-##    key = cv2.waitKey(1) & 0xFF
-##    if key == ord("q"):
-##        break
-##cv2.destroyAllWindows()
-##vs.stop()
+vs, detector, predictor, models = init_emotion()
+while True:
+    frame = vs.read()
+    get_emotion_class(frame, detector, predictor, models)
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q"):
+        break
+cv2.destroyAllWindows()
+vs.stop()
