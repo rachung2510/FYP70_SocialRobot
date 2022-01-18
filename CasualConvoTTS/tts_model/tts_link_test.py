@@ -6,6 +6,7 @@
 import requests
 #import subprocess
 #from playsound import playsound
+#from play_audio import playsound
 
 import os
 import torch
@@ -118,3 +119,5 @@ while bot_message not in bye_list:
     align, spec, stop_tokens, wav = tts(model, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
     # Playing the converted file
     #playsound("bot_reply.wav")
+
+    
