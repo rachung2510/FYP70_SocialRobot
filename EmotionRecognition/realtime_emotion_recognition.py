@@ -1,14 +1,16 @@
+from imutils import face_utils
 import imutils
 import cv2
 import numpy as np
-from helper_functions import mag, angle
+from helper_functions import mag, angle, getEmotionClass
 
+dim = 50
 def get_emotion(frame, detector, predictor, models):
     # store vectors as input data for model prediction
     vectors, coords = [], []
     classes = {}
     emotion_classes = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
-    cnn3, svm2, cnnA = models[0], models[1], models[2]
+    cnn2, svm2, cnnA, cnnB = models[0], models[1], models[2], models[3]
     
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) # convert to grayscale
     rects = detector(gray, 0) # detect faces in the grayscale frame
@@ -44,17 +46,20 @@ def get_emotion(frame, detector, predictor, models):
             face_area = w*h # store new max face_area
 
             # store inputs
-            ## vectors & coords
-            cnn3_input = np.r_[vectors, coords].reshape(1, len(vectors)+len(coords), 1)
-            svm2_input = np.r_[vectors, coords].reshape(1,-1)
+            ## vectors only
+            cnn_v_input = vectors.reshape(1, len(vectors), 1)
+            svm_v_input = vectors.reshape(1,-1)
             
-##            ## image graylevels
-##            dim = 50
-##            cnnA_input = frame[y:y+h, x:x+w] # crop to face
-##            cnnA_input = cv2.cvtColor(cnnA_input, cv2.COLOR_RGB2GRAY) # convert to grayscale
-##            cnnA_input = cv2.equalizeHist(cnnA_input) # equalize histogram
-##            cnnA_input = imutils.resize(cnnA_input, width=int(dim*1.1)) # buffer for cropping
-##            cnnA_input = np.expand_dims(cnnA_input[:dim,:dim], axis=0) # shape=(1,dim,dim)
+            ## vectors & coords
+            cnn_vc_input = np.r_[vectors, coords].reshape(1, len(vectors)+len(coords), 1)
+            svm_vc_input = np.r_[vectors, coords].reshape(1,-1)
+            
+            ## image graylevels            
+            cnn_px_input = frame[y:y+h, x:x+w] # crop to face
+            cnn_px_input = cv2.cvtColor(cnn_px_input, cv2.COLOR_RGB2GRAY) # convert to grayscale
+            cnn_px_input = cv2.equalizeHist(cnn_px_input) # equalize histogram
+            cnn_px_input = imutils.resize(cnn_px_input, width=int(dim*1.1)) # buffer for cropping
+            cnn_px_input = np.expand_dims(cnn_px_input[:dim,:dim], axis=0) # shape=(1,dim,dim)
 
             # draw facial landmark features on image
             for (xx,yy) in shape:
@@ -62,15 +67,21 @@ def get_emotion(frame, detector, predictor, models):
                 cv2.circle(frame, (xx,yy), 1, (0,0,255), -1) # draw markers
             cv2.circle(frame, cog, 5, (255,255,0), -1) # draw center of gravity
 
-        # prediction
-        classes['CNN3'] = emotion_classes[np.argmax(cnn3.predict(cnn3_input))]
-        classes['SVM2'] = emotion_classes[svm2.predict(svm2_input)[0]]
-##        classes['CNNA'] = emotion_classes[np.argmax(cnnA.predict(cnnA_input))]
-            
-        i = 1
-        for k,v in classes.items():
-            cv2.putText(frame, '%s: %s' % (k,v), (x-20,y+h+20*i),
+    # prediction
+    classes['CNN2'] = emotion_classes[np.argmax(cnn2.predict(cnn_v_input))]
+    classes['SVM2'] = emotion_classes[svm2.predict(svm_vc_input)[0]]
+    classes['CNNA'] = emotion_classes[np.argmax(cnnA.predict(cnn_px_input))]
+    classes['CNNB'] = emotion_classes[np.argmax(cnnB.predict(cnn_px_input))]
+
+    cnn2_prob = cnn2.predict(cnn_v_input)
+    svm2_prob = 2 * svm2.predict_proba(svm_vc_input)
+    cnnA_prob = 0.5 * cnnA.predict(cnn_px_input)
+    cnnB_prob = 0.5 * cnnB.predict(cnn_px_input)
+    emotion_class = emotion_classes[getEmotionClass(np.r_[cnn2_prob, svm2_prob, cnnB_prob, cnnB_prob], \
+                                                    emotion_classes)]
+    classes['FINAL'] = emotion_class
+
+    cv2.putText(frame, emotion_class.upper(), (x-20,y+h+20),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
-            i += 1
 
     return frame

@@ -3,11 +3,11 @@ emotion_path = 'EmotionRecognition/'
 obj_path = 'ObjectDetection/'
 sys.path.append(emotion_path)
 import realtime_emotion_recognition as emotion_recognition
-sys.path.append('../'+obj_path)
+sys.path.pop()
+sys.path.append(obj_path)
 import video as object_detection
 sys.path.pop()
 
-from imutils import face_utils
 import imutils
 import time
 import dlib
@@ -18,7 +18,7 @@ import numpy as np
 
 # Load emotion models and predictors
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
+##os.environ['CUDA_VISIBLE_DEVICES'] = '-1' # use tensorflow cpu (doesn't work on gpu)
 
 # initialize dlib's face detector (HOG-based) and then create the facial landmark predictor
 print("[INFO] loading facial landmark predictor...")
@@ -28,10 +28,11 @@ predictor = dlib.shape_predictor(emotion_path+'shape_predictor_68_face_landmarks
 # load emotion models
 model_path = emotion_path + 'trained_models/'
 print("[INFO] loading emotion recognition models...")
-cnn3 = load_model(model_path+'emotion-cnn3.hd5')
+cnn2 = load_model(model_path+'emotion-cnn2.hd5')
 svm2 = pickle.load(open(model_path+'emotion-svm2', 'rb'))
 cnnA = load_model(model_path+'emotion-cnnA.hd5')
-emotion_models = [cnn3, svm2, cnnA]
+cnnB = load_model(model_path+'emotion-cnnB.hd5')
+emotion_models = [cnn2, svm2, cnnA, cnnB]
 
 # Load object detection models
 print("[INFO] loading object detection model...")
@@ -60,7 +61,7 @@ while True:
         break
 
     frame = object_detection.get_objects(frame, width, height, yolo, yolo_classes)
-    frame = emotion_recognition.get_emotion(frame, detector, predictor, emotion_models)
+##    frame = emotion_recognition.get_emotion(frame, detector, predictor, emotion_models)
 
     # show the output image with the face detections + facial landmarks
     cv2.imshow("Video", frame)
