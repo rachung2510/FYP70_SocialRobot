@@ -4,9 +4,10 @@
 ## rasa run actions
 
 import requests
+from emotion_recognition import init_emotion, get_emotion_class
 #import subprocess
-#from playsound import playsound
-#from play_audio import playsound
+from threading import Thread, Event
+from play_audio import playsound
 
 import os
 import torch
@@ -38,6 +39,30 @@ def tts(model, text, CONFIG, use_cuda, ap, OUT_FILE, use_gl):
     #IPython.display.display(IPython.display.Audio(waveform, rate=CONFIG.audio['sample_rate']))
     ap.save_wav(waveform, OUT_FILE)  
     return alignment, mel_postnet_spec, stop_tokens, waveform
+
+def get_input():
+    global message, finished
+    if not finished.isSet():
+        message = input("Your input: \n")
+        '''insert STT block here'''
+        finished.set()
+    return
+    
+def pred_emotion(vs, detector, predictor, models):
+    global message, finished
+    c = 0
+    pred = "neutral"
+    while not finished.isSet():        
+        frame = vs.read()
+        emotion_class = get_emotion_class(frame, detector, predictor, models)
+        if emotion_class != "neutral":
+            c += 1 if emotion_class == pred else 0
+            pred = emotion_class
+            if c==5:
+                message = "I'm " + emotion_class            
+                print(message)
+                finished.set()
+    return emotion_class
 
 '''Settings for TTS'''
 # runtime settings
@@ -92,7 +117,6 @@ if use_cuda:
 vocoder_model.eval()
 
 
-
 '''Connector Program'''
 
 bot_message = ""
@@ -100,10 +124,16 @@ message=""
 
 bye_list = ["Bye", "Goodbye", "See you again!", "Let's talk again next time!"]
 
+finished = Event()
+vs, detector, predictor, models = init_emotion()
+
 while bot_message not in bye_list:
-    message = input("Your input: \n")
-    '''insert STT block here'''
-    
+    while not finished.isSet():   
+        worker = Thread(target=get_input)
+        worker.setDaemon(True)
+        worker.start()
+        emotion_class = pred_emotion(vs, detector, predictor, models)
+
     if len(message)==0:
         continue
     print("Sending message now...")
@@ -118,6 +148,6 @@ while bot_message not in bye_list:
     sentence = bot_message
     align, spec, stop_tokens, wav = tts(model, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
     # Playing the converted file
-    #playsound("bot_reply.wav")
+    playsound("bot_reply.wav")
 
-    
+    finished = Event() # reset event
