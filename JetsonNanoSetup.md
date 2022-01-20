@@ -24,17 +24,21 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 4. Open Ubuntu and run the command ```ssh username@ipaddress```, e.g. ```ssh nvidia@192.168.137.100```. The IP address here should remain the same, but in case there's no connection, you can check manually by opening the Nano's terminal through PuTTY and running ```ifconfig```. The address will be under "eth0:" next to "inet". 
 5. Enter the password (mine is "nvidia") and you're through. 
 
-## Basic setup for Python
+## Basic Setup
 1. Run ```sudo apt-get update``` and ```sudo apt-get u-y pgrade```. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
-2. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3. 
-3. (Optional) Install your text editor of choice: nano or gedit with ```sudo apt-get install nano``` or ```sudo apt-get install gedit```.
-4. Install pip for Python3 with sudo apt-get install -y python3-pip.
-5. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
-6. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
-7. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
-8. Now, if you create your virtual environment and activate it, you can just use ```python``` instead of ```python3.8```. But if you're outside your environment, you have to use ```python3.8```.
+### Installing Python
+1. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3. 
+2. (Optional) Install your text editor of choice: nano or gedit with ```sudo apt-get install nano``` or ```sudo apt-get install gedit```.
+3. Install pip for Python3 with sudo apt-get install -y python3-pip.
+4. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
+5. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
+6. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
+7. Now, if you create your virtual environment and activate it, you can just use ```python``` instead of ```python3.8```. But if you're outside your environment, you have to use ```python3.8```.
 
-## Installing basic Python packages
+### Installing others
+1. Install Git with ```sudo apt-get install git```.
+
+## Installing Basic Python Packages
 The list of packages for the object detection and emotion recognition is: NumPy, OpenCV, DLib 19.22.1, Tensorflow 2.6, imutils, and sk-learn.
 1. Before installing anything, make sure your pip is upgraded with ```python3.8 -m pip install --upgrade pip``` or just ```pip install --upgrade pip``` if you're in your virtual environment created in Python3.8.
 2. Run ```pip install wheel``` to save you some trouble.
@@ -45,7 +49,40 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 - ```pip install sklearn``` (this can take quite a while)
 
 ## Installing the more annoying Python packages
-The troublesome ones are DLib and Tensorflow.
+The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing with the USB camera.
+
+### Installing Jetcam
+1. ```git clone https://github.com/NVIDIA-AI-IOT/jetcam```.
+2. ```cd jetcam```.
+3. ```sudo python3.8 setup.py install```.
+4. To test, ```cd``` into the root directory or activate your virtual environment and run ```python3.8```. Then:
+```
+> from jetcam.usb_camera import USBCamera
+> cam = USBCamera(capture_device=0) # the number here can be found with "ls /dev/video*"
+> cam.read()
+```
+
+#### Possible error 1:
+ModuleNotFoundError: No module named 'jetcam.usb_camera'.
+In this case, you're probably running in a virtual environment.
+1. Check your site-packages at ```ls yourvenv/lib/python3.8/site-packages/``` for a **jetcam/** folder. If it does not exist, go to step 2.
+2. ```cd``` into the **jetcam/** folder created when you cloned from Git. If you installed into your root directory, it should be ```cd ~/jetcam```. There should be another **jetcam/** folder inside.
+3. Copy that **jetcam/** folder into **yourvenv/lib/python3.8/site-packages/**.
+4. Try again with ```python3.8``` and ```from jetcam.usb_camera import USBCamera```.
+
+#### Possible error 2:
+ModuleNotFoundError: No module named 'traitlets'.
+1. ```pip install traitlets``` if in a virtual environment or ```python3.8 -m pip install traitlets``` if otherwise.
+
+#### Possible error 3:
+RuntimeError: Could not read image from camera.
+1. ```cd``` into the **jetcam/** folder created when you cloned from Git, and then ```cd``` into the **jetcam/** folder inside.
+2. Open the ***usb_camera.py*** file.
+3. Modify the code at line 20:
+#self.cap = cv2.VideoCapture(self._gst_str(), cv2.CAP_GSTREAMER) ## Comment out this line
+self.cap = cv2.VideoCapture(self.capture_device)
+4. If you encountered error 1 and copied the **jetcam/** folder into your virtual environment site-packages, make the necessary changes on there as well.
+
 ### Installing DLib
 1. CMake is necessary to install Dlib: ```sudo apt-get install cmake```.
 2. First, try ```pip install dlib``` with all the variations (```python3.8 -m pip install dlib```, ```pip3 install dlib```). If there are any successful runs, make sure you test with Python3.8 by opening ```python3.8``` then typing ```import dlib``` to see if you've successfully installed into Python3.8, or you can do the one-liner ```python3.8 -c "import dlib"``` and look out for error messages.
