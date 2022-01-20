@@ -9,12 +9,12 @@ Prerequisites: A micro-SD card (preferably at least 64GB) and an SD card adapter
 4. Download, install and launch [Etcher](https://www.balena.io/etcher).
 5. Flash the downloaded SD card image to your formatted SD card with Etcher. See the full guide for more information.
 6. Insert the flashed microSD into the Jetson Nano.
-7a. If you have a monitor, keyboard and mouse, connect them to the Nano.
-7b. If not, install [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) and connect your Nano to your laptop with a micro-USB cable. 
+7. If you have a monitor, keyboard and mouse, connect them to the Nano.
+8. If not, install [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) and connect your Nano to your laptop with a micro-USB cable. 
 - Open "Device Manager", and under "Ports (COM & LPT)", find the COM port number (e.g. COM10). 
 - Open PuTTY, set "Connection Type" to "Serial", input the COM port into the "Serial line" and set "Speed" to "115200", then click "Open". 
-8. Connect your Nano to a power supply with a type-C cable. The supply should be 5V, so you can use a powerbank.
-9. Complete the initial setup from the display or the terminal. Make sure you remember your username & password. I used "nvidia" for both. For APP partition size, use the max size suggested.
+9. Connect your Nano to a power supply with a type-C cable. The supply should be 5V, so you can use a powerbank.
+10. Complete the initial setup from the display or the terminal. Make sure you remember your username & password. I used "nvidia" for both. For APP partition size, use the max size suggested.
 
 ## Configuring Nano for SSH
 If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you need a USB Wifi adapter or an Ethernet cable with a USB to LAN adapter if necessary.
