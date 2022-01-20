@@ -36,8 +36,7 @@ def init_emotion():
 def get_emotion_class(frame, detector, predictor, models):
     (cnn2,svm2,cnnA,cnnB) = models
     emotion_class = "neutral"
-    
-    vectors, coords = [], []
+        
     cnn_v_input = np.array([])
     svm_vc_input = np.array([])
     cnn_px_input = np.array([])
@@ -47,6 +46,7 @@ def get_emotion_class(frame, detector, predictor, models):
 
     face_area = 0
     for (i, rect) in enumerate(rects):
+        vectors, coords = [], []
         shape = predictor(gray, rect)
         shape = face_utils.shape_to_np(shape)
 
@@ -122,12 +122,12 @@ def angle(cog, point):
         angle -= math.pi
     return angle
 
-vs, detector, predictor, models = init_emotion()
-while True:
-    frame = vs.read()
-    get_emotion_class(frame, detector, predictor, models)
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("q"):
-        break
-cv2.destroyAllWindows()
-vs.stop()
+##vs, detector, predictor, models = init_emotion()
+##while True:
+##    frame = vs.read()
+##    get_emotion_class(frame, detector, predictor, models)
+##    key = cv2.waitKey(1) & 0xFF
+##    if key == ord("q"):
+##        break
+##cv2.destroyAllWindows()
+##vs.stop()

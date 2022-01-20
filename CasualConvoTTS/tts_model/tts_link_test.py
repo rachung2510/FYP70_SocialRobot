@@ -128,6 +128,7 @@ finished = Event()
 vs, detector, predictor, models = init_emotion()
 
 while bot_message not in bye_list:
+
     while not finished.isSet():   
         worker = Thread(target=get_input)
         worker.setDaemon(True)
