@@ -40,7 +40,7 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 
 ## Python vs Python3
 When to use ```python```, ```python3``` or ```python3.8```, and especially ```pip``` vs ```pip3``` vs ```python3.8 -m pip```?
-- When you run ```sudo apt-get install python python3``` and you run Python as a user (no virtual environment) running ```python``` should show the terminal for 2.7, running ```python3``` will be 3.6, and ```python3.8``` will be of course, 3.8.
+- When you run ```sudo apt-get install python python3``` and you run Python as a user (no virtual environment), running ```python``` should show the terminal for 2.7, running ```python3``` will be 3.6, and ```python3.8``` will be of course, 3.8.
 - Running Python in a virtual environment will depend on which version of Python you set it up in. If you set it up with ```python3.8 -m venv myvenv```, running both ```python``` and ```python3``` will result in Python3.8.
 - ```pip``` is more tricky, and will vary. The best way to find out is to run ```pip --version``` to see which it runs in. In a virtual environment, the ```pip``` and ```pip3``` will definitely be in the version of Python the environment was created, but as a user, you should check manually first. For me, both ```pip``` and ```pip3``` as a user were configured to Python3.8. 
 - If ```pip``` is not tied to Python3.8, run ```python3.8 -m pip install package``` instead when you want to install as a user.
