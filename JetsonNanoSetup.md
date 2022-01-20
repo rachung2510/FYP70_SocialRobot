@@ -28,7 +28,7 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 1. Run ```sudo apt-get update``` and ```sudo apt-get -y upgrade```. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
 ### Installing Python
 1. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3.
-2. Install pip for Python3 with sudo apt-get install -y python3-pip.
+2. Install pip for Python3 with ```sudo apt-get install -y python3-pip```.
 3. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
 4. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
 5. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
