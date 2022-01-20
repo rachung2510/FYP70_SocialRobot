@@ -25,21 +25,21 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 5. Enter the password (mine is "nvidia") and you're through. 
 
 ## Basic Setup
-1. Run ```sudo apt-get update``` and ```sudo apt-get u-y pgrade```. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
+1. Run ```sudo apt-get update``` and ```sudo apt-get -y upgrade```. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
 ### Installing Python
-1. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3. 
-2. (Optional) Install your text editor of choice: nano or gedit with ```sudo apt-get install nano``` or ```sudo apt-get install gedit```.
-3. Install pip for Python3 with sudo apt-get install -y python3-pip.
-4. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
-5. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
-6. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
-7. Now, if you create your virtual environment and activate it, you can just use ```python``` instead of ```python3.8```. But if you're outside your environment, you have to use ```python3.8```.
+1. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3.
+2. Install pip for Python3 with sudo apt-get install -y python3-pip.
+3. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
+4. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
+5. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
+6. Now, if you create your virtual environment and activate it, you can just use ```python``` instead of ```python3.8```. But if you're outside your environment, you have to use ```python3.8```.
 
 ### Installing others
 1. Install Git with ```sudo apt-get install git```.
+2. (Optional) Install your text editor of choice: nano or gedit with ```sudo apt-get install nano``` or ```sudo apt-get install gedit```.
 
 ## Installing Basic Python Packages
-The list of packages for the object detection and emotion recognition is: NumPy, OpenCV, DLib 19.22.1, Tensorflow 2.6, imutils, and sk-learn.
+The list of packages for the object detection and emotion recognition is: NumPy, OpenCV, DLib 19.22.1, Tensorflow 2.6, imutils, JetCam, and sk-learn.
 1. Before installing anything, make sure your pip is upgraded with ```python3.8 -m pip install --upgrade pip``` or just ```pip install --upgrade pip``` if you're in your virtual environment created in Python3.8.
 2. Run ```pip install wheel``` to save you some trouble.
 3. Install the easier packages:
@@ -47,6 +47,7 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 - ```pip install opencv-python```
 - ```pip install imutils```
 - ```pip install sklearn``` (this can take quite a while)
+4. If any wheels fail to build, run step 1 again. Numpy especially tends to fail if pip is not upgraded.
 
 ## Installing the more annoying Python packages
 The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing with the USB camera.
