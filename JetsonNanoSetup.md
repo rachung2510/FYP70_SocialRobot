@@ -86,16 +86,19 @@ self.cap = cv2.VideoCapture(self.capture_device)
 ### Installing DLib
 1. CMake is necessary to install Dlib: ```sudo apt-get install cmake```.
 2. First, try ```pip install dlib``` with all the variations (```python3.8 -m pip install dlib```, ```pip3 install dlib```). If there are any successful runs, make sure you test with Python3.8 by opening ```python3.8``` then typing ```import dlib``` to see if you've successfully installed into Python3.8, or you can do the one-liner ```python3.8 -c "import dlib"``` and look out for error messages.
-3. In the likely situation a pip install fails, you have to install it by source. Download the source file with ```wget https://files.pythonhosted.org/packages/f0/a2/ba6163c09fb427990180afd8d625bcecc5555af699c253193c35ffd48c4f/dlib-19.22.1.tar.gz``` into your root directory.
-4. Unzip the .tar.gz file with ```tar -xvzf dlib-19.22.1.tar.gz```.
-5. Enter the directory ```cd cd dlib-19.22.1/```.
-6. Run ```sudo python3.8 setup.py install```. This will take a while.
-7. After the above step finishes, you should have a **dlib-19.22.1-py3.8-linux-aarch64.egg** in your /usr/local/lib/python3.8/dist-packages/ directory.
-8. Try running by opening ```python3.8`` and ```import dlib``` to see if it's working.
-
-#### Possible error 1: 
-*undefined symbol: png_riffle_palette_neon* when running ```import dlib```
-TBE
+3. In the likely situation a pip install fails, you have to install it by source. 
+4. Do the following steps:
+```
+git clone https://github.com/davisking/dlib
+cd dlib
+mkdir build
+cd build/
+cmake ..
+cmake --build .
+cd ..
+sudo python3.8 setup.py install
+```
+5. Try running by opening ```python3.8`` and ```import dlib``` then ```dlib.__version__``` or ```dlib.get_frontal_face_detector()``` to see if it's working.
 
 ### Installing Tensorflow
 TBE
