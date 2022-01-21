@@ -106,7 +106,7 @@ cmake --build .
 cd ..
 sudo python3.8 setup.py install
 ```
-5. Try running by opening ```python3.8`` and ```import dlib``` then ```dlib.__version__``` or ```dlib.get_frontal_face_detector()``` to see if it's working.
+5. Try running by opening ```python3.8``` and ```import dlib``` then ```dlib.__version__``` or ```dlib.get_frontal_face_detector()``` to see if it's working.
 
 ### Installing Tensorflow
 TBE
