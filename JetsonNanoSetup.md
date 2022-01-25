@@ -1,9 +1,9 @@
 # Setting up the Jetson Nano with the necessary libraries
 
 ## Getting Started with the Jetson Nano
-Adapted from [Nvidia's guide](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit#write).
-Prerequisites: A micro-SD card (preferably at least 64GB) and an SD card adapter for your laptop
-1. Download the [Jetson Nano Developer Kit SD Card Image](https://developer.nvidia.com/jetson-nano-sd-card-image).
+Adapted from [Nvidia's guide: Getting Started with Jetson Nano 2GB Developer Kit](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-2gb-devkit#intro).
+Prerequisites: A micro-SD card (preferably at least 32GB) and an SD card adapter for your laptop
+1. Download the [Jetson Nano Developer Kit SD Card Image](https://developer.nvidia.com/jetson-nano-2gb-sd-card-image).
 2. Download, install and launch [SD Memory Card Formatter for Windows](https://www.sdcard.org/downloads/formatter/sd-memory-card-formatter-for-windows-download/).
 3. Format your SD card with the installed program. See the full guide for more information.
 4. Download, install and launch [Etcher](https://www.balena.io/etcher).
