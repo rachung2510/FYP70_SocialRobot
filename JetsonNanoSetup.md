@@ -15,7 +15,7 @@ Prerequisites: A micro-SD card (preferably at least 32GB) and an SD card adapter
 - Open PuTTY, set "Connection Type" to "Serial", input the COM port into the "Serial line" and set "Speed" to "115200", then click "Open". 
 9. Connect your Nano to a power supply with a type-C cable. The supply should be 5V, so you can use a powerbank.
 10. Complete the initial setup from the display or the terminal. Make sure you remember your username & password. I used "nvidia" for both. For APP partition size, use the max size suggested.
-11. If running headless set-up (through micro-USB), there may be a network configuration stage. Connect the Nano to your laptop through a LAN cable and select "eth0".
+11. If running headless set-up (through micro-USB), there may be a network configuration stage. Connect the Nano to your laptop through a LAN cable and select "eth0". You might have to perform steps 2-3 in **Configuring Nano for SSH**.
 
 ## Configuring Nano for SSH
 If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you need a USB Wifi adapter or an Ethernet cable with a USB to LAN adapter if necessary.
