@@ -74,9 +74,9 @@ The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing 
 #### Possible error 1:
 ModuleNotFoundError: No module named 'jetcam.usb_camera'.
 In this case, you're probably running in a virtual environment.
-1. Check your site-packages at ```ls yourvenv/lib/python3.8/site-packages/``` for a **jetcam/** folder. If it does not exist, go to step 2.
+1. Check your site-packages for a **jetcam/** folder. If running in a virtual environment, it should be ```ls yourvenv/lib/python3.8/site-packages/```, if not, it'll be ```ls /usr/local/lib/python3.8/dist-packages```. If it does not exist, go to step 2.
 2. ```cd``` into the **jetcam/** folder created when you cloned from Git. If you installed into your root directory, it should be ```cd ~/jetcam```. There should be another **jetcam/** folder inside.
-3. Copy that **jetcam/** folder into **yourvenv/lib/python3.8/site-packages/**.
+3. Copy that **jetcam/** folder into your site-packages folder at **yourvenv/lib/python3.8/site-packages/** or **/usr/local/lib/python3.8/dist-packages**.
 4. Try again with ```python3.8``` and ```from jetcam.usb_camera import USBCamera```.
 
 #### Possible error 2:
