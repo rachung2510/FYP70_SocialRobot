@@ -122,7 +122,7 @@ sudo apt-get install liblapack-dev
 ```python3.8 -m pip install Cython==0.29.26```
 3. Install h5py v3.1.0.\
 ```python3.8 -m pip install h5py==3.1.0```
-4. Download the whl file from [**KumaTea/tensorflow-aarch64**](https://github.com/KumaTea/tensorflow-aarch64/releases?q=2.6&expanded=true).\
+4. Download the whl file from [**KumaTea/tensorflow-aarch64**](https://github.com/KumaTea/tensorflow-aarch64/releases?q=2.6&expanded=true). The link below is for Python 3.8 and Tensorflow 2.6. For installation without virtual environment (recommended since importing tensorflow in a virtual environment tends to result in "core dumped" error), download the whl file without "manylinux".\
 ```wget https://github.com/KumaTea/tensorflow-aarch64/releases/download/v2.6/tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
 5. Run a pip install on the whl file.\
 ```python3.8 -m pip install tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
