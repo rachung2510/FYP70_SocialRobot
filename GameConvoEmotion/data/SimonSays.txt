@@ -1,0 +1,21 @@
+backpack
+tie
+bottle
+cup
+fork
+spoon
+bowl
+banana
+apple
+orange
+broccoli
+carrot
+remote
+cell phone
+book
+teddy bear
+toothbrush
+sphere
+rectangular object
+cylindrical object
+odd-shaped object
