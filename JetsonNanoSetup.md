@@ -84,7 +84,7 @@ ModuleNotFoundError: No module named 'traitlets'.
 1. ```pip install traitlets``` if in a virtual environment or ```python3.8 -m pip install traitlets``` if otherwise.
 
 #### Possible error 3:
-RuntimeError: Could not read image from camera.
+RuntimeError: Could not read image from camera and possibly RuntimeError: Could not initialize camera.
 1. ```cd``` into the **jetcam/** folder created when you cloned from Git, and then ```cd``` into the **jetcam/** folder inside.
 2. Open the ***usb_camera.py*** file.
 3. Modify the code at line 20:
