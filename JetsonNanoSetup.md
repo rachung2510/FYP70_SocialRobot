@@ -52,7 +52,7 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 2. Run ```pip install wheel``` to save you some trouble.
 3. Install the easier packages:
 - ```pip install numpy```
-- ```pip install opencv-python```
+- ```pip install scikit-build opencv-python``` (skbuild is a module required by opencv-python)
 - ```pip install imutils```
 - ```pip install sklearn``` (this can take quite a while)
 4. If any wheels fail to build, run step 1 again. Numpy especially tends to fail if pip is not upgraded.
