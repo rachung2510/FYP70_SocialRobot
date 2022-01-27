@@ -110,4 +110,19 @@ sudo python3.8 setup.py install
 5. Try running by opening ```python3.8``` and ```import dlib``` then ```dlib.__version__``` or ```dlib.get_frontal_face_detector()``` to see if it's working.
 
 ### Installing Tensorflow
-TBE
+Adapted from [**Install Tensorflow 2.4 on Jetson Nano**](https://qengineering.eu/install-tensorflow-2.4.0-on-jetson-nano.html).
+1. Download the dependencies
+```
+sudo apt-get install gfortran
+sudo apt-get install libhdf5-dev libc-ares-dev libeigen3-dev
+sudo apt-get install libatlas-base-dev libopenblas-dev libblas-dev
+sudo apt-get install liblapack-dev
+```
+2. Install Cython v0.29.26, which is required to install h5py v3.1.0.
+```python3.8 -m pip install Cython==0.29.26```
+3. Install h5py v3.1.0.
+```python3.8 -m pip install h5py==3.1.0```
+4. Download the whl file from [**KumaTea/tensorflow-aarch64**](https://github.com/KumaTea/tensorflow-aarch64/releases?q=2.6&expanded=true).
+```wget https://github.com/KumaTea/tensorflow-aarch64/releases/download/v2.6/tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
+5. Run a pip install on the whl file.
+```python3.8 -m pip install tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
