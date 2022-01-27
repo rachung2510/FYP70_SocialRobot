@@ -97,7 +97,7 @@ self.cap = cv2.VideoCapture(self.capture_device)
 ### Installing DLib
 1. CMake is necessary to install Dlib: ```sudo apt-get install cmake```.
 2. First, try ```pip install dlib``` with all the variations (```python3.8 -m pip install dlib```, ```pip3 install dlib```). If there are any successful runs, make sure you test with Python3.8 by opening ```python3.8``` then typing ```import dlib``` to see if you've successfully installed into Python3.8, or you can do the one-liner ```python3.8 -c "import dlib"``` and look out for error messages.
-3. In the likely situation a pip install fails, you have to install it by source. 
+3. If a pip install fails, you have to install it by source. 
 4. Do the following steps:
 ```
 git clone https://github.com/davisking/dlib
