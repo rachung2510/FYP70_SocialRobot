@@ -36,13 +36,13 @@ def init_emotion():
 def get_emotion_class(frame, detector, predictor, models):
     (cnn2,svm2,cnnA,cnnB) = models
     emotion_class = "neutral"
-        
+
     cnn_v_input = np.array([])
     svm_vc_input = np.array([])
     cnn_px_input = np.array([])
-        
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    rects = detector(gray, 0)        
+    rects = detector(gray, 0)
 
     face_area = 0
     for (i, rect) in enumerate(rects):
@@ -58,10 +58,10 @@ def get_emotion_class(frame, detector, predictor, models):
 
         # get bounding box
         (x, y, w, h) = face_utils.rect_to_bb(rect)
-        cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)            
+        cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
         cv2.putText(frame, "Face #{}".format(i+1), (x-10, y-10),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
- 
+
         # model inputs
         vectors = np.array(vectors)
         scale_factor = 1 / max(vectors[:,0])
@@ -69,15 +69,15 @@ def get_emotion_class(frame, detector, predictor, models):
         vectors = vectors[:,0] * vectors[:,1]
         coords = (np.array(coords) * scale_factor).reshape(-1) # 1D array
 
-        # actions for main face (largest area)        
+        # actions for main face (largest area)
         if w*h >= face_area:
             face_area = w*h # store new max face_area
 
-            ## vectors 
+            ## vectors
             cnn_v_input = vectors.reshape(1, len(vectors), 1)
             svm_vc_input = np.r_[vectors, coords].reshape(1,-1)
-            
-            ## image graylevels            
+
+            ## image graylevels
             cnn_px_input = frame[y:y+h, x:x+w] # crop to face
             cnn_px_input = cv2.cvtColor(cnn_px_input, cv2.COLOR_RGB2GRAY) # convert to grayscale
             cnn_px_input = cv2.equalizeHist(cnn_px_input) # equalize histogram
@@ -88,16 +88,16 @@ def get_emotion_class(frame, detector, predictor, models):
     # prediction
     if cnn_v_input.size!=0 and svm_vc_input.size!=0 and cnn_px_input.size!=0:
         cnn2_prob = cnn2.predict(cnn_v_input)
-        svm2_prob = 2 * svm2.predict_proba(svm_vc_input)   
+        svm2_prob = 2 * svm2.predict_proba(svm_vc_input)
         cnnA_prob = 0.5 * cnnA.predict(cnn_px_input)
         cnnB_prob = 0.5 * cnnB.predict(cnn_px_input)
         probArr = np.r_[cnn2_prob, svm2_prob, cnnA_prob, cnnB_prob]
         prob = np.sum(probArr, axis=0)
-        emotion_class = emotion_classes[np.argmax(prob)]      
-        
+        emotion_class = emotion_classes[np.argmax(prob)]
+
         cv2.putText(frame, emotion_class.upper(), (x-20,y+h+20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
-        
+
 ##    cv2.imshow("Frame", frame)
     cv2.destroyAllWindows()
 
@@ -111,10 +111,10 @@ def mag(pointA, pointB):
 def angle(cog, point):
     x = point[0] - cog[0]
     y = point[1] - cog[1]
-    
+
     if not x:
         return math.pi/2 if y>0 else -math.pi/2
-        
+
     angle = math.atan(y/x)
     if x<0 and y>0: # 2nd quadrant
         angle += math.pi
