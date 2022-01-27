@@ -51,10 +51,10 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 1. Before installing anything, make sure your pip is upgraded with ```python3.8 -m pip install --upgrade pip``` or just ```pip install --upgrade pip``` if you're in your virtual environment created in Python3.8.
 2. Run ```pip install wheel``` to save you some trouble.
 3. Install the easier packages:
-- ```pip install numpy```
 - ```pip install scikit-build opencv-python``` (skbuild is a module required by opencv-python)
 - ```pip install imutils```
 - ```pip install sklearn``` (this can take quite a while)
+- ```pip install numpy==1.19.3``` (opencv-python installs its own version of numpy, so will have to install Numpy 1.19.3 that works with Tensorflow 2.6)
 4. If any wheels fail to build, run step 1 again. Numpy especially tends to fail if pip is not upgraded.
 
 ## Installing the more annoying Python packages
