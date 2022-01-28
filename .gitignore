@@ -5,3 +5,4 @@ EmotionRecognition/dataset/
 CasualConvoTTS/tts_model/data/
 CasualConvoTTS/tts_model/bot_reply.wav
 CasualConvoTTS/tts_model/tts_out.wav
+models/shape_predictor_68_face_landmarks.dat
