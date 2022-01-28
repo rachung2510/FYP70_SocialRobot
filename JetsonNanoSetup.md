@@ -87,7 +87,7 @@ ModuleNotFoundError: No module named 'traitlets'.
 RuntimeError: Could not read image from camera and possibly RuntimeError: Could not initialize camera.
 1. ```cd``` into the **jetcam/** folder created when you cloned from Git, and then ```cd``` into the **jetcam/** folder inside.
 2. Open the ***usb_camera.py*** file.
-3. Modify the code at line 20:\
+3. Modify the code at line 20:
 ```
 #self.cap = cv2.VideoCapture(self._gst_str(), cv2.CAP_GSTREAMER) ## Comment out this line
 self.cap = cv2.VideoCapture(self.capture_device)
