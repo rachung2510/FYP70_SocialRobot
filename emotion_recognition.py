@@ -11,31 +11,30 @@ from jetcam.usb_camera import USBCamera
 import numpy as np
 import math
 
-# argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("dev", help="device no. from 'ls /dev/video*'", type=int)
-args = parser.parse_args()
+## argparse
+#parser = argparse.ArgumentParser()
+#parser.add_argument("dev", help="device no. from 'ls /dev/video*'", type=int)
+#args = parser.parse_args()
 
 # define constants
-model_path = 'models/'
 emotion_classes = ['anger','contempt','disgust','fear','happiness','neutral','sadness','surprise']
 dim = 50
 
-def init_emotion():
+def init_emotion(path):
     print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
-    predictor = dlib.shape_predictor(model_path + 'shape_predictor_68_face_landmarks.dat')
+    predictor = dlib.shape_predictor(path + 'shape_predictor_68_face_landmarks.dat')
 
-    print("[INFO] loading models...")
-    cnn2 = load_model(model_path + 'emotion-cnn2.hd5')
-    svm2 = pickle.load(open(model_path + 'emotion-svm2', 'rb'))
-    cnnA = load_model(model_path + 'emotion-cnnA.hd5')
-    cnnB = load_model(model_path + 'emotion-cnnB.hd5')
+    print("[INFO] loading emotion models...")
+    cnn2 = load_model(path + 'emotion-cnn2.hd5')
+    svm2 = pickle.load(open(path + 'emotion-svm2', 'rb'))
+    cnnA = load_model(path + 'emotion-cnnA.hd5')
+    cnnB = load_model(path + 'emotion-cnnB.hd5')
 
-    print("[INFO] camera sensor warming up...")
-    vs = USBCamera(capture_device=args.dev)
+#    print("[INFO] camera sensor warming up...")
+#    vs = USBCamera(capture_device=args.dev)
 
-    return vs, detector, predictor, (cnn2,svm2,cnnA,cnnB)
+    return detector, predictor, (cnn2,svm2,cnnA,cnnB)
 
 def get_emotion_class(frame, detector, predictor, models):
     (cnn2,svm2,cnnA,cnnB) = models
@@ -98,6 +97,7 @@ def get_emotion_class(frame, detector, predictor, models):
             probArr = np.r_[cnn2_prob, svm2_prob]
         prob = np.sum(probArr, axis=0)
         emotion_class = emotion_classes[np.argmax(prob)]
+        print(emotion_class)
 
     return emotion_class
 
@@ -120,11 +120,11 @@ def angle(cog, point):
         angle -= math.pi
     return angle
 
-vs, detector, predictor, models = init_emotion()
-while True:
-    frame = vs.read()
-    get_emotion_class(frame, detector, predictor, models)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-#cv2.destroyAllWindows()
-vs.stop()
+#vs, detector, predictor, models = init_emotion()
+#while True:
+#    frame = vs.read()
+#    get_emotion_class(frame, detector, predictor, models)
+#    if cv2.waitKey(1) & 0xFF == ord("q"):
+#        break
+##cv2.destroyAllWindows()
+#vs.stop()
