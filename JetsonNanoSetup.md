@@ -95,21 +95,19 @@ self.cap = cv2.VideoCapture(self.capture_device)
 4. If you encountered error 1 and copied the **jetcam/** folder into your virtual environment site-packages, make the necessary changes on there as well.
 
 ### Installing DLib
-1. CMake is necessary to install Dlib: ```sudo apt-get install cmake```.
-2. First, try ```pip install dlib==19.22.1``` with all the variations (```python3.8 -m pip install dlib==19.22.1```, ```pip3 install dlib==19.22.1```). If there are any successful runs, make sure you test with Python3.8 by opening ```python3.8``` then typing ```import dlib``` to see if you've successfully installed into Python3.8, or you can do the one-liner ```python3.8 -c "import dlib"``` and look out for error messages.
-4. If a pip install fails, or you get an ImportError with an undefined symbol: png_riffle_palette_neon, you have to install it by source. 
-5. Do the following steps:
+1. Install the dependencies:
 ```
-git clone https://github.com/davisking/dlib
-cd dlib
-mkdir build
-cd build/
-cmake ..
-cmake --build .
-cd ..
-sudo python3.8 setup.py install
+sudo apt-get install build-essential cmake
+sudo apt-get install libgtk-3-dev
+sudo apt-get install libboost-all-dev
 ```
-5. Try running by opening ```python3.8``` and ```import dlib``` then ```dlib.__version__``` or ```dlib.get_frontal_face_detector()``` to see if it's working.
+2. Run ```pip install dlib==19.22.1``` or ```python3.8-m pip install dlib==19.22.1```
+3. If installation is successful, test with Python3.8.
+```
+> import dlib
+> dlib.__version__
+> dlib.get_frontal_face_detector()
+```
 
 ### Installing Tensorflow
 Adapted from [**Install Tensorflow 2.4 on Jetson Nano**](https://qengineering.eu/install-tensorflow-2.4.0-on-jetson-nano.html).
