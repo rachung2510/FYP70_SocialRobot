@@ -74,8 +74,10 @@ When to use ```python```, ```python3``` or ```python3.8```, and especially ```pi
 
 ## Installing Basic Python Packages
 The list of packages for the object detection and emotion recognition is: NumPy, OpenCV, DLib 19.22.1, Tensorflow 2.6, imutils, JetCam, and sk-learn.
-1. Before installing anything, make sure your pip is upgraded with ```python3.8 -m pip install --upgrade pip``` or just ```pip install --upgrade pip``` if you're in your virtual environment created in Python3.8.
-2. Run ```pip install wheel``` to save you some trouble.
+1. Before installing anything, make sure your pip is upgraded.\
+```pip install --upgrade pip```
+2. Install wheel to save you some trouble.
+```pip install wheel```
 3. Install the easier packages:
 - ```pip install scikit-build opencv-python``` (skbuild is a module required by opencv-python)
 - ```pip install imutils```
