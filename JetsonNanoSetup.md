@@ -2,19 +2,11 @@
 **Contents:**
 1. [**Getting Started with the Jetson Nano**](#getting-started-with-the-jetson-nano)
 2. [**Configuring Nano for SSH**](#configuring-nano-for-ssh)
-3. [**Basic Setup**](#basic-setup)
-- [Installing Python](#installing-python)
-- [Installing Others](#installing-others)
+3. [**Basic Setup**](#basic-setup) - [Python](#installing-python), [Others](#installing-others)
 4. [**Python vs Python3**](#python-vs-python3)
 5. [**Installing Basic Python Packages**](#installing-basic-python-packages)
-6. [**Installing the more annoying Python Packages**](#installing-the-more-annoying-python-packages)
-- [Installing Jetcam](#installing-jetcam)
-- [Installing DLib](#installing-dlib)
-- [Installing Tensorflow](#installing-tensorflow)
-7. [**Installing Speech Recognition Packages**](#installing-speech-recognition-packages)
-- [Installing Mozilla TTS](#installing-mozilla-tts)
-- [Installing RASA](#installing-rasa)
-- [Installing Deepspeech](#installing-deepspeech)
+6. [**Installing the more annoying Python Packages**](#installing-the-more-annoying-python-packages) - [Jetcam](#installing-jetcam), [DLib](#installing-dlib), [Tensorflow](#installing-tensorflow)
+7. [**Installing Speech Recognition Packages**](#installing-speech-recognition-packages) - [Mozilla TTS](#installing-mozilla-tts), [RASA](#installing-rasa), [Deepspeech](#installing-deepspeech)
 
 ## Getting Started with the Jetson Nano
 Adapted from [Nvidia's guide: Getting Started with Jetson Nano 2GB Developer Kit](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-2gb-devkit#intro).\
