@@ -158,5 +158,21 @@ pip install numba==0.48.0
 ```pip install --upgrade numpy```
 
 ### Installing RASA
+1. Install dependencies.\
+```sudo apt-get install libpq-dev```
+2. Install Tensorflow dependencies.
+**tensorflow-addons v0.14**:
+```
+wget https://github.com/Qengineering/TensorFlow-Addons-Raspberry-Pi_64-bit/raw/main/tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
+pip install tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
+```
+**tensorflow-text v2.6**:
+TBE
+3. Install RASA through a downgraded version of pip.
+```
+pip install pip==20.2
+pip install sanic==21.9.3
+```
 
 ### Installing Deepspeech
+TBE
