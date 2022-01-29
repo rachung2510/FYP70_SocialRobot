@@ -167,7 +167,10 @@ wget https://github.com/Qengineering/TensorFlow-Addons-Raspberry-Pi_64-bit/raw/m
 pip install tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
 ```
 **tensorflow-text v2.6**:
-TBE
+I've built the .whl package so we'll just need to pip install it.\
+```
+pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
+```
 3. Install RASA through a downgraded version of pip.
 ```
 pip install pip==20.2
