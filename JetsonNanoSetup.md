@@ -182,7 +182,7 @@ pip install sanic==21.9.3
 ### Installing Deepspeech
 TBE
 
-**Possible error 1: Illegal instruction (core dumped) when running ```rasa run --enable-api```**
+**Possible error 1: Illegal instruction (core dumped) when running ```rasa run --enable-api```**\
 This could be because getauxval did not succeed (See [original answer](https://stackoverflow.com/questions/65631801/illegal-instructioncore-dumped-error-on-jetson-nano)). Open up the .bashrc file ```nano ~/.bashrc``` and insert the line ```export OPENBLAS_CORETYPE=ARMV8``` at the bottom, then do a ```sudo reboot```.
 
 **Possible error 2: ImportError: cannot allocate memory in static TLS block**
