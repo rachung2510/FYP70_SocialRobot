@@ -114,7 +114,7 @@ sudo python3.8 setup.py install
 ```pip install traitlets```
 
 **Possible error 3: RuntimeError: Could not read image from camera...Could not initialize camera.**
-1. ```cd``` into the **jetcam/** folder you copied into your **site-packages/** or **dist-packages/** folder in error 1, and then ```cd``` into the **jetcam/** folder inside.
+1. ```cd``` into the **jetcam/** folder you copied into your **site-packages/** or **dist-packages/** folder in error 1.
 2. Open the ***usb_camera.py*** file.
 3. Modify the code at line 20:
 ```
