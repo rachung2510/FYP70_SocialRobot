@@ -151,7 +151,7 @@ sudo apt-get install liblapack-dev
 ```pip install Cython==0.29.26```
 3. Install h5py v3.1.0.\
 ```pip install h5py==3.1.0```
-4. A whl package for Tensorflow 2.6.0 for AArch64 has been built by [KumaTea](https://github.com/KumaTea), so we'll just need to download the package and run a pip install. I've uploaded the whl package under the **builds/** folder as well in case that repository ever gets deleted. Huge thanks to KumaTea for building the package.
+4. A whl package for Tensorflow 2.6.0 for AArch64 has been built by [KumaTea](https://github.com/KumaTea), so we'll just need to download the package and run a pip install. Huge thanks to KumaTea for building the package.
 ```
 wget https://github.com/KumaTea/tensorflow-aarch64/releases/download/v2.6/tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl
 python3.8 -m pip install tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl
@@ -192,6 +192,8 @@ pip install numba==0.48.0
 ```sudo apt-get install libpq-dev```
 2. Install Tensorflow dependencies - tensorflow-addons v0.14.0 and tensorflow-text v2.6.0. I've built the .whl packages and uploaded under **builds/** so we'll just need to pip install it.\
 ```
+git clone -b jetsonNano https://github.com/rachung2510/FYP70_SocialRobot.git
+cd FYP70_SocialRobot/builds
 pip install tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
 pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
 ```
