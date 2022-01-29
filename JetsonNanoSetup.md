@@ -96,7 +96,8 @@ sudo python3.8 setup.py install
 1. Check your site-packages for a **jetcam/** folder. If running in a virtual environment, it should be ```ls yourvenv/lib/python3.8/site-packages/```, if not, it'll be ```ls /usr/local/lib/python3.8/dist-packages```. If it does not exist, go to step 2.
 2. ```cd``` into the **jetcam/** folder created when you cloned from Git. If you installed into your root directory, it should be ```cd ~/jetcam```. There should be another **jetcam/** folder inside.
 3. Copy that **jetcam/** folder into your site-packages folder at **yourvenv/lib/python3.8/site-packages/** or **/usr/local/lib/python3.8/dist-packages**.
-4. Try again with ```python3.8``` and ```from jetcam.usb_camera import USBCamera```.
+4. Test again in Python3.8.\
+```> from jetcam.usb_camera import USBCamera```.
 
 **Possible error 2: ModuleNotFoundError: No module named 'traitlets'.**
 1. ```pip install traitlets``` if in a virtual environment or ```python3.8 -m pip install traitlets``` if otherwise.
