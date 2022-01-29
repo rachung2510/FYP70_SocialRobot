@@ -34,18 +34,29 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 5. Enter the password (mine is "nvidia") and you're through. 
 
 ## Basic Setup
-1. Run ```sudo apt-get update``` and ```sudo apt-get -y upgrade```. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
+1. Update and upgrade your Ubuntu. The -y flag is used to confirm to our computer that we want to upgrade all the packages.
+```
+sudo apt-get update
+sudo apt-get -y upgrade
+```
 ### Installing Python
 1. Install Python with ```sudo apt-get install python python3```. This should install Python2.7 as python and Python3.6.9 as python3.
-2. Install pip for Python3 with ```sudo apt-get install -y python3-pip```.
+2. Install pip for Python3.\
+```sudo apt-get install -y python3-pip```
 3. Install Python3.8 with ```sudo apt install python3.8```. From now on, if you want to run a program in python3.8, you must make sure your virtual environment was created in Python3.8, or you must specify ```python3.8 myprog.py```. If you want to pip install for Python3.8, run ```python3.8 -m pip install mypackage```.
-4. Install the necessary packages for Python3.8 ```sudo apt install python3.8-venv python3.8-dev```.
+4. Install the necessary packages for Python3.8.\
+```sudo apt install python3.8-venv python3.8-dev```
 5. To create a virtual environment in Python3.8, run ```python3.8 -m venv yourvenvname```, and activate with ```source yourvenvname/bin/activate```.
 6. Now, if you create your virtual environment and activate it, you can just use ```python``` instead of ```python3.8```. But if you're outside your environment, you have to use ```python3.8```.
 
 ### Installing others
-1. Install Git with ```sudo apt-get install git```.
-2. (Optional) Install your text editor of choice: nano or gedit with ```sudo apt-get install nano``` or ```sudo apt-get install gedit```.
+1. Install Git.\
+```sudo apt-get install git```
+2. (Optional) Install your text editor of choice: nano or gedit.
+```
+sudo apt-get install nano
+sudo apt-get install gedit
+```
 
 ## Python vs Python3
 When to use ```python```, ```python3``` or ```python3.8```, and especially ```pip``` vs ```pip3``` vs ```python3.8 -m pip```?
@@ -69,10 +80,12 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing with the USB camera.
 
 ### Installing Jetcam
-1. ```git clone https://github.com/NVIDIA-AI-IOT/jetcam```.
-2. ```cd jetcam```.
-3. ```sudo python3.8 setup.py install```.
-4. To test, ```cd``` into the root directory or activate your virtual environment and run ```python3.8```. Then:
+1. Install from source.
+```git clone https://github.com/NVIDIA-AI-IOT/jetcam
+cd jetcam
+sudo python3.8 setup.py install
+```
+2. ```cd``` out of the **jetcam/** repository and test with Python3.8:
 ```
 > from jetcam.usb_camera import USBCamera
 > cam = USBCamera(capture_device=0) # the number here can be found with "ls /dev/video*"
