@@ -81,7 +81,8 @@ The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing 
 
 ### Installing Jetcam
 1. Install from source.
-```git clone https://github.com/NVIDIA-AI-IOT/jetcam
+```
+git clone https://github.com/NVIDIA-AI-IOT/jetcam
 cd jetcam
 sudo python3.8 setup.py install
 ```
@@ -95,12 +96,13 @@ sudo python3.8 setup.py install
 **Possible error 1: ModuleNotFoundError: No module named 'jetcam.usb_camera'.**
 1. Check your site-packages for a **jetcam/** folder. If running in a virtual environment, it should be ```ls yourvenv/lib/python3.8/site-packages/```, if not, it'll be ```ls /usr/local/lib/python3.8/dist-packages```. If it does not exist, go to step 2.
 2. ```cd``` into the **jetcam/** folder created when you cloned from Git. If you installed into your root directory, it should be ```cd ~/jetcam```. There should be another **jetcam/** folder inside.
-3. Copy that **jetcam/** folder into your site-packages folder at **yourvenv/lib/python3.8/site-packages/** or **/usr/local/lib/python3.8/dist-packages**.
+3. Copy that **jetcam/** folder into your site-packages folder at ```sudo cp -r ./jetcam yourvenv/lib/python3.8/site-packages/``` or ```sudo cp -r ./jetcam /usr/local/lib/python3.8/dist-packages```.
 4. Test again in Python3.8.\
-```> from jetcam.usb_camera import USBCamera```.
+```> from jetcam.usb_camera import USBCamera```
 
 **Possible error 2: ModuleNotFoundError: No module named 'traitlets'.**
-1. ```pip install traitlets``` if in a virtual environment or ```python3.8 -m pip install traitlets``` if otherwise.
+1. Install the module with pip.\
+```pip install traitlets```
 
 **Possible error 3: RuntimeError: Could not read image from camera...Could not initialize camera.**
 1. ```cd``` into the **jetcam/** folder you copied into your **site-packages/** or **dist-packages/** folder in error 1, and then ```cd``` into the **jetcam/** folder inside.
