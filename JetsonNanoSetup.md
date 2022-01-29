@@ -30,7 +30,7 @@ If you don't have a monitor, keyboard and mouse, SSH is a good idea. To SSH, you
 1. Connect the Ethernet cable between the Nano and your laptop, and connect the Nano to a power supply.
 2. Click your Wifi icon in your taskbar and select "Network & Internet settings". Under "Advanced network settings", select "Change adapter options".
 3. Right click the Wifi you're using and select "Properties". Under "Sharing", make sure "Allow other network users to connect through this computer's Internet connection" is checked.
-4. Open Ubuntu and run the command ```ssh username@ipaddress```, e.g. ```ssh nvidia@192.168.137.100```. The IP address here should remain the same, but in case there's no connection, you can check manually by opening the Nano's terminal through PuTTY and running ```ifconfig```. The address will be under "eth0:" next to "inet". 
+4. Open Ubuntu and run the command ```ssh username@ipaddress```, e.g. ```ssh nvidia@192.168.137.215```. The IP address here should remain the same, but in case there's no connection, you can check manually by opening the Nano's terminal through PuTTY and running ```ifconfig```. The address will be under "eth0:" next to "inet". 
 5. Enter the password (mine is "nvidia") and you're through. 
 
 ## Basic Setup
@@ -62,7 +62,7 @@ The list of packages for the object detection and emotion recognition is: NumPy,
 - ```pip install scikit-build opencv-python``` (skbuild is a module required by opencv-python)
 - ```pip install imutils```
 - ```pip install scikit-learn==0.24.2```
-- ```pip install numpy==1.19.3``` (opencv-python installs its own version of numpy, so will have to install Numpy 1.19.3 that works with Tensorflow 2.6)
+- ```pip install --upgrade numpy``` (opencv-python installs its own version of numpy, so will have to install Numpy again to avoid compile errors when installing RASA)
 4. If any wheels fail to build, run step 1 again. Numpy especially tends to fail if pip is not upgraded.
 
 ## Installing the more annoying Python packages
@@ -79,28 +79,23 @@ The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing 
 > cam.read()
 ```
 
-#### Possible error 1:
-ModuleNotFoundError: No module named 'jetcam.usb_camera'.
-In this case, you're probably running in a virtual environment.
+**Possible error 1: ModuleNotFoundError: No module named 'jetcam.usb_camera'.**
 1. Check your site-packages for a **jetcam/** folder. If running in a virtual environment, it should be ```ls yourvenv/lib/python3.8/site-packages/```, if not, it'll be ```ls /usr/local/lib/python3.8/dist-packages```. If it does not exist, go to step 2.
 2. ```cd``` into the **jetcam/** folder created when you cloned from Git. If you installed into your root directory, it should be ```cd ~/jetcam```. There should be another **jetcam/** folder inside.
 3. Copy that **jetcam/** folder into your site-packages folder at **yourvenv/lib/python3.8/site-packages/** or **/usr/local/lib/python3.8/dist-packages**.
 4. Try again with ```python3.8``` and ```from jetcam.usb_camera import USBCamera```.
 
-#### Possible error 2:
-ModuleNotFoundError: No module named 'traitlets'.
+**Possible error 2: ModuleNotFoundError: No module named 'traitlets'.**
 1. ```pip install traitlets``` if in a virtual environment or ```python3.8 -m pip install traitlets``` if otherwise.
 
-#### Possible error 3:
-RuntimeError: Could not read image from camera and possibly RuntimeError: Could not initialize camera.
-1. ```cd``` into the **jetcam/** folder created when you cloned from Git, and then ```cd``` into the **jetcam/** folder inside.
+**Possible error 3: RuntimeError: Could not read image from camera...Could not initialize camera.**
+1. ```cd``` into the **jetcam/** folder you copied into your **site-packages/** or **dist-packages/** folder in error 1, and then ```cd``` into the **jetcam/** folder inside.
 2. Open the ***usb_camera.py*** file.
 3. Modify the code at line 20:
 ```
 #self.cap = cv2.VideoCapture(self._gst_str(), cv2.CAP_GSTREAMER) ## Comment out this line
 self.cap = cv2.VideoCapture(self.capture_device)
 ```
-4. If you encountered error 1 and copied the **jetcam/** folder into your virtual environment site-packages, make the necessary changes on there as well.
 
 ### Installing DLib
 1. Install the dependencies:
