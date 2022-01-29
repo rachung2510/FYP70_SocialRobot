@@ -168,23 +168,33 @@ pip install numba==0.48.0
 ### Installing RASA
 1. Install dependencies.\
 ```sudo apt-get install libpq-dev```
-2. Install Tensorflow dependencies.\
-**tensorflow-addons v0.14**:
+2. Install Tensorflow dependencies - tensorflow-addons v0.14.0 and tensorflow-text v2.6.0. I've built the .whl packages and uploaded under **builds/** so we'll just need to pip install it.\
 ```
-wget https://github.com/Qengineering/TensorFlow-Addons-Raspberry-Pi_64-bit/raw/main/tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
 pip install tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
-```
-**tensorflow-text v2.6**:
-I've built the .whl package so we'll just need to pip install it.\
-```
 pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
 ```
 3. Install RASA through a downgraded version of pip.
 ```
 pip install pip==20.2
-pip install rasa
+pip install rasa==3.0.4
 pip install sanic==21.9.3
 ```
+4. Install the newest version of numpy again, if not matplotlib will raise compile errors.\
+```pip install --upgrade numpy```
+5. Install any additional packages which raises error with version. For me it was pyjwt being installed as v2.3.0 when RASA required v2.1.0.\
+```pip install pyjwt==2.1.0```
 
 ### Installing Deepspeech
 TBE
+
+**Possible error 1: Illegal instruction (core dumped) when running ```rasa run --enable-api```**
+This could be because getauxval did not succeed (See [original answer](https://stackoverflow.com/questions/65631801/illegal-instructioncore-dumped-error-on-jetson-nano)).
+```
+nano ~/.bashrc
+export OPENBLAS_CORETYPE=ARMV8
+sudo reboot
+```
+
+**Possible error 2: ImportError: cannot allocate memory in static TLS block**
+1. Find the very first RASA Python file which resulted in the error. For me, it was **/home/nvidia/.local/lib/python3.8/site-packages/rasa/__main__.py**.
+2. Open up that file and write ```import sklearn``` at the very top (before all other import statements).
