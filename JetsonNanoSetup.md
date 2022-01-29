@@ -126,3 +126,37 @@ sudo apt-get install liblapack-dev
 ```wget https://github.com/KumaTea/tensorflow-aarch64/releases/download/v2.6/tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
 5. Run a pip install on the whl file.\
 ```python3.8 -m pip install tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl```
+
+## Installing Speech Recognition Packages
+### Installing Mozilla TTS
+1. Install dependencies
+```
+sudo apt-get update -y
+sudo apt-get install -y pkg-config
+sudo apt-get install espeak
+```
+2. Clone TTS repository and setup
+```
+git clone https://github.com/mozilla/TTS
+cd TTS
+git checkout 72a6ac5
+sudo python3.8 setup.py develop
+```
+3. This is likely to terminate when Tensorflow can't be installed. Install the remaining packages manually.\
+```pip install torch librosa==0.7.2 phonemizer==3.0.1 unidecode==0.4.20 inflect```
+4. This version requires Numba v0.48, which requires llvmlite v0.31.0, which in turn requires LLVM 7+. We first install LLVM 7, then add the llvm-config to the path through a symbolic link. Then we install the source file for llvmlite v0.31.0, extract it and build it. After installing llvmlite, a pip install of Numba v0.48 should be successful.
+```
+sudo apt-get install llvm-7 
+sudo ln -s /usr/bin/llvm-config-7 /usr/local/bin/llvm-config
+wget https://files.pythonhosted.org/packages/17/fc/da81203725cb22d53e4f819374043bbfe3327831f3cb4388a3c020d7a497/llvmlite-0.31.0.tar.gz
+tar xvf llvmlite-0.31.0.tar.gz
+cd llvmlite-0.31.0
+python3.8 setup.py build
+pip install numba==0.48.0
+```
+5. PyTorch requires the updated version of Numpy. We'll have to ignore Tensorflow v2.6's warning of requiring a Numpy version ~=1.19.3.\
+```pip install --upgrade numpy```
+
+### Installing RASA
+
+### Installing Deepspeech
