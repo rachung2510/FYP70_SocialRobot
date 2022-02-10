@@ -73,17 +73,16 @@ When to use ```python```, ```python3``` or ```python3.8```, and especially ```pi
 - If ```pip``` is not tied to Python3.8, run ```python3.8 -m pip install package``` instead when you want to install as a user.
 
 ## Installing Basic Python Packages
-The list of packages for the object detection and emotion recognition is: NumPy, OpenCV, DLib 19.22.1, Tensorflow 2.6, imutils, JetCam, and sk-learn.
 1. Before installing anything, make sure your pip is upgraded.\
 ```pip install --upgrade pip```
 2. Install wheel to save you some trouble.\
 ```pip install wheel```
-3. Install the easier packages:
+3. Install the easier packages.
 - ```pip install scikit-build opencv-python``` (skbuild is a module required by opencv-python)
 - ```pip install imutils```
 - ```pip install scikit-learn==0.24.2```
-- ```pip install --upgrade numpy``` (opencv-python installs its own version of numpy, so will have to install Numpy again to avoid compile errors when installing RASA)
-4. If any wheels fail to build, run step 1 again. Numpy especially tends to fail if pip is not upgraded.
+- ```pip install --upgrade numpy``` (opencv-python installs its own version of NumPy, so will have to install NumPy again to avoid compile errors when installing RASA)
+4. If any wheels fail to build, run step 1 again. NumPy especially tends to fail if pip is not upgraded.
 
 ## Installing the more annoying Python packages
 The troublesome ones are DLib and Tensorflow, as well as JetCam for interfacing with the USB camera.
@@ -123,7 +122,7 @@ self.cap = cv2.VideoCapture(self.capture_device)
 ```
 
 ### Installing DLib
-1. Install the dependencies:
+1. Install the dependencies.
 ```
 sudo apt-get install build-essential cmake
 sudo apt-get install libgtk-3-dev
@@ -140,7 +139,7 @@ sudo apt-get install libboost-all-dev
 
 ### Installing Tensorflow
 Adapted from [**Install Tensorflow 2.4 on Jetson Nano**](https://qengineering.eu/install-tensorflow-2.4.0-on-jetson-nano.html).
-1. Download the dependencies
+1. Download the dependencies.
 ```
 sudo apt-get install gfortran
 sudo apt-get install libhdf5-dev libc-ares-dev libeigen3-dev
@@ -159,13 +158,13 @@ python3.8 -m pip install tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl
 
 ## Installing Speech Recognition Packages
 ### Installing Mozilla TTS
-1. Install dependencies
+1. Install dependencies.
 ```
 sudo apt-get update -y
 sudo apt-get install -y pkg-config
 sudo apt-get install espeak
 ```
-2. Clone TTS repository and setup
+2. Clone TTS repository and setup.
 ```
 git clone https://github.com/mozilla/TTS
 cd TTS
@@ -190,7 +189,7 @@ pip install numba==0.48.0
 ### Installing RASA
 1. Install dependencies.\
 ```sudo apt-get install libpq-dev```
-2. Install Tensorflow dependencies - tensorflow-addons v0.14.0 and tensorflow-text v2.6.0. I've built the .whl packages and uploaded under **builds/** so we'll just need to pip install it.\
+2. Install Tensorflow dependencies - tensorflow-addons v0.14.0 and tensorflow-text v2.6.0. I've built the .whl packages and uploaded under **builds/** so we'll just need to pip install it.
 ```
 git clone -b jetsonNano https://github.com/rachung2510/FYP70_SocialRobot.git
 cd FYP70_SocialRobot/builds
