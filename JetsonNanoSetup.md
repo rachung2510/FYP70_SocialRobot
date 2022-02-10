@@ -208,12 +208,12 @@ pip install sanic==21.9.3
 5. Install any additional packages which raises error with version. For me it was pyjwt being installed as v2.3.0 when RASA required v2.1.0.\
 ```pip install pyjwt==2.1.0```
 
-### Installing Deepspeech
-TBE
-
 **Possible error 1: Illegal instruction (core dumped) when running ```rasa run --enable-api```**\
 This could be because getauxval did not succeed (See [original answer](https://stackoverflow.com/questions/65631801/illegal-instructioncore-dumped-error-on-jetson-nano)). Open up the .bashrc file ```nano ~/.bashrc``` and insert the line ```export OPENBLAS_CORETYPE=ARMV8``` at the bottom, then do a ```sudo reboot```.
 
 **Possible error 2: ImportError: cannot allocate memory in static TLS block**
 1. Find the very first RASA Python file which resulted in the error. For me, it was **/home/nvidia/.local/lib/python3.8/site-packages/rasa/__main__.py**.
 2. Open up that file and write ```import sklearn``` at the very top (before all other import statements).
+
+### Installing Deepspeech
+TBE
