@@ -95,6 +95,16 @@ rules:
     - intent: bot_parents
   - action: utter_quit_game_first
 
+- rule: user is hungry
+  steps:
+  - intent: mood_hungry
+  - action: utter_eat
+
+- rule: user is thirsty
+  steps:
+  - intent: mood_thirsty
+  - action: utter_drink
+
 - rule: apologise when the user doesn't understand
   steps:
   - intent: not_understand

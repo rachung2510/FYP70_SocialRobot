@@ -155,6 +155,10 @@ nlu:
     - could you repeat that
     - can you say that again
     - could you say that again
+    - what
+    - sorry what
+    - I dunno what you mean
+    - I don't know what you mean
 - intent: thanks
   examples: |
     - thanks
@@ -169,6 +173,17 @@ nlu:
     - thank you for being my friend
     - thanks for being here
     - thank you for your help
+    - thank you you
+    - tank cute
+    - thank cute
+    - thang cute
+    - tank you
+    - tank youth
+    - thank youth
+    - thank yield
+    - tank yield
+    - thank u
+    - tank u
 
 - intent: play_Simon_says
   examples: |
@@ -258,6 +273,10 @@ nlu:
     - enough games
     - no more games
     - stop playing
+    - don't want game already
+    - don't want game
+    - no want game
+    - no one game
 - intent: play_again
   examples: |
     - play again
@@ -358,6 +377,8 @@ nlu:
     - good mood
     - I'm in a good mood
     - happiness
+    - very happy
+    - very good
 - intent: mood_unhappy
   examples: |
     - bad
@@ -405,6 +426,10 @@ nlu:
     - This sucks!
     - I am feeling quite lost
     - sadness
+    - very sad
+    - very bad
+    - very not good
+    
 - intent: mood_angry
   examples: |
     - I am angry
@@ -443,18 +468,20 @@ nlu:
     - I'm still angry about that
     - anger
     - disgust
+    - aghhh
+    - ughhh
+    - aaaaaa
+    - guhhhh
 - intent: mood_scared
   examples: |
     - I am scared
     - I feel scared
-    - I'm worried
     - I am terrified
     - That is frightening
     - I feel intimidated
     - That is intimidating
     - I am petrified
     - I am afraid
-    - I feel anxious
     - I'm having a bad feeling
     - I'm fearful
     - I panicked
@@ -468,6 +495,7 @@ nlu:
     - fear
 - intent: mood_nervous
   examples: |
+    - I'm worried
     - I am nervous
     - I am stressed out
     - I feel nervous
@@ -577,6 +605,31 @@ nlu:
     - I am ill
     - I don't feel very well
     - I am not feeling well
+- intent: mood_hungry
+  examples: |
+    - I am hungry
+    - I'm hungry
+    - I want food
+    - I want to eat
+    - I'm craving
+    - I want snacks
+    - I wanna eat
+    - I wanna snack
+- intent: mood_thirsty
+  examples: |
+    - I'm thirsty
+    - I am thirsty
+    - very thirsty
+    - I very thirsty
+    - I want water
+    - I want drink
+    - I want to drink
+    - I want to drink water
+    - I wanna drink
+    - I wanna drink water
+    - mouth is dry
+    - mouth dry
+    - my mouth is dry
 - intent: mood_tired
   examples: |
     - I'm sleepy
@@ -669,16 +722,48 @@ nlu:
     - do you know me
     - you know me
     - you remember me
+    - you don't like me
+    - you not like me
+    - do you dislike me
+    - do you hate me
 - intent: do_you_dislike
   examples: |
     - do you dislike cats?
     - do you dislike talking?
+    - do you dislike hair
+    - do you dislike claire
+    - do you dislike work
     - do you hate humans?
+    - do you hate food
+    - do you hate the sun
+    - do you hate insects
     - do you think school sucks?
+    - do you think he sucks
+    - do you think socks suck
+    - do you think work sucks
     - do you not like football?
+    - do you not like noodle
+    - do you not like drawing
+    - do you not like games
+    - do you not like the colour
     - you no like dogs?
     - you no like insect?
+    - you no like snow
+    - you no like leaves
+    - you no like moving
+    - you no like cartoon
     - you not like flowers?
+    - you not like toys
+    - you not like money
+    - you not like blue
+    - you not like yellow
+    - you don't like him
+    - you don't like her
+    - you don't like car
+    - you don't like dance
+    - you don't like movie
+    - you don't like
+    - you no like
 - intent: share_likes
   examples: |
     - I like animals
@@ -686,13 +771,18 @@ nlu:
     - I like cats
     - I like chocolate
     - I like music
+    - I like this pen
+    - I like this toy
     - I love dolphins
     - I love penguins
     - I love McDonalds
     - I love games
+    - I love pinky
     - horses are my favourite animal
     - ducks are my favorite animals
     - ice cream is my favourite food
+    - she is my favourite pet
+    - this is my favourite pen
     - my favourite food is mushroom
     - my favorite show is spongebob
     - my favourite season is summer
@@ -706,10 +796,15 @@ nlu:
     - I love to play with lego
     - I love baking
     - I love playing with lego
+    - I love dancing
     - my friend doesn't like games but I like
     - my teacher doesn't like exercise but I like
+    - my papa doesn't like cooking but I like
+    - my mama doesn't like him but I like
     - my friend don't like lego but I do
     - my friend don't like anime but I do
+    - my jiejie don't like school but I do
+    - my pet don't like fish but I do
     - my papa doesn't like flowers. I like
     - my mama doesn't like music. I like
     - korkor don't like cats but I like
@@ -717,10 +812,26 @@ nlu:
 - intent: share_liked_teacher
   examples: |
     - my favourite teacher is Ms Lisa
+    - my favourite teacher is a robot
+    - my favourite teacher is the best
+    - my favourite teacher is on tv
+    - my favourite teacher is Mr Tang
+    - my favourite teacher is Miss Chung
+    - my favourite teacher is Mister Xie
     - I like teacher Siti
+    - I like teacher Lina
+    - I like teacher Shirley
+    - I like teacher John
+    - I like teacher Jane
     - I like Mr Paul best
+    - I like Mr Koh the most
+    - I like Ms Toh a lot
+    - I like Mister Tang
     - I like Mister Tan
+    - I like Mister Quek
     - I like Miss Teo
+    - I like Miss Chan
+    - I like Miss Chang
 - intent: share_reason_like_person
   examples: |
     - she is very nice
@@ -729,12 +840,14 @@ nlu:
     - she listens to me
     - she draws with me
     - she can sing well
+    - she praise me
     - he is kind
     - he is patient
     - he is funny
     - he can fix anything
     - he plays with me
     - he teaches well
+    - he say I smart
     - they are funny
     - they don't scold me
     - they have a soothing voice
@@ -1062,6 +1175,9 @@ nlu:
     - my skin feels itchy
     - I don't know how to do
     - dunno how to do
+    - must see doctor
+    - see doctor tomorrow
+    - seeing doctor
 - intent: share_about_friends_bad
   examples: |
     - today I didn't see my friends
@@ -1172,6 +1288,8 @@ nlu:
     - have to see scary teacher tomorrow
     - teacher scary
     - cher very scary
+    - show-and-tell tomorrow
+    - I have show-and-tell
 - intent: chat
   examples: |
     - let's have a chat
@@ -1459,6 +1577,7 @@ nlu:
     - You are my favourite robot
     - You are my favourite edubot
     - You are my favourite toy
+    - You are my favourite teacher
     - You are my best friend
     - You are the best
     - You are the best robot
@@ -1488,6 +1607,8 @@ nlu:
     - have you had dinner
     - have you had lunch
     - have you had tea
+    - have you sleep
+    - do you sleep
 - intent: bot_age
   examples: |
     - how old are you?
