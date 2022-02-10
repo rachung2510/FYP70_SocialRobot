@@ -32,6 +32,8 @@ intents:
 - mood_lonely
 - mood_bored
 - mood_unwell
+- mood_hungry
+- mood_thirsty
 - mood_tired
 - do_you_like
 - do_you_like_me
@@ -213,27 +215,27 @@ responses:
   utter_exciting:
   - text: Sounds really exciting!
   - text: Woah, that's really something!
-  - text: Whee, can't wait!
+  - text: Whee, I can't wait!
   - text: I'd look forward to that too!
   utter_happy_self:
   - text: Glad to hear it!
   - text: Sounds like fun!
   - text: Wow, very interesting!
-  - text: Oo, I see, thanks for sharing!
+  - text: Oooo, thank you for sharing!
   - text: Love to see you grow!
   utter_happy_friends:
   - text: Wow, you sound like good friends!
-  - text: Aww, I want to be your friend too!
+  - text: I want to be your friend too!
   utter_happy_family:
   - text: Sounds like great family time!
   - text: What a lovely family you have!
   - text: Good to spend time together!
   - text: They sound lovely!
   utter_happy_school:
-  - text: Wow, you had fun at school?
+  - text: Wow, sounds like you had fun at school!
   - text: Sounds like school was fun!
   - text: Must have been a nice school day!
-  - text: Ooo, great to hear you had a good school day!
+  - text: Oooo, great to hear you had a good school day!
   utter_robot_like:
   - text: I like whatever you like.
   - text: I'm not sure, since I am a robot.
@@ -276,13 +278,12 @@ responses:
   - text: Go on...
   - text: Go ahead...
   - text: Continue...
-  - text: Mmhmm...
   - text: Carry on...
   utter_comfort_generic:
   - text: Oh no, give it some time, you will feel better!
   - text: Oh no, sorry to hear that. But don't worry, it will pass.
   - text: Aww, it'll be alright...
-  - text: Oh dear, sad to hear that... but you can talk to me anytime!
+  - text: Oh dear, sad to hear that. But you can talk to me anytime!
   utter_comfort_friends:
   - text: Oh no, I'll be your friend!
   - text: Oh dear, it's ok, you have me!
@@ -294,8 +295,8 @@ responses:
   - text: Don't worry about mistakes, it is part of learning!
   - text: Just do your best!
   utter_comfort_angry:
-  - text: Oh no you're angry! Breathe in... and out... does it help?
-  - text: Oh no, I don't like being angry too... do you want to talk about it?
+  - text: Oh no you're angry! Breathe in and out. Does it help?
+  - text: Oh no, I don't like being angry too. Do you want to talk about it?
   - text: Ah, frowning is not good! Takes a lot of energy. Do you wanna let it out?
   utter_comfort_scared:
   - text: Oh, don't be afraid, I'm here with you!
@@ -311,8 +312,16 @@ responses:
   - text: Oh dear, take care and rest. Do I need to call someone?
   - text: Should I tell someone like your mum, dad, or teacher?
   - text: Do you want me to tell a grown up?
+  utter_eat:
+  - text: Go ask for something to eat.
+  - text: Maybe you can wait until meal time.
+  - text: Try asking a grown up for a snack.
+  utter_drink:
+  - text: Go get your water bottle.
+  - text: Drink up!
+  - text: Drink some water.
   utter_sleep:
-  - text: Oh, you do look tired... maybe you should sleep!
+  - text: Oh, you do look tired. Maybe you should sleep!
   - text: Is it time for a nap?
   - text: Would you like to take a break? Maybe a nap?
   utter_sleep_well:
@@ -328,7 +337,7 @@ responses:
   - text: Welcome!
   utter_affirm:
   - text: No problem
-  - text: Sure, no problemo
+  - text: Sure, no problem
   - text: Ok
   - text: That's ok
   - text: That's alright
@@ -400,7 +409,7 @@ responses:
   - text: I wonder just as much!
   - text: I have the same question!
   - text: I was wondering the same thing...
-  - text: I'm not sure...try asking me something else!
+  - text: I'm not sure. Try asking me something else!
   utter_iamabot:
   - text: I am edubot, an educational robot.
   - text: I am a robot, not a person!
@@ -424,10 +433,11 @@ responses:
   - text: Ready for some fun times with you!
   - text: I'm always good!
   utter_bot_love_you:
-  - text: Of course, I love you, my best friend
-  - text: Definitely! I love you lots my friend!
+  - text: Of course I love you, my best friend
+  - text: I love you lots my friend!
   - text: I like you very much my friend!
   - text: You're my best friend!
+  - text: I'm your best friend!
   utter_bot_love_you_too:
   - text: Aww, I love you too
   - text: Aww how sweet, I like you too!
