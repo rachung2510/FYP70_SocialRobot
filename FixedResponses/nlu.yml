@@ -105,8 +105,10 @@ nlu:
 - intent: play_Word_of_the_day
   examples: |
     - play word of the day
+    - play were ofter day
     - Can we play word of the day?
     - I want to learn a new word
+    - I want to let a knew word
 
 - intent: play_Fun_fact
   examples: |
@@ -130,3 +132,68 @@ nlu:
     - I don't know what game to play
     - I don't know which game to choose
 
+- intent: how_to_play_Simon_says
+  examples: |
+    - how to play Simon says?
+    - May I know how to play Simon says?
+    - How does Simon says work?
+    - Instructions for Simon says
+
+- intent: how_to_play_Word_of_the_day
+  examples: |
+    - How does Word of the day work?
+    - How to play Word of the day?
+    - Instructions for word of the day
+    - May I know how to play Word of the day?
+
+- intent: how_to_play_Fun_fact
+  examples: |
+    - How to play fun fact?
+    - Instructions for fun fact
+    - How does fun fact work?
+
+- intent: quit_game
+  examples: |
+    - exit the game
+    - quit the game
+    - I don't want to play game anymore
+
+- intent: play_again
+  examples: |
+    - play again
+    - I want to play again
+    - Can we play again?
+    
+- intent: ask_available_game
+  examples: |
+    - Can you tell me what games you have?
+    - What games do you have?
+    - What games are available?
+    - Are there any games available?
+    - What games can I choose?
+
+- intent: item_entry_none
+  examples: |
+    - do nothing
+    - Do nothing
+    - Do Nothing
+    - do nothin
+
+- intent: word_entry
+  examples: |
+    - the word is [confused](word_spoken)
+    - the word is [upset](word_spoken)
+    - the word is [between](word_spoken)
+    - the word is [above](word_spoken)
+    - the word is [below](word_spoken)
+    - the word is [top](word_spoken)
+    - the word is [chase](word_spoken)
+    - the word is [empty](word_spoken)
+    - the word is [full](word_spoken)
+    - the word is [funny](word_spoken)
+
+
+- intent: trigger
+  examples: |
+    - trigger
+    - triggger

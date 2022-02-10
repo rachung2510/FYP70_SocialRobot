@@ -1,0 +1,181 @@
+version: '3.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- affirm
+- deny
+- play_Word_of_the_day
+- quit_game
+- greet
+- goodbye
+- mood_great
+- mood_unhappy
+- bot_challenge
+- play_Simon_says
+- play_Fun_fact
+- play_Scissor_Paper_Stone
+- play_unspecified_game
+- ask_choose_game
+- how_to_play_Simon_says
+- how_to_play_Word_of_the_day
+- how_to_play_SPS
+- ask_available_game
+- item_entry_none
+- play_again
+- tell_SPSchoice
+entities:
+- SPSchoice
+- game_choice
+- item
+- item_none
+- repeat_counter
+- word
+- word_meaning
+- word_spoken
+slots:
+  game_mode:
+    type: bool
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  game_choice:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+    - type: from_intent
+      value: Simon says
+      intent: play_Simon_says
+    - type: from_intent
+      value: Word of the day
+      intent: play_Word_of_the_day
+    - type: from_intent
+      value: Scissor paper stone
+      intent: play_Scissor_Paper_Stone
+  item:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  item_none:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: from_intent
+      value: do nothing
+      intent: item_entry_none
+  word:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  word_meaning:
+    type: text
+    initial_value: none
+    mappings:
+    - type: custom
+  word_spoken:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: from_text
+      conditions:
+      - active_loop: pronunciation_form
+        requested_slot: word_spoken
+    - type: from_intent
+      value: quit
+      intent: quit_game
+      conditions:
+      - active_loop: pronunciation_form
+        requested_slot: word_spoken
+  repeat_counter:
+    type: float
+    initial_value: 0
+    influence_conversation: true
+    mappings:
+    - type: custom
+    max_value: 1.0
+    min_value: 0.0
+  SPSchoice:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: SPSchoice
+responses:
+  utter_greet:
+  - text: Hey! How are you?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_quit_game:
+  - text: Okay, let me know if you want to play any game.
+  utter_ask_what_game:
+  - text: We have Simon says, word of the day and fun fact. What game do you want to play?
+  utter_tell_available_game:
+  - text: We have Simon says, word of the day and scissor paper stone.
+  utter_ask_need_instruction:
+  - text: Do you need to know the instruction for the game?
+  utter_tell_instruction:
+  - condition:
+    - type: slot
+      name: game_choice
+      value: Simon says
+    text: "Here is the instruction for Simon says: When I say 'Simon says, do something', you need to follow the instruction such as bring me an item in 2 minutes or do a gesture in 30 seconds. If I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing'. Remember to tell me 'I am ready' when you are ready to show an item or do a gesture."
+  - condition:
+    - type: slot
+      name: game_choice
+      value: Word of the day
+    text: 'Here is the instruction for Word of the day: You will try to learn a new word. You need to repeat the word with me and I will check your pronunciation. I will explain the meaning of the word to you too at the end.'
+  - condition:
+    - type: slot
+      name: game_choice
+      value: Scissor paper stone
+    text: "Here is the instruction for Scissor Paper Stone: You just tell me your chocie and I will tell you my choice and the result. Don't worry, I will not cheat."
+  utter_tell_SimonSays_instruction:
+  - text: "Here is the instruction for Simon says: When I say 'Simon says, do something', you need to follow the instruction such as bring me an item in 2 minutes or do a gesture in 30 seconds. If I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing'. Remember to tell me 'I am ready' when you are ready to show an item or do a gesture."
+  utter_tell_WordOfTheDay_instruction:
+  - text: 'Here is the instruction for Word of the day: You will try to learn a new word. You need to repeat the word with me and I will check your pronunciation. I will explain the meaning of the word to you too at the end.'
+  utter_tell_SPS_instruction:
+  - text: "Here is the instruction for Scissor Paper Stone: You just tell me your chocie and I will tell you my choice and the result. Don't worry, I will not cheat."
+  utter_ask_word_spoken:
+  - text: '{word}!'
+  utter_what_to_do:
+  - text: Ok, what would you like to do now?
+  - text: That's ok, what do you want to do?
+  - text: In that case, what shall we do now?
+  - text: Sure, do you wanna do something else now?
+  - text: Alright, what to do next?
+  - text: Now then, what's next?
+  - text: Alright, what do you want to do now?
+actions:
+- action_check_SPS
+- action_check_item
+- action_choose_game
+- action_enter_game_mode
+- action_exit_game_mode
+- action_play_game
+- action_tell_fun_fact
+- utter_ask_need_instruction
+- utter_quit_game
+- validate_pronunciation_form
+forms:
+  pronunciation_form:
+    required_slots:
+    - word_spoken

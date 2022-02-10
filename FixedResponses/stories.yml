@@ -2,49 +2,264 @@ version: "3.0"
 
 stories:
 
-- story: happy path
+- story: choose a game for user
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
-
-- story: choose a game for user 
-  steps:
-  - intent: ask_choose_game
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
   - action: action_choose_game
   - intent: affirm
-  - action: utter_play_game
-  - action: action_play_game
-  - action: utter_play_again
+  - action: utter_ask_need_instruction
   - intent: affirm
-  - action: utter_play_game
+  - action: utter_tell_instruction
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
   - action: action_play_game
 
-- story: choose a game for user but user does not want
+- story: choose a game for user without instruction
   steps:
-  - intent: ask_choose_game
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
+  - action: action_choose_game
+  - intent: affirm
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: choose a game for user but user does not want it
+  steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
   - action: action_choose_game
   - intent: deny
-  - action: utter_reask_what_game
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+  - intent: affirm
+  - action: utter_what_to_do
 
+- story: initiate specific game 1 with instruction
+  steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 1 without instruction
+  steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 2 with instruction
+  steps:
+  - or:
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 2 without instruction
+  steps:
+  - or:
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate Simon Says without instruction
+  steps:
+  - intent: play_Simon_says
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+      - game_mode: true
+      - game_choice: Simon says
+  - action: action_check_item
+  - checkpoint: end_game
+
+- story: initiate Simon Says with instruction
+  steps:
+  - intent: play_Simon_says
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+      - game_mode: true
+      - game_choice: Simon says
+  - action: action_check_item
+  - checkpoint: end_game
+
+- story: play Simon says again after end of game
+  steps:
+  - checkpoint: end_game
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+      - game_choice: Simon says
+  - action: action_check_item
+
+- story: check scissor paper stone choice after begin game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+    - game_choice: Scissor Paper Stone
+  - intent: tell_SPSchoice
+  - action: action_check_SPS
+  - checkpoint: end_game
+
+- story: Tell a fun fact again
+  steps:
+  - action: action_tell_fun_fact
+  - intent: affirm
+  - action: action_tell_fun_fact
+
+- story: do not play again after end of game
+  steps:
+  - checkpoint: end_game
+  - intent: deny
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+- story: play again after end of game
+  steps:
+  - checkpoint: end_game
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: ask to play again at any time in game mode
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: play_again
+  - action: action_play_game
+
+- story: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+- story: Activate Pronunciation form
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: deny
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+- story: interactive_story_1 (User interrupts the pronunciaiton form and doesn't want to continue)
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - word: confused
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - repeat_counter: 1
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - intent: quit_game
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+- story: interactive_story_2 (User interrupts the pronunciaiton form and doesn't want to continue)
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - word: confused
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - repeat_counter: 1
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - intent: quit_game
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_exit_game_mode
+  - action: utter_quit_game

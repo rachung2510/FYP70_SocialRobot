@@ -2,35 +2,81 @@ version: "3.0"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: tell instruction of Simon says
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - intent: how_to_play_Simon_says
+  - action: utter_tell_SimonSays_instruction
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: tell instruction of Scissor Paper Stone
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - intent: how_to_play_SPS
+  - action: utter_tell_SPS_instruction
 
-- rule: initiate a specified game
+- rule: tell instruction of Word of the day
   steps:
-  - or:
-    - intent: play_Simon_says
-    - intent: play_Word_of_the_day
-    - intent: play_Fun_fact
-  - action: utter_play_game
+  - intent: how_to_play_Word_of_the_day
+  - action: utter_tell_WordOfTheDay_instruction
+
+- rule: tell available games
+  steps:
+  - intent: ask_available_game
+  - action: utter_tell_available_game
+
+- rule: tell a fun fact
+  steps:
+  - intent: play_Fun_fact
+  - action: action_tell_fun_fact
+
+- rule: Activate Pronunciation form
+  steps:
   - action: action_play_game
-  - action: utter_play_again
-
-- rule: play again
-  steps:
-  - action: utter_play_again
+  - slot_was_set:
+    - game_choice: Word of the day
   - intent: affirm
-  - action: utter_play_game
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+
+- rule: Submit Pronunciation form
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: deny
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+- rule: Submit Pronunciation form
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: affirm
+  - action: action_enter_game_mode
   - action: action_play_game
 
-- rule: play unspecified game
-  steps:
-  - intent: play_unspecified_game
-  - action: utter_ask_what_game
 
+- rule: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
+  - action: utter_quit_game
+
+
+- rule: User interrupts the pronunciaiton form and doesn't want to continue
+  steps:
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: quit
+  - intent: affirm
+  - action: action_deactivate_loop
+  - action: action_exit_game_mode
+  - action: utter_quit_game
