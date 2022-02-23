@@ -21,10 +21,10 @@ def get_input():
     if not finished.isSet():
         #message = input("Your input: \n")
         '''STT block'''
-    	# read user input
+       	# read user input
         record_audio(WAVE_OUTPUT_FILENAME)
-    	
-    	# convert audio to text
+       	
+       	# convert audio to text
         N_FEATURES = 25
         N_CONTEXT = 9
         BEAM_WIDTH = 500
@@ -33,11 +33,11 @@ def get_input():
         ds = Model(model_file_path)
         fs, audio = wav.read(WAVE_OUTPUT_FILENAME)
         message = ds.stt(audio)
-    	
+       	
         # remove audio file
         os.remove(WAVE_OUTPUT_FILENAME)
-        
-    	# for reference
+       
+       	# for reference
         print("I say: "+ message)
         finished.set()
     return
@@ -46,43 +46,48 @@ def pred_emotion(vs, detector, predictor, models):
     global message, finished
     c = 0
     pred = "neutral"
-    while not finished.isSet():        
+    while not finished.isSet():
         frame = vs.read()
         emotion_class = get_emotion_class(frame, detector, predictor, models)
         if emotion_class != "neutral":
             c += 1 if emotion_class == pred else 0
             pred = emotion_class
             if c==5:
-                message = "I'm " + emotion_class            
-                print(message)
+                message = emotion_class
+                print("I'm " + emotion_class)
                 finished.set()
     return emotion_class
-
-
-#Load TTS
-model, vocoder_model, speaker_id, TTS_CONFIG, use_cuda, ap, OUT_FILE = load_tts()
 
 
 '''Connector Program'''
 
 bot_message = ""
 message=""
+emo_mode = True
+finished = Event()
 
 bye_list = ["Bye", "Goodbye", "See you again!", "Let's talk again next time!"]
 
-finished = Event()
+#Load TTS
+model, vocoder_model, speaker_id, TTS_CONFIG, use_cuda, ap, OUT_FILE = load_tts()
+
+#Load emotion model
 vs, detector, predictor, models = init_emotion()
 
-while bot_message not in bye_list:
+# Main prog loop
+while True:
 
-    while not finished.isSet():   
-        worker = Thread(target=get_input)
-        worker.setDaemon(True)
-        worker.start()
-        emotion_class = pred_emotion(vs, detector, predictor, models)
+    if emo_mode:
+        while not finished.isSet():
+            worker = Thread(target=get_input) # STT thread
+            worker.setDaemon(True)
+            worker.start()
+            emotion_class = pred_emotion(vs, detector, predictor, models)
+    else:
+        get_input()
 
-    if len(message)==0:
-        continue
+    #if len(message)==0:
+    #    continue
     print("Sending message now...")
 
     #Pass message to rasa and print response
@@ -98,10 +103,14 @@ while bot_message not in bye_list:
     emo_mode = j['slots']['emo_mode']
     print(f"Emotion Detection mode: {emo_mode}")
 
-    '''TTS block'''
-    sentence = bot_message
-    align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
-    # Playing the converted file
-    playsound("bot_reply.wav")
-
+    # TTS block
+    if bot_message != "":
+        sentence = bot_message
+        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
+        playsound("bot_reply.wav") # Playing the converted file
+        
     finished = Event() # reset event
+    
+    # End program if bot said goodbye
+    if bot_message in bye_list:
+        break
