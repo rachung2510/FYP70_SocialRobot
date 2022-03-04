@@ -5,9 +5,9 @@ import time
 import dlib
 import cv2
 import torch
-from torch import nn
 import numpy as np
 from helper_functions import mag, angle
+from torch_classes import FCNNModel, ResNet, to_device, get_default_device
 
 # define constants
 model_path = 'trained_models/'
@@ -20,28 +20,10 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
 # load models
 print("[INFO] loading models...")
-class FCNNModel(nn.Module):
-    def __init__(self, *args, **kwargs):
-        super(FCNNModel, self).__init__()
-        
-        input_layer_size = kwargs['input_layer_size']
-        hidden_layer_size = kwargs['hidden_layer_size']
-        num_classes = kwargs['num_classes']
-        
-        self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(input_layer_size, hidden_layer_size),
-            nn.ReLU(),
-            nn.Linear(hidden_layer_size, hidden_layer_size),
-            nn.ReLU(),
-            nn.Linear(hidden_layer_size, num_classes),
-        )
-    
-    def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
-fcnn_model = torch.load(model_path + 'FCNN_model.pt')    
+##fcnn_model = torch.load(model_path + 'FCNN_model.pt')
+cnn_model = to_device(ResNet(1, len(emotion_classes)), get_default_device())
+cnn_model.load_state_dict(torch.load(model_path + 'CNNModel.pth'))
+cnn_model.eval()
 
 def start():
     # initialize the video stream and allow the cammera sensor to warmup
@@ -73,21 +55,35 @@ def start():
             cv2.rectangle(image, (x,y), (x+w, y+h), (0,255,0), 2) # draw the face bounding box
             cv2.putText(image, "Face #{}".format(i+1), (x-10, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2) # show face number
 
+        ## vectors
         vectors = np.array(vectors)        
         scale_factor = 1 / max(vectors[:,0])
         vectors[:,0] = vectors[:,0] * scale_factor # normalize magnitudes
         coords = np.array(coords) * scale_factor
         coords = coords.reshape(-1)
+
+        ## graylevels
+        dim = 50
+        cnn_input = image[y:y+h, x:x+w] # crop to face
+        cnn_input = cv2.cvtColor(cnn_input, cv2.COLOR_RGB2GRAY) # convert to grayscale
+        cnn_input = cv2.equalizeHist(cnn_input) # equalize histogram
+        cnn_input = imutils.resize(cnn_input, width=int(dim*1.05)) # buffer of 5 pixels for cropping to 100x100
+        cnn_input = cnn_input[:dim,:dim]
+        cnn_input = cnn_input.reshape(1,1,dim,dim)/255.0 # shape=(1,1,dim,dim)
         
         # prediction
-        fcnn_input = np.dstack((vectors.reshape(1, -1), coords)).reshape(1, -1) # shape=(1, 272)
-        if fcnn_input.shape == (1,272):
-            with torch.no_grad():
-                pred_tensor = fcnn_model(torch.Tensor(fcnn_input).cuda()).argmax()        
-                pred = pred_tensor.cpu().numpy().item()
-            pred_label = emotion_classes[pred]
-            cv2.putText(image, '%s' % pred_label, (x,y+h+20),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)    
+##        fcnn_input = np.dstack((vectors.reshape(1, -1), coords)).reshape(1, -1) # shape=(1, 272)
+##        if fcnn_input.shape == (1,272):
+##            with torch.no_grad():
+##                fcnn_pred_tensor = fcnn_model(torch.Tensor(fcnn_input).cuda()).argmax()
+##                fcnn_pred = fcnn_pred_tensor.cpu().numpy().item()                
+##            fcnn_pred_label = mood_map[fcnn_pred]
+##            cv2.putText(image, '%s' % fcnn_pred_label, (x,y+h+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
+        with torch.no_grad():
+            cnn_pred_tensor = cnn_model(torch.Tensor(cnn_input).cuda()).argmax()
+            cnn_pred = cnn_pred_tensor.cpu().numpy().item()
+        cnn_pred_label = mood_map[cnn_pred]            
+        cv2.putText(image, '%s' % cnn_pred_label, (x,y+h+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)    
                     
         cv2.imshow("Frame", image)
         
