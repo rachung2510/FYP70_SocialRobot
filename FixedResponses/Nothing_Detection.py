@@ -1,25 +1,38 @@
 import cv2
 import numpy as np
+import random
 import time
 
 
-def SimonSays_item(selected_item):
-    starting_time = time.time()
+def SimonSays_nothing(selected_item):
+    lst1 = ['fork', 'spoon', 'bottle']
+    lst2 = ["Cylindrical","Sphere","Rectangular"]
+    choose = selected_item
+    classes = []
+
+    sample = []
+
+    if choose in lst1:
+        yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4.cfg')
+        with open("./coco.names","r") as f:
+            classes = f.read().splitlines()
+        # print((classes))
+
+    else:
+        yolo = cv2.dnn.readNet('./iteration3_final.weights' , './customyolov4-obj.cfg')
+        with open("./obj.names","r") as f:
+            classes = f.read().splitlines()
+        # print((classes))
 
     # ./yolov4.weights ./darknet-master/cfg/yolov4.cfg
-    yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4.cfg')
     #yolo = cv2.dnn.readNet('./customyolov4-obj_last.weights' , './customyolov4-obj.cfg')
 
+    starting_time = time.time()
 
     #yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4-tiny.cfg')
-    classes = []
-    with open("./coco.names","r") as f:
-        classes = f.read().splitlines()
-    # print((classes))
+
 
     cam = cv2.VideoCapture(0)
-    cam.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
-    cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     if (cam.isOpened() == False):
         print("Unable to read camera feed")
     width = int(cam.get(3))
@@ -27,8 +40,9 @@ def SimonSays_item(selected_item):
     #out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 30, (width,height))
 
     # items_of_selection = ["bottle","sports ball","spoon","fork"]
-    # #items_of_selection = ["bottle","sports ball","cell phone"]
+    #items_of_selection = ["bottle","sports ball","cell phone"]
     # selected_item = random.choice(items_of_selection)
+
 
     while(True):
         ret,frame = cam.read()
@@ -38,9 +52,10 @@ def SimonSays_item(selected_item):
         if not frame.any():
             print("Nothing")
             break
-        if (time.time() - starting_time) > 30:
-            break
 
+        #if time.time() - starting_time > 30:
+        #    break
+        
         blob = cv2.dnn.blobFromImage(frame,1/255, (320,320), (0,0,0), swapRB=True, crop=False)
         yolo.setInput(blob)
         output_layer_names = yolo.getUnconnectedOutLayersNames()
@@ -74,7 +89,7 @@ def SimonSays_item(selected_item):
         
         color = (0, 0, 255)
         
-        cv2.putText(frame, "Please find this Item: " + selected_item, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
+        cv2.putText(frame, "Please find this Item: " + choose, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0))
         font = cv2.FONT_HERSHEY_PLAIN
         colors = np.random.uniform(0,255,size=(len(boxes),3))
         if len(indexes) >0:
@@ -84,25 +99,25 @@ def SimonSays_item(selected_item):
                 label = str(classes[class_ids[i]])
                 confi = str(round(confidences[i],2))
                 #color = colors[i]
-                if label == selected_item:
-                    color = (0, 255, 0)
-                    cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                    start = time.time()
+                if label not in sample:
+                    sample.append(label)
 
-                    while (time.time() - start > 5000000):
-                        cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                    # selected_item = random.choice(items_of_selection)
-                    # status_level=0
-                    cam.release()
-                    #out.release()
-                    cv2.destroyAllWindows()
-                    return True
-                
+
                 cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
                 cv2.putText(frame, label + " " + confi, (x,y+20), font, 2, (255,255,255), 2)
 
                 #plt.imshow(img)
                 #plt.show()
+        if time.time() - starting_time > 30:
+            if choose not in sample:
+                cv2.putText(frame, "Well Done!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
+                ans = True
+            else:
+                cv2.putText(frame, "Wrong!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
+                ans = False
+            break
+        # print(sample)
+
 
         cv2.imshow("Video",frame)
 
@@ -111,4 +126,4 @@ def SimonSays_item(selected_item):
 
     cv2.destroyAllWindows()
 
-    return False
+    return ans
