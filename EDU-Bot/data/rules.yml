@@ -1,0 +1,278 @@
+version: "3.0"
+
+rules:
+
+- rule: tell instruction of Simon says
+  steps:
+  - intent: how_to_play_Simon_says
+  - action: utter_tell_SimonSays_instruction
+
+- rule: tell instruction of Scissor Paper Stone
+  steps:
+  - intent: how_to_play_SPS
+  - action: utter_tell_SPS_instruction
+
+- rule: tell instruction of Word of the day
+  steps:
+  - intent: how_to_play_Word_of_the_day
+  - action: utter_tell_WordOfTheDay_instruction
+
+- rule: tell available games
+  steps:
+  - intent: ask_available_game
+  - action: utter_tell_available_game
+
+- rule: user mentioned non game intents in game mode
+  condition:
+  - slot_was_set:
+    - game_mode: true
+    # - disallow_nonsense: true
+  steps:
+  - or:
+    - intent: nlu_fallback
+    - intent: greet
+    - intent: out_of_scope
+    - intent: not_understand
+    - intent: thanks
+    - intent: chat
+    - intent: goodbye
+    - intent: mood_great
+    - intent: mood_unhappy
+    - intent: mood_angry
+    - intent: mood_scared
+    - intent: mood_nervous
+    - intent: mood_excited
+    - intent: mood_lonely
+    - intent: mood_bored
+    - intent: mood_unwell
+    - intent: mood_tired
+    - intent: do_you_like
+    - intent: do_you_like_me
+    - intent: do_you_dislike
+    - intent: share_likes
+    - intent: share_liked_teacher
+    - intent: share_reason_like_person
+    - intent: share_dislikes
+    - intent: share_birthday
+    - intent: share_age
+    - intent: share_about_self_good
+    - intent: share_about_friends_good
+    - intent: share_about_family_good
+    - intent: share_about_school_good
+    - intent: share_about_self_bad
+    - intent: share_about_friends_bad
+    - intent: share_about_family_bad
+    - intent: share_about_school_bad
+    - intent: why_know
+    - intent: do_you_want_to
+    - intent: laughter
+    - intent: bot_joke
+    - intent: bot_challenge
+    - intent: bot_purpose
+    - intent: bot_how_see
+    - intent: bot_how_hear
+    - intent: bot_how_are_you
+    - intent: bot_do_you
+    - intent: bot_love
+    - intent: bot_alive
+    - intent: bot_age
+    - intent: bot_name
+    - intent: bot_parents
+  - action: utter_quit_game_first
+
+- rule: user mentioned non game intents in game mode
+  condition:
+  - slot_was_set:
+    - disallow_nonsense: true
+  steps:
+  - or:
+    - intent: affirm
+    - intent: deny
+  - action: utter_quit_game_first
+
+- rule: user is hungry
+  steps:
+  - intent: mood_hungry
+  - action: utter_eat
+
+- rule: user is thirsty
+  steps:
+  - intent: mood_thirsty
+  - action: utter_drink
+
+- rule: apologise when the user doesn't understand
+  steps:
+  - intent: not_understand
+  - action: utter_sorry
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+  
+- rule: user asks why do you want to know
+  steps:
+  - intent: why_know
+  - action: utter_just_asking
+
+- rule: agree if user asks if bot wants to do something
+  steps:
+  - intent: do_you_want_to
+  - action: utter_do_anything
+
+- rule: laugh if user laughs
+  steps:
+  - intent: laughter
+  - action: utter_laughter
+
+- rule: handle out of scope questions
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+
+- rule: tell a joke if user asks for it
+  steps:
+  - intent: bot_joke
+  - action: action_tell_joke
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: explain bot purpose
+  steps:
+  - intent: bot_purpose
+  - action: utter_bot_purpose
+
+- rule: user asks how does robot see
+  steps:
+  - intent: bot_how_see
+  - action: utter_bot_see
+
+- rule: user asks how does robot hear
+  steps:
+  - intent: bot_how_hear
+  - action: utter_bot_hear
+  
+- rule: user asks how the robot feels
+  steps:
+  - intent: bot_how_are_you
+  - action: utter_bot_great
+
+- rule: user asks if robot likes them
+  steps:
+  - intent: do_you_like_me
+  - action: utter_bot_love_you
+
+- rule: user indicates they love the robot
+  steps:
+  - intent: bot_love
+  - action: utter_bot_love_you_too
+
+- rule: user asks robot about itself, to which the answer is no
+  steps:
+  - intent: bot_do_you
+  - action: utter_deny
+
+- rule: user asks if robot is alive
+  steps:
+  - intent: bot_alive
+  - action: utter_bot_not_alive
+
+- rule: what is bot age
+  steps:
+  - intent: bot_age
+  - action: utter_bot_age
+  
+- rule: what is bot name
+  steps:
+  - intent: bot_name
+  - action: utter_bot_name
+  
+- rule: who are bot's creators
+  steps:
+  - intent: bot_parents
+  - action: utter_bot_parents
+- rule: tell a fun fact
+  steps:
+  - intent: play_Fun_fact
+  - action: action_tell_fun_fact
+
+- rule: Activate Pronunciation form
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+
+- rule: Submit Pronunciation form and do not play again
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: deny
+  - action: action_exit_game_mode
+
+- rule: Submit Pronunciation form and play again
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: affirm
+  - action: action_enter_game_mode
+  - action: action_play_game
+
+# - rule: Submit Item form and play again
+#   condition:
+#   # Condition that form is active.
+#   - active_loop: item_form
+#   steps:
+#   # Form is deactivated
+#   - action: item_form
+#   - active_loop: null
+#   - slot_was_set:
+#     - requested_slot: null
+#   # The actions we want to run when the form is submitted.
+#   - intent: affirm
+#   - action: action_enter_game_mode
+#   - action: action_play_game
+
+# - rule: Submit Item form and do not play again
+#   condition:
+#   # Condition that form is active.
+#   - active_loop: item_form
+#   steps:
+#   # Form is deactivated
+#   - action: item_form
+#   - active_loop: null
+#   - slot_was_set:
+#     - requested_slot: null
+#   # The actions we want to run when the form is submitted.
+#   - intent: deny
+#   - action: action_exit_game_mode
+
+- rule: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
+
+- rule: User interrupts the pronunciaiton form and doesn't want to continue
+  steps:
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: quit
+  - intent: affirm
+  - action: action_deactivate_loop
+  - action: action_exit_game_mode

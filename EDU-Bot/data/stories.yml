@@ -1,0 +1,2440 @@
+version: "3.0"
+
+stories:
+
+- story: choose a game for user with instruction affirmed
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
+  - action: action_choose_game
+  - intent: affirm
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: choose a game for user with instruction denied
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
+  - action: action_choose_game
+  - intent: affirm
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - or:
+    - intent: deny
+    - intent: not_understand
+  - action: utter_sorry
+
+- story: choose a game for user without instruction
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
+  - action: action_choose_game
+  - intent: affirm
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: choose a game for user but user does not want it
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: ask_choose_game
+    - intent: deny
+  - action: action_choose_game
+  - intent: deny
+  - action: action_exit_game_mode
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: initiate specific game 1 with instruction affirmed
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 1 with instruction denied
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - or:
+    - intent: deny
+    - intent: not_understand
+  - action: utter_sorry
+
+
+
+- story: initiate specific game 1 without instruction
+  steps:
+  - intent: play_unspecified_game
+  - action: action_exit_emo_mode
+  - action: utter_ask_what_game
+  - or:
+    - intent: play_Simon_says
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 2 with instruction affirmed
+  steps:
+  - or:
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+    - intent: play_Simon_says
+  - action: action_exit_emo_mode
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate specific game 2 with instruction denied
+  steps:
+  - or:
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+    - intent: play_Simon_says
+  - action: action_exit_emo_mode
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - or:
+    - intent: deny
+    - intent: not_understand
+  - action: utter_sorry
+
+- story: initiate specific game 2 without instruction
+  steps:
+  - or:
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Word_of_the_day
+    - intent: play_Simon_says
+  - action: action_exit_emo_mode
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: initiate Simon Says (show item)
+  steps:
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - action: action_disallow_nonsense
+  - slot_was_set:
+    - object_detection: yes
+    - SimonsaysAns: true
+  - intent: security_code_object_detection
+  - action: action_check_item
+  - action: action_allow_nonsense
+  - checkpoint: end_game
+
+- story: initiate Simon Says (do nothing)
+  steps:
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: no
+  - intent: security_code_object_detection
+  - action: action_check_item
+  # - intent: security_code_object_detection
+  # - action: item_form
+  # - active_loop: item_form
+  - checkpoint: end_game
+
+- story: check scissor paper stone choice after begin game
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_mode: true
+    - game_choice: Scissor Paper Stone
+  # - action: action_disallow_nonsense
+  - intent: tell_SPSchoice
+  - action: action_check_SPS
+  # - action: action_allow_nonsense
+  - checkpoint: end_game
+
+- story: Tell a fun fact again
+  steps:
+  - action: action_tell_fun_fact
+  - intent: affirm
+  - action: action_tell_fun_fact
+
+- story: do not play again after end of game
+  steps:
+  - checkpoint: end_game
+  - intent: deny
+  - action: action_exit_game_mode
+
+- story: play again after end of game
+  steps:
+  - checkpoint: end_game
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+
+- story: ask to play again at any time in game mode
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: play_again
+  - action: action_play_game
+
+- story: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
+
+- story: do not play again (Word of the day)
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: deny
+  - action: action_exit_game_mode
+
+- story: interactive_story_1 (User interrupts the pronunciation form and doesn't want to continue)
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - word: confused
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - repeat_counter: 1
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - intent: quit_game
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_exit_game_mode
+
+- story: interactive_story_2 (User interrupts the pronunciation form and doesn't want to continue)
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - word: confused
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - repeat_counter: 1
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - intent: quit_game
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_exit_game_mode
+
+- story: interactive_story_1 (Simon says do nothing)
+  steps:
+  - intent: play_Simon_says
+  - slot_was_set:
+    - game_choice: Simon says
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: no
+  - intent: security_code_object_detection
+  - action: action_check_item
+  # - action: item_form
+  # - active_loop: item_form
+  # - slot_was_set:
+  #   - requested_slot: item_donothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - requested_slot: null
+  - active_loop: null
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: no
+  - intent: security_code_object_detection
+  - action: action_check_item
+  # - action: item_form
+  # - active_loop: item_form
+  # - slot_was_set:
+  #   - requested_slot: item_donothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - item_donothing: do nothing
+  # - slot_was_set:
+  #   - requested_slot: null
+  # - active_loop: null
+  - intent: deny
+  - action: action_exit_game_mode
+
+- story: interactive_story_2 (Simon says show item)
+  steps:
+  - intent: play_Simon_says
+  - slot_was_set:
+    - game_choice: Simon says
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: yes
+  - intent: security_code_object_detection
+  - action: action_check_item
+  - slot_was_set:
+    - object_detection: none
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: yes
+  - intent: security_code_object_detection
+  - action: action_check_item
+  - slot_was_set:
+    - object_detection: none
+  - intent: affirm
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - object_detection: yes
+  - intent: security_code_object_detection
+  - action: action_check_item
+  - slot_was_set:
+    - object_detection: none
+  - intent: deny
+  - action: action_exit_game_mode
+
+- story: Ask the user to rephrase in case of low NLU confidence
+  steps:
+  - intent: nlu_fallback
+  - action: utter_please_rephrase
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: greet twice
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - or:
+    - intent: affirm
+    - intent: greet
+  - action: utter_what_to_do
+
+- story: deny greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: deny
+  - action: utter_what_to_do
+
+- story: user wants to chat
+  steps:
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+  - checkpoint: chit_chat
+
+- story: suggest chitchat self
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat friends
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_about_friends_good
+  - action: utter_happy_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat family
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat school
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat school 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_liked_teacher
+  - action: utter_why_like_teacher
+  - or:
+    - intent: affirm
+    - intent: deny
+    - intent: share_reason_like_person
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat likes 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_likes
+  - action: utter_likes
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+  
+- story: suggest chitchat likes 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_likes
+  - action: utter_likes
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat dislikes 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: affirm
+  - action: utter_what_to_do
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat dislikes 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: deny
+  - action: utter_sorry
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat age 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_age
+  - action: utter_happy
+  - or:
+    - intent: affirm
+    - intent: mood_great
+    - intent: mood_excited
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: suggest chitchat age 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: deny
+  - action: action_exit_emo_mode
+  - action: utter_random_qn
+  - intent: share_age
+  - action: utter_happy
+  - or:
+    - intent: deny
+    - intent: mood_unhappy
+    - intent: mood_nervous
+  - action: utter_sorry
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+
+- story: chitchat self
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_about_self_good
+  - action: action_exit_emo_mode
+  - action: utter_happy_self
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: chitchat friends
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_about_friends_good
+  - action: action_exit_emo_mode
+  - action: utter_happy_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+  
+- story: chitchat family
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_about_family_good
+  - action: action_exit_emo_mode
+  - action: utter_happy_family
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+  
+- story: chitchat school
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_about_school_good
+  - action: action_exit_emo_mode
+  - action: utter_happy_school
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: chitchat likes 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_likes
+  - action: action_exit_emo_mode
+  - action: utter_likes
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+  
+- story: chitchat likes 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_likes
+  - action: action_exit_emo_mode
+  - action: utter_likes
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: chitchat dislikes 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_dislikes
+  - action: action_exit_emo_mode
+  - action: utter_dislikes
+  - intent: affirm
+  - action: utter_what_to_do
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+
+- story: chitchat dislikes 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_dislikes
+  - action: action_exit_emo_mode
+  - action: utter_dislikes
+  - intent: deny
+  - action: utter_sorry
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+
+- story: chitchat age 1
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_birthday
+  - action: action_exit_emo_mode
+  - action: utter_how_old
+  - intent: share_age
+  - action: utter_happy
+  - or:
+    - intent: affirm
+    - intent: mood_great
+    - intent: mood_excited
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: chitchat age 2
+  steps:
+  - checkpoint: chit_chat
+  - intent: share_birthday
+  - action: action_exit_emo_mode
+  - action: utter_how_old
+  - intent: share_age
+  - action: utter_happy
+  - or:
+    - intent: deny
+    - intent: mood_unhappy
+    - intent: mood_nervous
+  - action: utter_sorry
+
+- story: reply about likes 1
+  steps:
+  - intent: do_you_like
+  - action: action_exit_emo_mode
+  - action: utter_robot_like
+  - intent: share_likes
+  - action: utter_likes
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: reply about likes 2
+  steps:
+  - intent: do_you_like
+  - action: action_exit_emo_mode
+  - action: utter_robot_like
+  - intent: share_likes
+  - action: utter_likes
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+
+- story: reply about likes 3
+  steps:
+  - intent: do_you_dislike
+  - action: action_exit_emo_mode
+  - action: utter_robot_dislike
+  - intent: share_likes
+  - action: utter_likes
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: reply about dislikes 1
+  steps:
+  - intent: do_you_like
+  - action: action_exit_emo_mode
+  - action: utter_robot_like
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: reply about dislikes 2
+  steps:
+  - intent: do_you_like
+  - action: action_exit_emo_mode
+  - action: utter_robot_like
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: deny
+  - action: utter_what_to_do
+
+- story: reply about dislikes 3
+  steps:
+  - intent: do_you_dislike
+  - action: action_exit_emo_mode
+  - action: utter_robot_dislike
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: reply about dislikes 4
+  steps:
+  - intent: do_you_dislike
+  - action: action_exit_emo_mode
+  - action: utter_robot_dislike
+  - intent: share_dislikes
+  - action: utter_dislikes
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+
+- story: happy path generic 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: deny
+  - action: utter_what_to_do
+  - action: action_enter_emo_mode
+
+- story: happy path generic 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+
+- story: happy path generic 3
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: deny
+  - action: utter_what_to_do
+  - action: action_enter_emo_mode
+
+- story: happy path generic 4
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+
+- story: happy path self 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path self 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path self 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path self 4
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path self 5
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_self_good
+  - action: utter_happy_self
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path friends 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_friends_good
+  - action: utter_happy_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path friends 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_friends_good
+  - action: utter_happy_friends
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path friends 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_good
+  - action: utter_happy_friends
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path friends 4
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_friends_good
+  - action: utter_happy_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path friends 5
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_friends_good
+  - action: utter_happy_self
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path family 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path family 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path family 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path family 4
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path family 5
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path family 6
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_good
+  - action: utter_happy_family
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path school 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path school 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path school 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path school 4
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: happy path school 5
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: happy path school 6
+  steps:
+  - intent: mood_great
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_good
+  - action: utter_happy_school
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: sad path generic 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+  
+- story: sad path generic 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path generic 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+
+- story: sad path generic 4
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+  
+- story: sad path generic 5
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path self 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path self 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path self 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path self 4
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path self 5
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path self 6
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path self 7
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path self 8
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_self_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path friends 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path friends 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path friends 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path friends 4
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path friends 5
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path friends 6
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path friends 7
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path friends 8
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path family 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path family 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path family 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path family 4
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path family 5
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path family 6
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path family 7
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path family 8
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path school 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path school 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path school 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path school 4
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path school 5
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path school 6
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: sad path school 7
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: sad path school 8
+  steps:
+  - intent: mood_unhappy
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path generic 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path generic 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+
+- story: angry path generic 3
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path generic 4
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+
+- story: angry path friends 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path friends 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path friends 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+  
+- story: angry path friends 4
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path friends 5
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path friends 6
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_friends_bad
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+  
+- story: angry path family 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path family 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path family 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+  
+- story: angry path family 4
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path family 5
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path family 6
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_family_bad
+  - action: utter_comfort_generic
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path school 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path school 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path school 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - intent: deny
+  - action: utter_sorry
+  
+- story: angry path school 4
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: angry path school 5
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: affirm
+  - action: utter_continue
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: angry path school 6
+  steps:
+  - intent: mood_angry
+  - action: action_exit_emo_mode
+  - action: utter_comfort_angry
+  - intent: share_about_school_bad
+  - action: utter_comfort_school
+  - intent: deny
+  - action: utter_sorry
+
+- story: scared path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: scared path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - intent: deny
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+  
+- story: scared path 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - intent: deny
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: scared path 4
+  steps:
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - or:
+    - intent: affirm
+    - intent: thanks
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: scared path 5
+  steps:
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - intent: deny
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+  
+- story: scared path 6
+  steps:
+  - intent: mood_scared
+  - action: action_exit_emo_mode
+  - action: utter_comfort_scared
+  - intent: deny
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: nervous path generic 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_comfort_nervous
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: nervous path generic 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_comfort_nervous
+  - intent: deny
+  - action: utter_sorry
+  - intent: chat
+  - action: utter_chat
+  - action: action_enter_emo_mode
+  - checkpoint: chit_chat
+
+- story: nervous path generic 3
+  steps:
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_comfort_nervous
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: nervous path generic 4
+  steps:
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: deny
+  - action: utter_comfort_nervous
+  - intent: deny
+  - action: utter_sorry
+  
+- story: nervous path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - or:
+    - intent: share_about_self_bad
+    - intent: share_about_friends_bad
+    - intent: share_about_family_bad
+    - intent: share_about_school_bad
+  - action: utter_comfort_nervous
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: nervous path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - or:
+    - intent: share_about_self_bad
+    - intent: share_about_friends_bad
+    - intent: share_about_family_bad
+    - intent: share_about_school_bad
+  - action: utter_comfort_nervous
+  - intent: deny
+  - action: utter_sorry
+
+- story: nervous path 3
+  steps:
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - intent: affirm
+  - action: utter_continue
+  - or:
+    - intent: share_about_self_bad
+    - intent: share_about_friends_bad
+    - intent: share_about_family_bad
+    - intent: share_about_school_bad
+  - action: utter_comfort_nervous
+  - intent: affirm
+  - action: utter_what_to_do
+
+- story: nervous path 4
+  steps:
+  - intent: mood_nervous
+  - action: action_exit_emo_mode
+  - action: utter_why_negative
+  - or:
+    - intent: share_about_self_bad
+    - intent: share_about_friends_bad
+    - intent: share_about_family_bad
+    - intent: share_about_school_bad
+  - action: utter_comfort_nervous
+  - intent: deny
+  - action: utter_sorry
+
+- story: excited path generic 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: deny
+  - action: utter_what_to_do
+  - action: action_enter_emo_mode
+
+- story: excited path generic 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+
+- story: excited path generic 3
+  steps:
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: deny
+  - action: utter_what_to_do
+  - action: action_enter_emo_mode
+
+- story: excited path generic 4
+  steps:
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - intent: affirm
+  - action: utter_continue
+
+- story: excited path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - or:
+    - intent: share_about_self_good
+    - intent: share_about_friends_good
+    - intent: share_about_family_good
+    - intent: share_about_school_good
+  - action: utter_exciting
+  - action: action_enter_emo_mode
+  - intent: affirm
+  - action: utter_happy
+
+- story: excited path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - or:
+    - intent: share_about_self_good
+    - intent: share_about_friends_good
+    - intent: share_about_family_good
+    - intent: share_about_school_good
+  - action: utter_exciting
+  - action: action_enter_emo_mode
+  - intent: deny
+  - action: utter_affirm
+
+- story: excited path 3
+  steps:
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - or:
+    - intent: share_about_self_good
+    - intent: share_about_friends_good
+    - intent: share_about_family_good
+    - intent: share_about_school_good
+  - action: utter_exciting
+  - action: action_enter_emo_mode
+  - intent: affirm
+  - action: utter_happy
+
+- story: excited path 4
+  steps:
+  - intent: mood_excited
+  - action: action_exit_emo_mode
+  - action: utter_why_positive
+  - or:
+    - intent: share_about_self_good
+    - intent: share_about_friends_good
+    - intent: share_about_family_good
+    - intent: share_about_school_good
+  - action: utter_exciting
+  - action: action_enter_emo_mode
+  - intent: deny
+  - action: utter_affirm
+
+- story: lonely path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_lonely
+  - action: action_exit_emo_mode
+  - action: utter_comfort_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: lonely path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_lonely
+  - action: action_exit_emo_mode
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+
+- story: lonely path 3
+  steps:
+  - intent: mood_lonely
+  - action: action_exit_emo_mode
+  - action: utter_comfort_friends
+  - intent: affirm
+  - action: utter_happy
+  - action: action_enter_emo_mode
+
+- story: lonely path 4
+  steps:
+  - intent: mood_lonely
+  - action: action_exit_emo_mode
+  - action: utter_comfort_friends
+  - intent: deny
+  - action: utter_sorry
+
+- story: bored path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: bored path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: bored path 3
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+  
+- story: bored path 4
+  steps:
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: affirm
+  - action: utter_letsplay_game
+  - action: action_enter_emo_mode
+
+- story: bored path 5
+  steps:
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+
+- story: bored path 6
+  steps:
+  - intent: mood_bored
+  - action: action_exit_emo_mode
+  - action: utter_game
+  - intent: deny
+  - action: utter_sorry
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+  
+- story: unwell path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unwell
+  - action: action_exit_emo_mode
+  - action: utter_comfort_unwell
+  - intent: deny
+  - action: utter_what_to_do
+
+- story: unwell path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unwell
+  - action: action_exit_emo_mode
+  - action: utter_comfort_unwell
+  - intent: affirm
+  - action: utter_calling
+  - action: action_enter_emo_mode
+
+- story: unwell path 3
+  steps:
+  - intent: mood_unwell
+  - action: action_exit_emo_mode
+  - action: utter_comfort_unwell
+  - intent: deny
+  - action: utter_what_to_do
+
+- story: unwell path 4
+  steps:
+  - intent: mood_unwell
+  - action: action_exit_emo_mode
+  - action: utter_comfort_unwell
+  - intent: affirm
+  - action: utter_calling  
+  - action: action_enter_emo_mode
+
+- story: tired path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_tired
+  - action: action_exit_emo_mode
+  - action: utter_sleep
+  - intent: affirm
+  - action: utter_sleep_well
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+
+- story: tired path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_tired
+  - action: action_exit_emo_mode
+  - action: utter_sleep
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: tired path 3
+  steps:
+  - intent: mood_tired
+  - action: action_exit_emo_mode
+  - action: utter_sleep
+  - intent: affirm
+  - action: utter_sleep_well
+  - intent: thanks
+  - action: utter_welcome
+  - action: action_enter_emo_mode
+
+- story: tired path 4
+  steps:
+  - intent: mood_tired
+  - action: action_exit_emo_mode
+  - action: utter_sleep
+  - intent: deny
+  - action: utter_affirm
+  - action: action_enter_emo_mode
+
+- story: say welcome when user says thanks for no reason
+  steps:
+  - intent: thanks
+  - action: utter_welcome
