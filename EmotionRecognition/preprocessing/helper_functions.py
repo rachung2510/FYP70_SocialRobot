@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import imutils
 
 ## Functions for finding vector magnitude and direction
 def mag(pointA, pointB):
@@ -21,6 +22,13 @@ def angle(cog, point):
     elif x<0 and y<0: # 3rd quadrant
         angle -= math.pi
     return angle
+
+def resize(img, dim):
+    w, h = img.shape[1], img.shape[0]
+    (length, width) = (w,h) if w>h else (h,w)
+    factor = 50 / width
+    img = imutils.resize(img, width=math.ceil(w*factor))
+    return img[:dim, :dim]
 
 def getEmotionClass(probArr, emotion_classes):
     prob = np.sum(probArr, axis=0)
