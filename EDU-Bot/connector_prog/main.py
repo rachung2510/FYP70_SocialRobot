@@ -6,44 +6,62 @@
 from emotion_recognition import init_emotion, get_emotion_class
 from Object_Detection import SimonSays_item
 from Nothing_Detection import SimonSays_nothing
-from stt_tts import load_tts, tts, record_audio
-from deepspeech import Model
+from stt_tts import load_tts, tts #, record_audio
+import speech_recognition as sr
+# from deepspeech import Model
 from play_audio import playsound
 from threading import Thread, Event
 import requests
-import scipy.io.wavfile as wav
-import os
+# import scipy.io.wavfile as wav
+# import os
 import time
 from imutils.video import VideoStream
 
-''' Settings for STT '''
-WAVE_OUTPUT_FILENAME = "user_audio.wav"
-model_file_path = 'stt_tts_data/deepspeech-0.9.3-models.pbmm'
+# =============================================================================
+# ''' Settings for STT '''
+# WAVE_OUTPUT_FILENAME = "user_audio.wav"
+# model_file_path = 'stt_tts_data/deepspeech-0.9.3-models.pbmm'
+# =============================================================================
 
 ''' Define functions '''
 def get_input():
     global message, finished
     if not finished.isSet():
         '''STT block'''
-       	# read user input
-        record_audio(WAVE_OUTPUT_FILENAME)
-       	
-       	# convert audio to text
-        N_FEATURES = 25
-        N_CONTEXT = 9
-        BEAM_WIDTH = 500
-        LM_ALPHA = 0.75
-        LM_BETA = 1.85
-        ds = Model(model_file_path)
-        fs, audio = wav.read(WAVE_OUTPUT_FILENAME)
-        message = ds.stt(audio)
-       	
-        # remove audio file
-        os.remove(WAVE_OUTPUT_FILENAME)
-        
-       	# for reference
-        print("I say: "+ message)
-        finished.set()
+        #using speech_recognition library
+        r = sr.Recognizer()  # initialize recognizer
+        with sr.Microphone() as source:  # either Microphone or audio files.
+            print("Speak Anything :")
+            audio = r.listen(source)  # listen to the source
+            try:
+                message = r.recognize_google(audio)  # use recognizer to convert our audio into text
+                print("I say: "+ message)
+                finished.set()
+            except:
+                print("Sorry could not recognize your voice")  # In case of voice not recognized clearly
+
+        #using mozilla deepspeech
+# =============================================================================
+#        	# read user input
+#         record_audio(WAVE_OUTPUT_FILENAME)
+#        	
+#        	# convert audio to text
+#         N_FEATURES = 25
+#         N_CONTEXT = 9
+#         BEAM_WIDTH = 500
+#         LM_ALPHA = 0.75
+#         LM_BETA = 1.85
+#         ds = Model(model_file_path)
+#         fs, audio = wav.read(WAVE_OUTPUT_FILENAME)
+#         message = ds.stt(audio)
+#        	
+#         # remove audio file
+#         os.remove(WAVE_OUTPUT_FILENAME)
+#         
+#        	# for reference
+#         print("I say: "+ message)
+#         finished.set()
+# =============================================================================
     return
     
 def pred_emotion(vs, detector, predictor, models):
