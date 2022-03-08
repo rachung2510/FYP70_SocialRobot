@@ -2,13 +2,9 @@ from torch import nn
 import torch
 
 class FCNNModel(nn.Module):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, input_layer_size, hidden_layer_size, num_classes):
         super(FCNNModel, self).__init__()
-        
-        input_layer_size = kwargs['input_layer_size']
-        hidden_layer_size = kwargs['hidden_layer_size']
-        num_classes = kwargs['num_classes']
-        
+
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(input_layer_size, hidden_layer_size),
@@ -29,34 +25,6 @@ def conv_block(in_channels, out_channels, pool=False):
               nn.ELU(inplace=True)]
     if pool: layers.append(nn.MaxPool2d(2))
     return nn.Sequential(*layers)
-
-##class ImageClassificationBase(nn.Module)
-##    def training_step(self, batch):
-##        images, labels = batch 
-##        out = self(images)
-##        loss = F.cross_entropy(out, labels)
-##        acc = accuracy(out, labels)
-##        return loss, acc
-##    
-##    def validation_step(self, batch):
-##        images, labels = batch 
-##        out = self(images)
-##        loss = F.cross_entropy(out, labels)
-##        acc = accuracy(out, labels)
-##        return {'val_loss': loss.detach(), 'val_acc': acc}
-##        
-##    def validation_epoch_end(self, outputs):
-##        batch_losses = [x['val_loss'] for x in outputs]
-##        epoch_loss = torch.stack(batch_losses).mean()
-##        batch_accs = [x['val_acc'] for x in outputs]
-##        epoch_acc = torch.stack(batch_accs).mean()
-##        return {'val_loss': epoch_loss.item(), 'val_acc': epoch_acc.item()}
-##    
-##    def epoch_end(self, epoch, result, total, print_epoch=1):
-##        if (not epoch % print_epoch) or epoch==total-1:
-##            print('epoch=%d  ' % epoch + (' ' if epoch<10 else ''), end="")
-##            print('last_lr={:.5f}   train loss={:.4f}   test loss={:.4f}   train accuracy={:.4f}   test accuracy={:.4f}'.format(
-##                result['lrs'][-1], result['train_loss'], result['val_loss'], result['train_acc'], result['val_acc']))
 
 class ResNet(nn.Module):
     def __init__(self, in_channels, num_classes):
