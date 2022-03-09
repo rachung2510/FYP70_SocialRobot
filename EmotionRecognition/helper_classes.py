@@ -19,13 +19,6 @@ class FCNNModel(nn.Module):
         logits = self.linear_relu_stack(x)
         return logits
 
-def conv_block(in_channels, out_channels, pool=False):
-    layers = [nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1), 
-              nn.BatchNorm2d(out_channels), 
-              nn.ELU(inplace=True)]
-    if pool: layers.append(nn.MaxPool2d(2))
-    return nn.Sequential(*layers)
-
 class ResNet(nn.Module):
     def __init__(self, in_channels, num_classes):
         super().__init__()
@@ -68,13 +61,9 @@ class ResNet(nn.Module):
         out = self.classifier(out)
         return out
 
-def get_default_device():
-    if torch.cuda.is_available():
-        return torch.device('cuda')
-    else:
-        return torch.device('cpu')
-    
-def to_device(data, device):
-    if isinstance(data, (list,tuple)):
-        return [to_device(x, device) for x in data]
-    return data.to(device, non_blocking=True)
+def conv_block(in_channels, out_channels, pool=False):
+    layers = [nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1), 
+              nn.BatchNorm2d(out_channels), 
+              nn.ELU(inplace=True)]
+    if pool: layers.append(nn.MaxPool2d(2))
+    return nn.Sequential(*layers)
