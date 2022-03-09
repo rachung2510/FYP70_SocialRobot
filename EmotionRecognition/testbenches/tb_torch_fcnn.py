@@ -1,23 +1,23 @@
 from imutils.video import VideoStream
 from imutils import face_utils
-import imutils
-import time
-import dlib
-import cv2
+import imutils, time, dlib, cv2
 import torch
 import numpy as np
-from helper_functions import mag, angle
-from torch_model_classes import FCNNModel, ResNet, to_device, get_default_device
 from math import pi
+import os, sys
+
+sys.path.append(os.path.abspath('../'))
+from helper_functions import mag, angle
+from helper_classes import FCNNModel
 
 # define constants
-model_path = 'models/'
+model_path = '../models/'
 emotion_classes = ['anger','disgust','fear','happiness','sadness','surprise','neutral']
 
 # initialize dlib's face detector (HOG-based) and then create the facial landmark predictor
 print("[INFO] loading facial landmark predictor...")
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('../shape_predictor_68_face_landmarks.dat')
 
 # load models
 print("[INFO] loading models...")
