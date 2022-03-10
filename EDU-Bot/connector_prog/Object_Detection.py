@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 
-def SimonSays_item(selected_item):
+def SimonSays_item(selected_item,cam):
     starting_time = time.time()
 
     # ./yolov4.weights ./darknet-master/cfg/yolov4.cfg
@@ -17,7 +17,7 @@ def SimonSays_item(selected_item):
         classes = f.read().splitlines()
     # print((classes))
 
-    cam = cv2.VideoCapture(0)
+    #cam = cv2.VideoCapture(0)
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     if (cam.isOpened() == False):
@@ -93,7 +93,7 @@ def SimonSays_item(selected_item):
                         cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
                     # selected_item = random.choice(items_of_selection)
                     # status_level=0
-                    cam.release()
+                    #cam.release()
                     #out.release()
                     cv2.destroyAllWindows()
                     return True
@@ -106,7 +106,7 @@ def SimonSays_item(selected_item):
 
         cv2.imshow("Video",frame)
 
-    cam.release()
+    #cam.release()
     #out.release()
 
     cv2.destroyAllWindows()

@@ -14,8 +14,6 @@ from threading import Thread, Event
 import requests
 # import scipy.io.wavfile as wav
 # import os
-import time
-from imutils.video import VideoStream
 
 # =============================================================================
 # ''' Settings for STT '''
@@ -69,14 +67,14 @@ def pred_emotion(vs, detector, predictor, models):
     c = 0
     pred = "neutral"
     while not finished.isSet():
-        frame = vs.read()
+        ret,frame = vs.read()
         emotion_class = get_emotion_class(frame, detector, predictor, models)
         if emotion_class != "neutral":
             c += 1 if emotion_class == pred else 0
             pred = emotion_class
             if c==5:
                 message = emotion_class
-                print("I'm " + emotion_class)
+                print("Detected emotion: " + emotion_class)
                 finished.set()
     return emotion_class
 
@@ -113,6 +111,9 @@ while True:
     
     emo_mode = j['slots']['emo_mode'] #Emotion detection slot
     # print(f"Emotion Detection mode: {emo_mode}")
+    
+    game_mode = j['slots']['game_mode']  #Game mode slot
+    # print(f"Game mode: {game_mode}")
     
     SimonsaysAns = j['slots']['SimonsaysAns'] #Simon Says slot
     # print(f"SimonsaysAns: {SimonsaysAns}")
@@ -151,32 +152,13 @@ while True:
         break
 
 
-    ''' Camera Switching and Object Detection '''
-
-    #Get game mode slot for camera switching
-    url = "http://localhost:5005/conversations/default/tracker?include_events=NONE"
+    ''' Object Detection '''
+    
+    # Get object detection slot to determine whether to detect
+    url = 'http://localhost:5005/conversations/default/tracker?include_events=NONE'
     s = requests.request("GET", url, headers={}, data={})
     j = s.json()
     
-    game_mode = j['slots']['game_mode']  
-    # print(f"Game mode: {game_mode}")
-    
-    # switch camera for appropriate purpose
-    if prev_game_mode != game_mode:
-        if game_mode == "none":
-            # If mode changed from game to chat, restart emotion video stream
-            print("[INFO] camera sensor warming up...")
-            vs = VideoStream(src=0).start()
-            time.sleep(2.0)
-            print("done")
-        else:
-            # If mode changed from chat to game, terminate emotion video stream
-            # so the object detection can use it
-            vs.stop()
-
-    prev_game_mode = game_mode # update previous mode
-    
-    # Get object detection slot to determine whether to detect
     object_detection = j['slots']['object_detection']
     # print("object_detection: ", object_detection)
     
@@ -184,12 +166,12 @@ while True:
     set_url = 'http://localhost:5005/conversations/default/tracker/events?include_events=NONE'
     if object_detection == "yes":
         item = j['slots']['item']
-        ans = SimonSays_item(item)
+        ans = SimonSays_item(item,vs)
         #print(f"detected {ans}")
         r = requests.post(set_url, json={"event":"slot","name":"SimonsaysAns","value":ans, "timestamp":0})
     elif object_detection == "no":
         item = j['slots']['item']
-        ans = SimonSays_nothing(item)
+        ans = SimonSays_nothing(item,vs)
         #print(f"detected {ans}")
         r = requests.post(set_url, json={"event":"slot","name":"SimonsaysAns","value":ans, "timestamp":0})
 

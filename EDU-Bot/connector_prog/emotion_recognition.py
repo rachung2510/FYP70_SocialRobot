@@ -1,4 +1,4 @@
-from imutils.video import VideoStream
+from cv2 import VideoCapture
 from imutils import face_utils
 import imutils
 import time
@@ -28,7 +28,7 @@ def init_emotion():
     cnnB = load_model(model_path+'emotion-cnnB.hd5')
 
     print("[INFO] camera sensor warming up...")
-    vs = VideoStream(src=0).start()
+    vs = VideoCapture(0)
     time.sleep(2.0)
     print("done")
 

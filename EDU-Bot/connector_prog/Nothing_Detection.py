@@ -4,7 +4,7 @@ import random
 import time
 
 
-def SimonSays_nothing(selected_item):
+def SimonSays_nothing(selected_item,cam):
     lst1 = ['fork', 'spoon', 'bottle']
     lst2 = ["Cylindrical","Sphere","Rectangular"]
     choose = selected_item
@@ -32,7 +32,7 @@ def SimonSays_nothing(selected_item):
     #yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4-tiny.cfg')
 
 
-    cam = cv2.VideoCapture(0)
+    # cam = cv2.VideoCapture(0)
     if (cam.isOpened() == False):
         print("Unable to read camera feed")
     width = int(cam.get(3))
@@ -121,7 +121,7 @@ def SimonSays_nothing(selected_item):
 
         cv2.imshow("Video",frame)
 
-    cam.release()
+    #cam.release()
     #out.release()
 
     cv2.destroyAllWindows()
