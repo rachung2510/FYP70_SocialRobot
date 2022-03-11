@@ -196,15 +196,25 @@ cd FYP70_SocialRobot/builds
 pip install tensorflow_addons-0.14.0-cp38-cp38-linux_aarch64.whl
 pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
 ```
-3. Install RASA through a downgraded version of pip.
+3. Download bazel.
+```
+sudo apt-get install build-essential openjdk-11-jdk python zip unzip
+wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip
+mkdir bazel-3.1.0
+unzip -d ./bazel-3.1.0 bazel-3.1.0-dist.zip
+cd bazel-3.1.0
+env EXTRA_BAZEL_ARGS="--host_javabase=@local_jdk//:jdk" bash ./compile.sh
+sudo cp output/bazel /usr/local/bin/bazel
+```
+4. Install RASA through a downgraded version of pip.
 ```
 pip install pip==20.2
 pip install rasa==3.0.4
 pip install sanic==21.9.3
 ```
-4. Install the newest version of numpy again, if not matplotlib will raise compile errors.\
+5. Install the newest version of numpy again, if not matplotlib will raise compile errors.\
 ```pip install --upgrade numpy```
-5. Install any additional packages which raises error with version. For me it was pyjwt being installed as v2.3.0 when RASA required v2.1.0.\
+6. Install any additional packages which raises error with version. For me it was pyjwt being installed as v2.3.0 when RASA required v2.1.0.\
 ```pip install pyjwt==2.1.0```
 
 **Possible error 1: Illegal instruction (core dumped) when running ```rasa run --enable-api```**\
