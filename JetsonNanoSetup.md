@@ -196,7 +196,7 @@ cd FYP70_SocialRobot/builds
 pip install tensorflow_addons-0.14.0-cp38-cp38-linux_aarch64.whl
 pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
 ```
-3. Download bazel.
+3. Download bazel. (Sources: [github/kmhofmann](https://gist.github.com/kmhofmann/e368a2ebba05f807fa1a90b3bf9a1e03), [Q-engineering](https://qengineering.eu/install-tensorflow-2.4.0-on-jetson-nano.html))
 ```
 sudo apt-get install build-essential openjdk-11-jdk python zip unzip
 wget https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip
