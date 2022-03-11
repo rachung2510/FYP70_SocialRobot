@@ -193,7 +193,7 @@ pip install numba==0.48.0
 ```
 git clone -b jetsonNano https://github.com/rachung2510/FYP70_SocialRobot.git
 cd FYP70_SocialRobot/builds
-pip install tensorflow_addons-0.14.0.dev0-cp38-cp38-linux_aarch64.whl
+pip install tensorflow_addons-0.14.0-cp38-cp38-linux_aarch64.whl
 pip install tensorflow_text-2.6.0-cp38-cp38-linux_aarch64.whl
 ```
 3. Install RASA through a downgraded version of pip.
