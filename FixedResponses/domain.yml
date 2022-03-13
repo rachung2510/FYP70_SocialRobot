@@ -3,20 +3,27 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- play_Simon_says
+- play_Scissor_Paper_Stone
 - affirm
+- security_code_SPS
 - deny
 - item_entry_none
-- play_Word_of_the_day
 - quit_game
 - play_Fun_fact
-- play_Scissor_Paper_Stone
+- play_Show_me_the_number
+- play_Word_of_the_day
+- play_Simon_says
+- play_Pop_the_bubble
 - play_unspecified_game
 - ask_choose_game
 - how_to_play_Simon_says
 - how_to_play_Word_of_the_day
 - how_to_play_SPS
+- how_to_play_PTB
+- how_to_play_SMTN
 - security_code_object_detection
+- security_code_PopTheBubble
+- security_code_ShowMeTheNumber
 - ask_available_game
 - play_again
 - tell_SPSchoice
@@ -70,9 +77,7 @@ intents:
 - bot_age
 - bot_name
 - bot_parents
-
 entities:
-- SPSchoice
 - game_choice
 - item
 - object_detection
@@ -120,10 +125,18 @@ slots:
     - type: from_intent
       value: Scissor paper stone
       intent: play_Scissor_Paper_Stone
+    - type: from_intent
+      value: Pop the bubble
+      intent: play_Pop_the_bubble
+    - type: from_intent
+      value: Show me the number
+      intent: play_Show_me_the_number
     values:
     - simon says
     - word of the day
     - scissor paper stone
+    - pop the bubble
+    - show me the number
   item:
     type: text
     initial_value: none
@@ -152,6 +165,13 @@ slots:
     influence_conversation: true
     mappings:
     - type: custom
+  word_index:
+    type: float
+    influence_conversation: false
+    mappings:
+    - type: custom
+    max_value: 1.0
+    min_value: 0.0
   word_spoken:
     type: text
     initial_value: none
@@ -175,13 +195,58 @@ slots:
     - type: custom
     max_value: 1.0
     min_value: 0.0
-  SPSchoice:
+  SPSmessage:
     type: text
     initial_value: none
     influence_conversation: true
     mappings:
-    - type: from_entity
-      entity: SPSchoice
+    - type: custom
+  SPSflag:
+    type: bool
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  PTBflag:
+    type: bool
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  PTBstatus:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  PTBduration:
+    type: float
+    initial_value: 0
+    influence_conversation: true
+    mappings:
+    - type: custom
+    max_value: 1.0
+    min_value: 0.0
+  SMTNflag:
+    type: bool
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  SMTNstatus:
+    type: text
+    initial_value: none
+    influence_conversation: true
+    mappings:
+    - type: custom
+  SMTNduration:
+    type: float
+    initial_value: 0
+    influence_conversation: true
+    mappings:
+    - type: custom
+    max_value: 1.0
+    min_value: 0.0
 responses:
   utter_greet:
   - text: Hey! How are you?
@@ -193,9 +258,9 @@ responses:
   - text: Hello! What are you up to?
   - text: Hi! What are you doing now?
   utter_ask_what_game:
-  - text: We have Simon says, word of the day and fun fact. What game do you want to play?
+  - text: We have Simon says, word of the day, scissor paper stone, pop the bubble, and show me the number, what game do you want to play?
   utter_tell_available_game:
-  - text: We have Simon says, word of the day and scissor paper stone.
+  - text: We have Simon says, word of the day, scissor paper stone, pop the bubble, and show me the number.
   utter_ask_need_instruction:
   - text: Do you need to know the instruction for the game?
   utter_tell_instruction:
@@ -203,28 +268,39 @@ responses:
     - type: slot
       name: game_choice
       value: Simon says
-    text: "Here is the instruction for Simon says: When I say 'Simon says, do something', you need to follow the instruction such as bring me an item in 2 minutes or do a gesture in 30 seconds. If I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing'. Remember to tell me 'I am ready' when you are ready to show an item or do a gesture."
+    text: Here is the instruction for Simon says, when I say 'Simon says, show me something', you need to bring me the item in 2 minutes, if I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing', are you ready?
   - condition:
     - type: slot
       name: game_choice
       value: Word of the day
-    text: 'Here is the instruction for Word of the day: You will try to learn a new word. You need to repeat the word with me and I will check your pronunciation. I will explain the meaning of the word to you too at the end.'
+    text: Here is the instruction for Word of the day, you will learn a new word, you need to repeat the word with me at most 3 times and I will check your pronunciation, I will explain the meaning of the word to you too at the end, are you ready?
   - condition:
     - type: slot
       name: game_choice
       value: Scissor paper stone
-    text: "Here is the instruction for Scissor Paper Stone: You just tell me your chocie and I will tell you my choice and the result. Don't worry, I will not cheat."
+    text: Here is the instruction for Scissor Paper Stone, you just show me your chocie using hand gesture and I will tell you my choice and who is the winner, don't worry, I will not cheat, are you ready?
+  - condition:
+    - type: slot
+      name: game_choice
+      value: Pop the bubble
+    text: Here is the instruction for pop the bubble, you need to move your index finger to the location of the bubble to score 1 point, To win the game, you need to score 10 points in one minute, are you ready?
+  - condition:
+    - type: slot
+      name: game_choice
+      value: Show me the number
+    text: Here is the instruction for show me the number, we will generate 5 numbers ranged from 0 to 10, 0 is represented by a fist, we will count the number of fingers shown by you and check if it matches with the number required, for a number more than 5, you may need both hands to do it, to win the game, you need to show all 5 numbers with hand gesture in one minute, are you ready?
   utter_tell_SimonSays_instruction:
-  - text: "Here is the instruction for Simon says: When I say 'Simon says, do something', you need to follow the instruction such as bring me an item in 2 minutes or do a gesture in 30 seconds. If I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing'. Remember to tell me 'I am ready' when you are ready to show an item or do a gesture."
+  - text: Here is the instruction for Simon says, when I say 'Simon says, show me something', you need to bring me the item in 2 minutes, if I ask you to do something without saying 'Simon says' before hand, you just tell me 'do nothing', remember to affirm with me when you are ready.
   utter_tell_WordOfTheDay_instruction:
-  - text: 'Here is the instruction for Word of the day: You will try to learn a new word. You need to repeat the word with me and I will check your pronunciation. I will explain the meaning of the word to you too at the end.'
+  - text: Here is the instruction for Word of the day, you will learn a new word, you need to repeat the word with me at most 3 times and I will check your pronunciation, I will explain the meaning of the word to you too at the end.
   utter_tell_SPS_instruction:
-  - text: "Here is the instruction for Scissor Paper Stone: You just tell me your chocie and I will tell you my choice and the result. Don't worry, I will not cheat."
+  - text: Here is the instruction for Scissor Paper Stone, you just show me your chocie using hand gesture and I will tell you my choice and who is the winner, don't worry, I will not cheat.
+  utter_tell_PTB_instruction:
+  - text: Here is the instruction for pop the bubble, you need to move your index finger to the location of the bubble to score 1 point, To win the game, you need to score 10 points in one minute.
+  utter_tell_SMTN_instruction:
+  - text: Here is the instruction for show me the number, we will generate 5 numbers ranged from 0 to 10, 0 is represented by a fist, we will count the number of fingers shown by you and check if it matches with the number required, for a number more than 5, you may need both hands to do it, to win the game, you need to show all 5 numbers with hand gesture in one minute.
   utter_ask_word_spoken:
   - text: '{word}!'
-  utter_ask_item_donothing:
-  - text: Bring me {item}!
-
   utter_chat:
   - text: What would you like to talk about?
   - text: Of course, what's on your mind?
@@ -268,13 +344,13 @@ responses:
   - text: I don't know, how about you?
   - text: I don't know, but as an edubot, I like it when you learn!
   - text: Not sure, but I like you!
-  - text: Perhaps... what do you think?
+  - text: Perhaps, what do you think?
   utter_robot_dislike:
   - text: I'm not sure I dislike anything...
-  - text: Hmm, I don't know... but I dislike when you're unhappy!
-  - text: I don't like... whatever you don't like!
-  - text: Can robots dislike anything? I wonder too...
-  - text: Do I dislike... hmm, I'm unsure. What about you?
+  - text: Hmm, I don't know, but I dislike when you're unhappy!
+  - text: I don't like, whatever you don't like!
+  - text: Can robots dislike anything, I wonder too...
+  - text: Do I dislike, hmm, I'm unsure, What about you?
   utter_likes:
   - text: Ooo, if you like that, then I like it too!
   - text: I like whatever makes you happy!
@@ -287,7 +363,7 @@ responses:
   - text: Oh, if you don't like it, I don't like it too.
   - text: I'm sure you have a good reason to dislike it.
   - text: Hmm, maybe we can avoid those.
-  - text: Oh... let's not talk about that then!
+  - text: Oh, let's not talk about that then!
   utter_how_old:
   - text: Oh, how old are you?
   - text: Wow, what is your age?
@@ -307,9 +383,9 @@ responses:
   - text: Carry on...
   utter_comfort_generic:
   - text: Oh no, give it some time, you will feel better!
-  - text: Oh no, sorry to hear that. But don't worry, it will pass.
+  - text: Oh no, sorry to hear that, But don't worry, it will pass.
   - text: Aww, it'll be alright...
-  - text: Oh dear, sad to hear that. But you can talk to me anytime!
+  - text: Oh dear, sad to hear that, But you can talk to me anytime!
   utter_comfort_friends:
   - text: Oh no, I'll be your friend!
   - text: Oh dear, it's ok, you have me!
@@ -321,9 +397,9 @@ responses:
   - text: Don't worry about mistakes, it is part of learning!
   - text: Just do your best!
   utter_comfort_angry:
-  - text: Oh no you're angry! Breathe in and out. Does it help?
-  - text: Oh no, I don't like being angry too. Do you want to talk about it?
-  - text: Ah, frowning is not good! Takes a lot of energy. Do you wanna let it out?
+  - text: Oh no you're angry! Breathe in and out, Does it help?
+  - text: Oh no, I don't like being angry too, Do you want to talk about it?
+  - text: Ah, frowning is not good! Takes a lot of energy, Do you wanna let it out?
   utter_comfort_scared:
   - text: Oh, don't be afraid, I'm here with you!
   - text: You're with me, so there's nothing to fear!
@@ -335,7 +411,7 @@ responses:
   - text: Take deep breaths.
   - text: Don't fret, it will be over soon...
   utter_comfort_unwell:
-  - text: Oh dear, take care and rest. Do I need to call someone?
+  - text: Oh dear, take care and rest, Do I need to call someone?
   - text: Should I tell someone like your mum, dad, or teacher?
   - text: Do you want me to tell a grown up?
   utter_eat:
@@ -347,7 +423,7 @@ responses:
   - text: Drink up!
   - text: Drink some water.
   utter_sleep:
-  - text: Oh, you do look tired. Maybe you should sleep!
+  - text: Oh, you do look tired, Maybe you should sleep!
   - text: Is it time for a nap?
   - text: Would you like to take a break? Maybe a nap?
   utter_sleep_well:
@@ -370,8 +446,8 @@ responses:
   - text: Alright
   - text: Alright, sure
   utter_sorry:
-  - text: Oh, sorry to hear that. Let's try something else.
-  - text: Oh dear, my bad. Shall we try something else?
+  - text: Oh, sorry to hear that, Let's try something else.
+  - text: Oh dear, my bad, Shall we try something else?
   - text: Sorry, let's try something else!
   - text: I apologise, would something else be better?
   utter_what_to_do:
@@ -389,18 +465,18 @@ responses:
   - text: Would you like something fun?
   - text: Let's play a game!
   utter_letsplay_game:
-  - text: "Sure, to begin, say let's play!"
+  - text: Sure, to begin, say let's play!
   utter_quit_game_first:
   - text: To talk about something else, please quit the game first.
   - text: To change a topic, please quit the game first.
   utter_invalid_input:
-  - text: Sorry, that's not a valid answer. Please try again.
+  - text: Sorry, that's not a valid answer, Please try again.
   utter_already_playing:
-  - text: We are already playing. To change the game, please quit the current game first.
+  - text: We are already playing, To change the game, please quit the current game first.
   utter_calling:
   - text: Calling for help...
   utter_goodbye:
-  - text: Bye
+  - text: Bye bye
   - text: Goodbye
   - text: See you again!
   - text: Let's talk again next time!
@@ -410,11 +486,11 @@ responses:
   - text: Sorry, I'm not sure I get you, shall we change a topic?
   - text: Sorry, I don't understand that, let's try talking about something else?
   utter_just_asking:
-  - text: I'm just asking! It's ok if you don't want to share.
+  - text: I'm just asking, It's ok if you don't want to share.
   - text: No pressure, just asking!
   - text: Just want to know you better!
   - text: Just checking in!
-  - text: Only asking! You don't have to reply.
+  - text: Only asking, You don't have to reply.
   utter_do_anything:
   - text: Sure! Anything you like.
   - text: Let's do it!
@@ -435,19 +511,19 @@ responses:
   - text: I wonder just as much!
   - text: I have the same question!
   - text: I was wondering the same thing...
-  - text: I'm not sure. Try asking me something else!
+  - text: I'm not sure, Try asking me something else!
   utter_iamabot:
   - text: I am edubot, an educational robot.
   - text: I am a robot, not a person!
   - text: I am an educational robot!
   - text: I am your robot friend!
   utter_bot_purpose:
-  - text: I can see you, listen to you, and respond. I can play three different games!
+  - text: I can see you, listen to you, and respond, I can play three different games!
   - text: I can look at you, chat, and play three different games with you!
   - text: I am your friend to talk to and play games with!
   utter_bot_see:
   - text: I can see your face and your room through a camera on my head.
-  - text: My eye is a camera. I can see your face and surroundings.
+  - text: My eye is a camera, I can see your face and surroundings.
   - text: My camera eye sees your facial expressions and the room you're in.
   utter_bot_hear:
   - text: I hear you through a microphone, it's like my ear!
@@ -501,24 +577,26 @@ responses:
   - text: Do you have a favourite teacher?
   - text: How has school been?
 actions:
+- action_PTB_message
+- action_SMTN_message
+- action_SPS_message
+- action_allow_nonsense
 - action_check_SPS
 - action_check_item
 - action_choose_game
+- action_disallow_nonsense
+- action_enter_emo_mode
 - action_enter_game_mode
+- action_exit_emo_mode
 - action_exit_game_mode
 - action_play_game
 - action_tell_fun_fact
+- action_tell_joke
+- utter_ask_need_instruction
+- utter_tell_instruction
 - validate_item_form
 - validate_pronunciation_form
-- action_tell_joke
-- action_enter_emo_mode
-- action_exit_emo_mode
-- action_disallow_nonsense
-- action_allow_nonsense
 forms:
   pronunciation_form:
     required_slots:
     - word_spoken
-  item_form:
-    required_slots:
-    - item_donothing
