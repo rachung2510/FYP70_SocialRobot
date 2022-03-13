@@ -12,6 +12,16 @@ rules:
   - intent: how_to_play_SPS
   - action: utter_tell_SPS_instruction
 
+- rule: tell instruction of Pop the bubble
+  steps:
+  - intent: how_to_play_PTB
+  - action: utter_tell_PTB_instruction
+
+- rule: tell instruction of Show me the number
+  steps:
+  - intent: how_to_play_SMTN
+  - action: utter_tell_SMTN_instruction
+
 - rule: tell instruction of Word of the day
   steps:
   - intent: how_to_play_Word_of_the_day
@@ -26,7 +36,7 @@ rules:
   condition:
   - slot_was_set:
     - game_mode: true
-    # - disallow_nonsense: true
+    - disallow_nonsense: true
   steps:
   - or:
     - intent: nlu_fallback
@@ -208,57 +218,18 @@ rules:
   - action: pronunciation_form
   - active_loop: pronunciation_form
 
-- rule: Submit Pronunciation form and do not play again
+- rule: Submit Pronunciation form
   condition:
   - active_loop: pronunciation_form
   steps:
   - action: pronunciation_form
-  - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - intent: deny
+  - active_loop: null
+  - action: action_allow_nonsense
+  - slot_was_set:
+    - disallow_nonsense: false
   - action: action_exit_game_mode
-
-- rule: Submit Pronunciation form and play again
-  condition:
-  - active_loop: pronunciation_form
-  steps:
-  - action: pronunciation_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - intent: affirm
-  - action: action_enter_game_mode
-  - action: action_play_game
-
-# - rule: Submit Item form and play again
-#   condition:
-#   # Condition that form is active.
-#   - active_loop: item_form
-#   steps:
-#   # Form is deactivated
-#   - action: item_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   # The actions we want to run when the form is submitted.
-#   - intent: affirm
-#   - action: action_enter_game_mode
-#   - action: action_play_game
-
-# - rule: Submit Item form and do not play again
-#   condition:
-#   # Condition that form is active.
-#   - active_loop: item_form
-#   steps:
-#   # Form is deactivated
-#   - action: item_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   # The actions we want to run when the form is submitted.
-#   - intent: deny
-#   - action: action_exit_game_mode
 
 - rule: quit game
   steps:
