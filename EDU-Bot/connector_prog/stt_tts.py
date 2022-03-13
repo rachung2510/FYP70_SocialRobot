@@ -1,6 +1,6 @@
 
 import pyaudio
-from deepspeech import Model
+##from deepspeech import Model
 import scipy.io.wavfile as wav
 import wave
 import torch
