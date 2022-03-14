@@ -4,7 +4,18 @@ nlu:
   examples: |
     - dfgdyttvyhtf1559716hkyk
     - dfgdyttvyhtf1559716hkyk1
-
+- intent: security_code_SPS
+  examples: |
+    - BVHGGTHY4665fger45225
+    - BVHGGTHY4665fger452251
+- intent: security_code_PopTheBubble
+  examples: |
+    - sagrnyfvyutccreqwbtrth0t658dfb0
+    - sagrnyfvyutccreqwbtrth0t658dfb1
+- intent: security_code_ShowMeTheNumber
+  examples: |
+    - hgjtytn5t2GHEBLLOUIEKVF6565
+    - hgjtytn5t2GHEBLLOUIEKVF6566
 - intent: greet
   examples: |
     - hey
@@ -96,6 +107,12 @@ nlu:
     - yahoo
     - You could say that again
     - you can say that again
+    - ready
+    - I'm ready
+    - I am ready
+    - yes I am
+    - yes I am ready
+    - yes I'm ready
 - intent: deny
   examples: |
     - no
@@ -132,7 +149,6 @@ nlu:
     - not sure
     - I'm not sure
     - anything
-    - nothing
     - nothing much
     - not much
 - intent: not_understand
@@ -192,27 +208,12 @@ nlu:
     - tank yield
     - thank u
     - tank u
-- intent: play_Scissor_Paper_Stone
-  examples: |
-    - play scissor paper stone
-    - Can we play scissor paper stone?
-    - I want to play scissor paper stone
-    - rock paper scissors
-    - scissors paper rock
-    - scissor paper rock
-- intent: tell_SPSchoice
-  examples: |
-    - [paper](SPSchoice)
-    - [scissor](SPSchoice)
-    - [stone](SPSchoice)
 - intent: play_Simon_says
   examples: |
     - play Simon says
     - Can we play Simon says?
     - I want to play Simon says
     - play simon says
-    - Simon says
-    - let's play simon says
 - intent: play_Word_of_the_day
   examples: |
     - play word of the day
@@ -220,6 +221,26 @@ nlu:
     - Can we play word of the day?
     - I want to learn a new word
     - I want to let a knew word
+- intent: play_Pop_the_bubble
+  examples: |
+    - play pop the bubble
+    - can we play pop the bubble?
+    - I want to play pop the bubble
+- intent: play_Show_me_the_number
+  examples: |
+    - show me the number
+    - play show me the number
+    - can we play show me the number?
+    - I want to play show me the number
+- intent: play_Scissor_Paper_Stone
+  examples: |
+    - play scissor paper stone
+    - Can we play scissor paper stone?
+    - I want to play scissor paper stone
+    - scissor paper stone
+    - rock paper scissors
+    - scissors paper rock
+    - scissor paper rock
 - intent: play_Fun_fact
   examples: |
     - play fun fact
@@ -279,6 +300,24 @@ nlu:
     - How to play fun fact?
     - Instructions for fun fact
     - How does fun fact work?
+- intent: how_to_play_PTB
+  examples: |
+    - How to play pop the bubble?
+    - Instructions for pop the bubble
+    - How does pop the bubble work?
+- intent: how_to_play_SMTN
+  examples: |
+    - How to play show me the number?
+    - Instructions for show me the number
+    - How does show me the number work?
+- intent: how_to_play_SPS
+  examples: |
+    - How to play scissor paper stone?
+    - Instructions for scissor paper stone
+    - How does scissor paper stone work?
+    - how to play paper scissor stone
+    - Instructions for paper scissor stone
+    - How does paper scissor stone work?
 - intent: quit_game
   examples: |
     - exit game
@@ -293,7 +332,6 @@ nlu:
     - can we stop now
     - I wanna stop
     - no more play
-    - enough games
     - no more games
     - stop playing
     - don't want game already
@@ -315,13 +353,10 @@ nlu:
     - What games can I choose?
     - what games can we play?
     - what games you have?
-    - What are the three games?
-    - What are the three games you can play?
-    - what 3 games?
-    - what three games?
-    - 3 games?
-    - three games?
+    - What are the games?
+    - What are the games you can play?
     - what games?
+    - several games?
     - can you play hangman?
     - can you play pretend?
     - can you play draw something?
@@ -427,10 +462,7 @@ nlu:
     - This sucks!
     - I am feeling quite lost
     - sadness
-    - very sad
-    - very bad
     - very not good
-    
 - intent: mood_angry
   examples: |
     - I am angry

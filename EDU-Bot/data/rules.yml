@@ -12,6 +12,16 @@ rules:
   - intent: how_to_play_SPS
   - action: utter_tell_SPS_instruction
 
+- rule: tell instruction of Pop the bubble
+  steps:
+  - intent: how_to_play_PTB
+  - action: utter_tell_PTB_instruction
+
+- rule: tell instruction of Show me the number
+  steps:
+  - intent: how_to_play_SMTN
+  - action: utter_tell_SMTN_instruction
+
 - rule: tell instruction of Word of the day
   steps:
   - intent: how_to_play_Word_of_the_day
@@ -26,7 +36,6 @@ rules:
   condition:
   - slot_was_set:
     - game_mode: true
-    # - disallow_nonsense: true
   steps:
   - or:
     - intent: nlu_fallback
@@ -80,15 +89,46 @@ rules:
     - intent: bot_parents
   - action: utter_quit_game_first
 
-- rule: user mentioned non game intents in game mode
-  condition:
-  - slot_was_set:
-    - disallow_nonsense: true
+- rule: tell a fun fact
   steps:
-  - or:
-    - intent: affirm
-    - intent: deny
-  - action: utter_quit_game_first
+  - intent: play_Fun_fact
+  - action: action_tell_fun_fact
+
+- rule: Activate Pronunciation form
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+
+- rule: Submit Pronunciation form
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_exit_game_mode
+
+- rule: User interrupts the pronunciation form and doesn't want to continue
+  steps:
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: quit
+  - intent: affirm
+  - action: action_deactivate_loop
+  - action: action_exit_game_mode
+
+- rule: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
 
 - rule: user is hungry
   steps:
@@ -194,85 +234,3 @@ rules:
   steps:
   - intent: bot_parents
   - action: utter_bot_parents
-- rule: tell a fun fact
-  steps:
-  - intent: play_Fun_fact
-  - action: action_tell_fun_fact
-
-- rule: Activate Pronunciation form
-  steps:
-  - action: action_play_game
-  - slot_was_set:
-    - game_choice: Word of the day
-  - intent: affirm
-  - action: pronunciation_form
-  - active_loop: pronunciation_form
-
-- rule: Submit Pronunciation form and do not play again
-  condition:
-  - active_loop: pronunciation_form
-  steps:
-  - action: pronunciation_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - intent: deny
-  - action: action_exit_game_mode
-
-- rule: Submit Pronunciation form and play again
-  condition:
-  - active_loop: pronunciation_form
-  steps:
-  - action: pronunciation_form
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - intent: affirm
-  - action: action_enter_game_mode
-  - action: action_play_game
-
-# - rule: Submit Item form and play again
-#   condition:
-#   # Condition that form is active.
-#   - active_loop: item_form
-#   steps:
-#   # Form is deactivated
-#   - action: item_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   # The actions we want to run when the form is submitted.
-#   - intent: affirm
-#   - action: action_enter_game_mode
-#   - action: action_play_game
-
-# - rule: Submit Item form and do not play again
-#   condition:
-#   # Condition that form is active.
-#   - active_loop: item_form
-#   steps:
-#   # Form is deactivated
-#   - action: item_form
-#   - active_loop: null
-#   - slot_was_set:
-#     - requested_slot: null
-#   # The actions we want to run when the form is submitted.
-#   - intent: deny
-#   - action: action_exit_game_mode
-
-- rule: quit game
-  steps:
-  - slot_was_set:
-    - game_mode: true
-  - intent: quit_game
-  - action: action_exit_game_mode
-
-- rule: User interrupts the pronunciaiton form and doesn't want to continue
-  steps:
-  - action: pronunciation_form
-  - active_loop: pronunciation_form
-  - slot_was_set:
-    - word_spoken: quit
-  - intent: affirm
-  - action: action_deactivate_loop
-  - action: action_exit_game_mode

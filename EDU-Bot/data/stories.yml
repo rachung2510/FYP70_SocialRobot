@@ -5,7 +5,6 @@ stories:
 - story: choose a game for user with instruction affirmed
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: ask_choose_game
@@ -16,6 +15,9 @@ stories:
   - intent: affirm
   - action: utter_tell_instruction
   - intent: affirm
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -24,7 +26,6 @@ stories:
 - story: choose a game for user with instruction denied
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: ask_choose_game
@@ -42,7 +43,6 @@ stories:
 - story: choose a game for user without instruction
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: ask_choose_game
@@ -51,6 +51,9 @@ stories:
   - intent: affirm
   - action: utter_ask_need_instruction
   - intent: deny
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -59,7 +62,6 @@ stories:
 - story: choose a game for user but user does not want it
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: ask_choose_game
@@ -73,16 +75,20 @@ stories:
 - story: initiate specific game 1 with instruction affirmed
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: play_Simon_says
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
   - intent: affirm
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -91,12 +97,13 @@ stories:
 - story: initiate specific game 1 with instruction denied
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: play_Simon_says
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
@@ -105,19 +112,21 @@ stories:
     - intent: not_understand
   - action: utter_sorry
 
-
-
 - story: initiate specific game 1 without instruction
   steps:
   - intent: play_unspecified_game
-  - action: action_exit_emo_mode
   - action: utter_ask_what_game
   - or:
     - intent: play_Simon_says
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: deny
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -129,11 +138,15 @@ stories:
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
     - intent: play_Simon_says
-  - action: action_exit_emo_mode
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
   - intent: affirm
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -145,7 +158,8 @@ stories:
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
     - intent: play_Simon_says
-  - action: action_exit_emo_mode
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
@@ -160,9 +174,13 @@ stories:
     - intent: play_Scissor_Paper_Stone
     - intent: play_Word_of_the_day
     - intent: play_Simon_says
-  - action: action_exit_emo_mode
+    - intent: play_Pop_the_bubble
+    - intent: play_Show_me_the_number
   - action: utter_ask_need_instruction
   - intent: deny
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -173,14 +191,13 @@ stories:
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
+    - game_choice: Simon says
   - action: action_play_game
-  - action: action_disallow_nonsense
   - slot_was_set:
     - object_detection: yes
     - SimonsaysAns: true
   - intent: security_code_object_detection
   - action: action_check_item
-  - action: action_allow_nonsense
   - checkpoint: end_game
 
 - story: initiate Simon Says (do nothing)
@@ -193,21 +210,36 @@ stories:
     - object_detection: no
   - intent: security_code_object_detection
   - action: action_check_item
-  # - intent: security_code_object_detection
-  # - action: item_form
-  # - active_loop: item_form
   - checkpoint: end_game
 
-- story: check scissor paper stone choice after begin game
+- story: scissor paper stone
   steps:
-  - action: action_play_game
   - slot_was_set:
     - game_mode: true
     - game_choice: Scissor Paper Stone
-  # - action: action_disallow_nonsense
-  - intent: tell_SPSchoice
-  - action: action_check_SPS
-  # - action: action_allow_nonsense
+  - action: action_play_game
+  - intent: security_code_SPS
+  - action: action_SPS_message
+  - checkpoint: end_game
+
+- story: pop the bubble
+  steps:
+  - slot_was_set:
+    - game_mode: true
+    - game_choice: Pop the bubble
+  - action: action_play_game
+  - intent: security_code_PopTheBubble
+  - action: action_PTB_message
+  - checkpoint: end_game
+
+- story: show me the number
+  steps:
+  - slot_was_set:
+    - game_mode: true
+    - game_choice: Show me the number
+  - action: action_play_game
+  - intent: security_code_ShowMeTheNumber
+  - action: action_SMTN_message
   - checkpoint: end_game
 
 - story: Tell a fun fact again
@@ -226,7 +258,6 @@ stories:
   steps:
   - checkpoint: end_game
   - intent: affirm
-  - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
   - action: action_play_game
@@ -245,19 +276,86 @@ stories:
   - intent: quit_game
   - action: action_exit_game_mode
 
-- story: do not play again (Word of the day)
+- story: interactive_story for Show me the number with instruction affirmed
   steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - intent: play_Show_me_the_number
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
   - action: action_play_game
   - slot_was_set:
-    - game_choice: Word of the day
+    - game_mode: true
+    - game_choice: Show me the number
+  - action: action_play_game
+  - intent: security_code_ShowMeTheNumber
+  - action: action_SMTN_message
+  - checkpoint: end_game
+
+- story: interactive_story_1 Scissor paper stone without instruction
+  steps:
+  - intent: play_Scissor_Paper_Stone
+  - slot_was_set:
+    - game_choice: Scissor paper stone
+  - action: utter_ask_need_instruction
   - intent: deny
-  - action: action_exit_game_mode
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - SPSflag: true
+  - intent: security_code_SPS
+  - action: action_SPS_message
+  - slot_was_set:
+    - SPSflag: none
+  - slot_was_set:
+    - SPSmessage: none
+
+- story: interactive_story_2 Scissor paper stone with instruction
+  steps:
+  - intent: play_Scissor_Paper_Stone
+  - slot_was_set:
+    - game_choice: Scissor paper stone
+  - action: utter_ask_need_instruction
+  - intent: affirm
+  - action: utter_tell_instruction
+  - intent: affirm
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - slot_was_set:
+    - SPSflag: true
+  - intent: security_code_SPS
+  - action: action_SPS_message
+  - slot_was_set:
+    - SPSflag: none
+  - slot_was_set:
+    - SPSmessage: none
 
 - story: interactive_story_1 (User interrupts the pronunciation form and doesn't want to continue)
   steps:
   - intent: play_Word_of_the_day
   - slot_was_set:
     - game_choice: Word of the day
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_enter_game_mode
@@ -287,6 +385,9 @@ stories:
   - intent: play_Word_of_the_day
   - slot_was_set:
     - game_choice: Word of the day
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
@@ -313,6 +414,32 @@ stories:
     - requested_slot: null
   - action: action_exit_game_mode
 
+- story: interactive_story Word of the day
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_exit_game_mode
+
 - story: interactive_story_1 (Simon says do nothing)
   steps:
   - intent: play_Simon_says
@@ -320,6 +447,9 @@ stories:
     - game_choice: Simon says
   - action: utter_ask_need_instruction
   - intent: deny
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -328,18 +458,6 @@ stories:
     - object_detection: no
   - intent: security_code_object_detection
   - action: action_check_item
-  # - action: item_form
-  # - active_loop: item_form
-  # - slot_was_set:
-  #   - requested_slot: item_donothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - requested_slot: null
   - active_loop: null
   - intent: affirm
   - action: action_enter_game_mode
@@ -350,19 +468,6 @@ stories:
     - object_detection: no
   - intent: security_code_object_detection
   - action: action_check_item
-  # - action: item_form
-  # - active_loop: item_form
-  # - slot_was_set:
-  #   - requested_slot: item_donothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - item_donothing: do nothing
-  # - slot_was_set:
-  #   - requested_slot: null
-  # - active_loop: null
   - intent: deny
   - action: action_exit_game_mode
 
@@ -373,6 +478,9 @@ stories:
     - game_choice: Simon says
   - action: utter_ask_need_instruction
   - intent: deny
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true

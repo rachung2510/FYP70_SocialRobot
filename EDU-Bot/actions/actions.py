@@ -4,32 +4,15 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 import random
 from pathlib import Path
-from rasa_sdk.events import SlotSet, AllSlotsReset
+import os
+from rasa_sdk.events import SlotSet, AllSlotsReset, EventType
 from rasa_sdk.types import DomainDict
 
-class ActionDisallowNonsense(Action):
-    def name(self) -> Text:
-        return "action_disallow_nonsense"
-    
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [SlotSet(key = "disallow_nonsense", value = True)]
-
-class ActionAllowNonsense(Action):
-    def name(self) -> Text:
-        return "action_allow_nonsense"
-    
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [SlotSet(key = "disallow_nonsense", value = False)]
         
 class ActionTellJoke(Action):
     def name(self) -> Text:
@@ -82,7 +65,9 @@ class ActionExitGameMode(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Okay, let me know if you want to play any game.")
+        game = tracker.get_slot("game_choice")
+        if game != "Word of the day":
+            dispatcher.utter_message(text="Okay, let me know if you want to play any game.")
         return [AllSlotsReset()]
 
 class ActionPlayGame(Action):
@@ -96,30 +81,44 @@ class ActionPlayGame(Action):
         game = tracker.get_slot("game_choice")
         if game == "Simon says":
             # whether to say 'Simon says' before hand
-            simonFlag = 1 #random.randint(0,1)
+            simonFlag = random.randint(0,1)
             # read items
-            # SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
-            # idx = random.randint(0, len(SimonDataItems)-1)
-            test_data = ['fork']#, 'spoon', 'bottle']
-            idx = random.randint(0, len(test_data)-1)
+            SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
+            idx = random.randint(0, len(SimonDataItems)-1)
+            #test_data = ['fork']#, 'spoon', 'bottle']
+            #idx = random.randint(0, len(test_data)-1)  
             if simonFlag == 0:
-                dispatcher.utter_message(text="Okay. Simon says, show me " + str(test_data[idx]))
-                return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(test_data[idx]))]
+                dispatcher.utter_message(text="Okay. Simon says, show me " + str(SimonDataItems[idx]))
+                return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
             else:
-                dispatcher.utter_message(text="Okay. Show me " + str(test_data[idx]))
-                return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(test_data[idx]))]
+                dispatcher.utter_message(text="Okay. Show me " + str(SimonDataItems[idx]))
+                return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
         elif game == "Word of the day":
+            # if all words are learnt, move all learnt words back to database
+            if os.stat("data/Word_of_the_day.txt").st_size == 0:
+                    with open("data/Word_of_the_day.txt", "w") as f1, open("data/learnt_words.txt", "r+") as f2:
+                        lines = f2.readlines()  
+                        f1.writelines(lines)
+                        f2.truncate(0)
+                        f1.close()
+                        f2.close()
             WordData = Path('data/Word_of_the_day.txt').read_text().split('\n')
             
             # randomly select a word
             randn = random.randint(0, len(WordData)-1)
             word = WordData[randn].split('/')[0]
             meaning = WordData[randn].split('/')[1]
-            dispatcher.utter_message(text= "Okay let's learn a new word. Repeat the word with me. Are you ready?")
-            return [SlotSet(key = "word", value = word), SlotSet(key = "word_meaning", value = meaning)]
+            dispatcher.utter_message(text= "Okay let's learn a new word, repeat the word with me, are you ready?")
+            return [SlotSet(key = "word", value = word), SlotSet(key = "word_meaning", value = meaning), SlotSet(key = "word_index", value = randn)]
         elif game == "Scissor paper stone":
-            dispatcher.utter_message(text= "Okay let's play scissor paper stone. Tell me your choice")
-            return []
+            dispatcher.utter_message(text= "Okay let's play scissor paper stone, get ready, scissor, paper, stone.")
+            return [SlotSet(key = "SPSflag", value = True)]
+        elif game == "Pop the bubble":
+            dispatcher.utter_message(text= "Okay let's play pop the bubble.")
+            return [SlotSet(key = "PTBflag", value = True)]
+        elif game == "Show me the number":
+            dispatcher.utter_message(text= "Okay let's play show me the number.")
+            return [SlotSet(key = "SMTNflag", value = True)]
 
 class ActionTellFunFact(Action):
     def name(self) -> Text:
@@ -133,7 +132,7 @@ class ActionTellFunFact(Action):
                 FunFactData = f.readlines()
             # randomly select a fun fact
             randn = random.randint(0, len(FunFactData)-1)
-            dispatcher.utter_message(text= "Okay, let me tell you a fun fact. " + str(FunFactData[randn]) + " Do you want to know another fun fact?")
+            dispatcher.utter_message(text= "Okay, let me tell you a fun fact, " + str(FunFactData[randn]) + ", do you want to know another fun fact?")
             return []
 
 class ActionChooseGame(Action):
@@ -145,13 +144,13 @@ class ActionChooseGame(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         randn = random.randint(0, 2)
         if randn == 0:
-            dispatcher.utter_message(text="Let's play Simon says. Shall we?")
+            dispatcher.utter_message(text="Let's play Simon says, shall we?")
             game = "Simon says"
         elif randn == 1:
-            dispatcher.utter_message(text="Let's learn a word of the day. Shall we?")
+            dispatcher.utter_message(text="Let's learn a word of the day, shall we?")
             game = "Word of the day"
         else:
-            dispatcher.utter_message(text="Let's learn a fun fact. Shall we?")
+            dispatcher.utter_message(text="Let's learn a fun fact, shall we?")
             game = "Fun fact"
         return [SlotSet(key = "game_choice", value = game)]
 
@@ -166,33 +165,30 @@ class ActionCheckItem(Action):
         object_detection = tracker.get_slot("object_detection")
         # check answer
         if ans == True:
-            dispatcher.utter_message(text="Great, you are correct! Do you want to play Simon says again?")
+            dispatcher.utter_message(text="Great, you are correct, do you want to play Simon says again?")
         else:
             if object_detection == "yes":
-                dispatcher.utter_message(text="Oh no time out! Do you want to play Simon says again?")
+                dispatcher.utter_message(text="Oh no time out, do you want to play Simon says again?")
             else:
-                dispatcher.utter_message(text="Oh no you are supposed to do nothing! Do you want to play Simon says again?")
+                dispatcher.utter_message(text="Oh no you are supposed to do nothing, do you want to play Simon says again?")
         return [SlotSet(key = "object_detection", value = "none"), SlotSet(key = "SimonsaysAns", value = "none")]
 
-class ValidateItemForm(FormValidationAction):
+class AskForSlotAction(Action):
     def name(self) -> Text:
-        return "validate_item_form"
+        return "action_ask_word_spoken"
 
-    def validate_item_donothing(
-        self,
-        slot_value: Any,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict,
-    ) -> Dict[Text, Any]:
-        item = tracker.slots.get("item")
-        if slot_value != 'none':
-            if slot_value == "do nothing":
-                dispatcher.utter_message(text="Great, you are correct! Do you want to play Simon says again?")
-            else:
-                dispatcher.utter_message(text="Oh no, you are supposed to say do nothing since I never say Simon says! Do you want to play Simon says again?")
-            return {"item_donothing": slot_value}
-        return {"item_donothing": None}
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        word = tracker.slots.get("word")
+        repeat_counter = tracker.slots.get("repeat_counter")
+        if repeat_counter == 1:
+            dispatcher.utter_message(text="Repeat after me, " + word + ".")
+        elif repeat_counter == 2:
+            dispatcher.utter_message(text="Great, try to pronounce it again, " + word + ".")
+        else:
+            dispatcher.utter_message(text="Almost there, repeat one more time, " + word + ".")
+        return []
 
 class ValidatePronunciationForm(FormValidationAction):
     def name(self) -> Text:
@@ -209,51 +205,73 @@ class ValidatePronunciationForm(FormValidationAction):
         meaning = tracker.slots.get("word_meaning")
         repeat_counter = tracker.slots.get("repeat_counter")
         if slot_value == "quit":
-                dispatcher.utter_message(text="Are you sure to quit the game? We haven't finished learning a word yet.")
+                dispatcher.utter_message(text="Are you sure to quit the game, we haven't finished learning a word yet?")
                 return []
         if repeat_counter < 3 and word != slot_value:
-                if repeat_counter == 0:
-                    dispatcher.utter_message(text="Repeat the word with me.")
-                elif repeat_counter == 1:
-                    dispatcher.utter_message(text="Great, try to pronounce it again!")
-                else:
-                    dispatcher.utter_message(text="Almost there. Repeat one more time with me.")
-                return {"repeat_counter": repeat_counter+1, "word_spoken": None}
+            return {"repeat_counter": repeat_counter+1, "word_spoken": None}
         else:
-            dispatcher.utter_message(text="Well done! Let me tell you the meaning of the word. "+ meaning + "Do you want to learn another word?")
+            dispatcher.utter_message(text="Well done, let me tell you the meaning of the word, "+ meaning + ", great, you learnt a new word today!")
+            # move the learnt word to another database
+            path = Path("data/learnt_words.txt")
+            if not path.is_file():
+                with open(path, "w+"):
+                    pass
+            idx = tracker.slots.get("word_index")
+            with open("data/learnt_words.txt", "a") as f:
+                if os.stat("data/learnt_words.txt").st_size == 0:
+                    f.write(word + "/"+ meaning)
+                else:
+                    f.write("\n" + word + "/"+ meaning)
+                f.close()
+            with open("data/Word_of_the_day.txt", "r+") as f:
+                lines = f.readlines()
+                del lines[idx]  
+                f.seek(0)
+                f.truncate()
+                f.writelines(lines)
+                f.close()
+
             return {"repeat_counter": 0, "word_spoken": slot_value}
 
-class ActionCheckSPS(Action):
+class ActionSPSmessage(Action):
     def name(self) -> Text:
-        return "action_check_SPS"
+        return "action_SPS_message"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        choice = tracker.get_slot("SPSchoice")
-        choicelist = ["Scissor", "Paper", "Stone"]
-        randn = random.randint(0, 2)
-        computerChoice = choicelist[randn]
-        playagain = "Do you want to play again?"
-        if choice == "scissor":
-            if computerChoice == "Scissor":
-                dispatcher.utter_message(text="It is a tie. My choice was scissor too." + playagain)
-            elif computerChoice == "Paper":
-                dispatcher.utter_message(text="Yay you win. My choice was paper." + playagain)
-            else:
-                dispatcher.utter_message(text="Oh no you lose. My choice was stone." + playagain)
-        elif choice == "paper":
-            if computerChoice == "Scissor":
-                dispatcher.utter_message(text="Oh no you lose. My choice was scissor" + playagain)
-            elif computerChoice == "Paper":
-                dispatcher.utter_message(text="It is a tie. My choice was paper too." + playagain)
-            else:
-                dispatcher.utter_message(text="Yay you win. My choice was stone." + playagain)
-        elif choice == "stone":
-            if computerChoice == "Scissor":
-                dispatcher.utter_message(text="Yay you win. My choice was scissor." + playagain)
-            elif computerChoice == "Paper":
-                dispatcher.utter_message(text="Oh no you lose. My choice was paper." + playagain)
-            else:
-                dispatcher.utter_message(text="It is a tie. My choice was stone too." + playagain)
-        return []
+        SPSmessage = tracker.slots.get("SPSmessage")
+        dispatcher.utter_message(text=SPSmessage)
+        return [SlotSet(key = "SPSflag", value = "none"), SlotSet(key = "SPSmessage", value = "none")]
+
+class ActionPTBmessage(Action):
+    def name(self) -> Text:
+        return "action_PTB_message"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        status = tracker.slots.get("PTBstatus")
+        duration =  int(tracker.slots.get("PTBduration"))
+        if status == "1":
+            message = "Awesome, you scored 10 points in " + str(duration) + " seconds, do you want to play again?"
+        else:
+            message = "Oh no time out please try to score 10 points in one minute, do you want to play again?"
+        dispatcher.utter_message(text=message)
+        return [SlotSet(key = "PTBstatus", value = "none"), SlotSet(key = "PTBduration", value = 0), SlotSet(key = "PTBflag", value = "none")]
+
+class ActionSMTNmessage(Action):
+    def name(self) -> Text:
+        return "action_SMTN_message"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        status = tracker.slots.get("SMTNstatus")
+        duration =  int(tracker.slots.get("SMTNduration"))
+        if status == "1":
+            message = "Awesome, you are able to show 5 numbers with hand gestures in " + str(duration) + " seconds, do you want to play again?"
+        else:
+            message = "Oh no time out, please try to show 5 numbers with hand gesture in one minute, do you want to play again?"
+        dispatcher.utter_message(text=message)
+        return [SlotSet(key = "SMTNstatus", value = "none"), SlotSet(key = "SMTNduration", value = 0), SlotSet(key = "SMTNflag", value = "none")]
