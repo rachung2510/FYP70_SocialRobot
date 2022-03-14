@@ -36,7 +36,6 @@ rules:
   condition:
   - slot_was_set:
     - game_mode: true
-    - disallow_nonsense: true
   steps:
   - or:
     - intent: nlu_fallback
@@ -88,16 +87,6 @@ rules:
     - intent: bot_age
     - intent: bot_name
     - intent: bot_parents
-  - action: utter_quit_game_first
-
-- rule: user mentioned non game intents in game mode
-  condition:
-  - slot_was_set:
-    - disallow_nonsense: true
-  steps:
-  - or:
-    - intent: affirm
-    - intent: deny
   - action: utter_quit_game_first
 
 - rule: user is hungry
@@ -226,9 +215,6 @@ rules:
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
-  - action: action_allow_nonsense
-  - slot_was_set:
-    - disallow_nonsense: false
   - action: action_exit_game_mode
 
 - rule: quit game

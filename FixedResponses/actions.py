@@ -13,26 +13,8 @@ from rasa_sdk.executor import CollectingDispatcher
 import random
 from pathlib import Path
 import os
-from rasa_sdk.events import SlotSet, AllSlotsReset
+from rasa_sdk.events import SlotSet, AllSlotsReset, EventType
 from rasa_sdk.types import DomainDict
-
-class ActionDisallowNonsense(Action):
-    def name(self) -> Text:
-        return "action_disallow_nonsense"
-    
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [SlotSet(key = "disallow_nonsense", value = True)]
-
-class ActionAllowNonsense(Action):
-    def name(self) -> Text:
-        return "action_allow_nonsense"
-    
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [SlotSet(key = "disallow_nonsense", value = False)]
         
 class ActionTellJoke(Action):
     def name(self) -> Text:
@@ -85,7 +67,9 @@ class ActionExitGameMode(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Okay, let me know if you want to play any game.")
+        game = tracker.get_slot("game_choice")
+        if game != "Word of the day":
+            dispatcher.utter_message(text="Okay, let me know if you want to play any game.")
         return [AllSlotsReset()]
 
 class ActionPlayGame(Action):
@@ -191,6 +175,23 @@ class ActionCheckItem(Action):
                 dispatcher.utter_message(text="Oh no you are supposed to do nothing, do you want to play Simon says again?")
         return [SlotSet(key = "object_detection", value = "none"), SlotSet(key = "SimonsaysAns", value = "none")]
 
+class AskForSlotAction(Action):
+    def name(self) -> Text:
+        return "action_ask_word_spoken"
+
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        word = tracker.slots.get("word")
+        repeat_counter = tracker.slots.get("repeat_counter")
+        if repeat_counter == 1:
+            dispatcher.utter_message(text="Repeat the word with me," + word + ".")
+        elif repeat_counter == 2:
+            dispatcher.utter_message(text="Great, try to pronounce it again, " + word + ".")
+        else:
+            dispatcher.utter_message(text="Almost there, repeat one more time with me, " + word + ".")
+        return []
+
 class ValidatePronunciationForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_pronunciation_form"
@@ -206,16 +207,10 @@ class ValidatePronunciationForm(FormValidationAction):
         meaning = tracker.slots.get("word_meaning")
         repeat_counter = tracker.slots.get("repeat_counter")
         if slot_value == "quit":
-                dispatcher.utter_message(text="Are you sure to quit the game, we haven't finished learning a word yet.")
+                dispatcher.utter_message(text="Are you sure to quit the game, we haven't finished learning a word yet?")
                 return []
         if repeat_counter < 3 and word != slot_value:
-                if repeat_counter == 0:
-                    dispatcher.utter_message(text="Repeat the word with me.")
-                elif repeat_counter == 1:
-                    dispatcher.utter_message(text="Great, try to pronounce it again!")
-                else:
-                    dispatcher.utter_message(text="Almost there, repeat one more time with me.")
-                return {"repeat_counter": repeat_counter+1, "word_spoken": None}
+            return {"repeat_counter": repeat_counter+1, "word_spoken": None}
         else:
             dispatcher.utter_message(text="Well done, let me tell you the meaning of the word, "+ meaning + ", great, you learnt a new word today!")
             # move the learnt word to another database

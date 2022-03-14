@@ -3,15 +3,15 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- play_Scissor_Paper_Stone
+- play_Word_of_the_day
 - affirm
-- security_code_SPS
 - deny
+- play_Scissor_Paper_Stone
+- security_code_SPS
 - item_entry_none
 - quit_game
 - play_Fun_fact
 - play_Show_me_the_number
-- play_Word_of_the_day
 - play_Simon_says
 - play_Pop_the_bubble
 - play_unspecified_game
@@ -89,12 +89,6 @@ slots:
   SimonsaysAns:
     type: bool
     initial_value: none
-    influence_conversation: true
-    mappings:
-    - type: custom
-  disallow_nonsense:
-    type: bool
-    initial_value: false
     influence_conversation: true
     mappings:
     - type: custom
@@ -299,8 +293,6 @@ responses:
   - text: Here is the instruction for pop the bubble, you need to move your index finger to the location of the bubble to score 1 point, To win the game, you need to score 10 points in one minute.
   utter_tell_SMTN_instruction:
   - text: Here is the instruction for show me the number, we will generate 5 numbers ranged from 0 to 10, 0 is represented by a fist, we will count the number of fingers shown by you and check if it matches with the number required, for a number more than 5, you may need both hands to do it, to win the game, you need to show all 5 numbers with hand gesture in one minute.
-  utter_ask_word_spoken:
-  - text: '{word}!'
   utter_chat:
   - text: What would you like to talk about?
   - text: Of course, what's on your mind?
@@ -580,11 +572,10 @@ actions:
 - action_PTB_message
 - action_SMTN_message
 - action_SPS_message
-- action_allow_nonsense
+- action_ask_word_spoken
 - action_check_SPS
 - action_check_item
 - action_choose_game
-- action_disallow_nonsense
 - action_enter_emo_mode
 - action_enter_game_mode
 - action_exit_emo_mode
@@ -593,8 +584,6 @@ actions:
 - action_tell_fun_fact
 - action_tell_joke
 - utter_ask_need_instruction
-- utter_tell_instruction
-- validate_item_form
 - validate_pronunciation_form
 forms:
   pronunciation_form:

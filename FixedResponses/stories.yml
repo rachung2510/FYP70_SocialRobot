@@ -181,13 +181,11 @@ stories:
     - game_mode: true
     - game_choice: Simon says
   - action: action_play_game
-  - action: action_disallow_nonsense
   - slot_was_set:
     - object_detection: yes
     - SimonsaysAns: true
   - intent: security_code_object_detection
   - action: action_check_item
-  - action: action_allow_nonsense
   - checkpoint: end_game
 
 - story: initiate Simon Says (do nothing)
@@ -344,7 +342,6 @@ stories:
   - action: action_exit_emo_mode
   - action: utter_ask_need_instruction
   - intent: deny
-  - action: action_disallow_nonsense
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -365,7 +362,6 @@ stories:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - action: action_allow_nonsense
   - action: action_exit_game_mode
 
 - story: interactive_story_2 (User interrupts the pronunciaiton form and doesn't want to continue)
@@ -378,7 +374,6 @@ stories:
   - intent: affirm
   - action: utter_tell_instruction
   - intent: affirm
-  - action: action_disallow_nonsense
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -399,7 +394,32 @@ stories:
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - action: action_allow_nonsense
+  - action: action_exit_game_mode
+
+- story: interactive_story Word of the day
+  steps:
+  - intent: play_Word_of_the_day
+  - slot_was_set:
+    - game_choice: Word of the day
+  - action: action_exit_emo_mode
+  - slot_was_set:
+    - emo_mode: false
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: null
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
   - action: action_exit_game_mode
 
 - story: interactive_story_1 (Simon says do nothing)
