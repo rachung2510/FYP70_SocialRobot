@@ -6,18 +6,29 @@ import time
 def SimonSays_item(selected_item,cam):
     starting_time = time.time()
 
-    # ./yolov4.weights ./darknet-master/cfg/yolov4.cfg
-    yolo = cv2.dnn.readNet('./object_data/yolov4.weights' , './object_data/yolov4.cfg')
-    #yolo = cv2.dnn.readNet('./customyolov4-obj_last.weights' , './customyolov4-obj.cfg')
+    lst = ["Cylindrical","Sphere","Rectangular"]
 
-
-    #yolo = cv2.dnn.readNet('./yolov4.weights' , './yolov4-tiny.cfg')
     classes = []
-    with open("./object_data/coco.names","r") as f:
+    with open("./coco.names","r") as f:
         classes = f.read().splitlines()
     # print((classes))
 
-    #cam = cv2.VideoCapture(0)
+    choose = selected_item
+    classes = []
+
+    if choose not in lst:
+        yolo = cv2.dnn.readNet('./object_data/yolov4.weights' , './object_data/yolov4.cfg')
+        with open("./object_data/coco.names","r") as f:
+            classes = f.read().splitlines()
+        # print((classes))
+    else:
+        yolo = cv2.dnn.readNet('./object_data/iteration3_final.weights' , './object_data/customyolov4-obj.cfg')
+        with open("./object_data/obj.names","r") as f:
+            classes = f.read().splitlines()
+        # print((classes))
+
+
+    # cam = cv2.VideoCapture(0)
     cam.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
     cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     if (cam.isOpened() == False):
@@ -93,7 +104,7 @@ def SimonSays_item(selected_item,cam):
                         cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
                     # selected_item = random.choice(items_of_selection)
                     # status_level=0
-                    #cam.release()
+                    cam.release()
                     #out.release()
                     cv2.destroyAllWindows()
                     return True
@@ -106,7 +117,7 @@ def SimonSays_item(selected_item,cam):
 
         cv2.imshow("Video",frame)
 
-    #cam.release()
+    # cam.release()
     #out.release()
 
     cv2.destroyAllWindows()

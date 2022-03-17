@@ -5,14 +5,13 @@ import time
 
 
 def SimonSays_nothing(selected_item,cam):
-    lst1 = ['fork', 'spoon', 'bottle']
-    lst2 = ["Cylindrical","Sphere","Rectangular"]
+    lst = ["Cylindrical","Sphere","Rectangular"]
     choose = selected_item
     classes = []
 
     sample = []
 
-    if choose in lst1:
+    if choose not in lst:
         yolo = cv2.dnn.readNet('./object_data/yolov4.weights' , './object_data/yolov4.cfg')
         with open("./object_data/coco.names","r") as f:
             classes = f.read().splitlines()
@@ -108,7 +107,7 @@ def SimonSays_nothing(selected_item,cam):
 
                 #plt.imshow(img)
                 #plt.show()
-        if time.time() - starting_time > 30:
+        if time.time() - starting_time > 10:
             if choose not in sample:
                 cv2.putText(frame, "Well Done!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
                 ans = True
@@ -121,7 +120,7 @@ def SimonSays_nothing(selected_item,cam):
 
         cv2.imshow("Video",frame)
 
-    #cam.release()
+    # cam.release()
     #out.release()
 
     cv2.destroyAllWindows()
