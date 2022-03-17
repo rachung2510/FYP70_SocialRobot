@@ -1,22 +1,22 @@
-A Backpack
-An Umbrella
-A Sports Ball
-A Cup
-A Knife
-A Spoon
-A Bowl
-A Banana
-An Orange
-A Carrot
-A Donut
-A Remote
-A Book
-A Teddy Bear
-A Toothbrush
-A Glove
-A Fork
-An Apple
-A Cell Phone
-A Cylindrical Object
-A Rectangular Object
-A Sphere
+Backpack
+Umbrella
+Sports Ball
+Cup
+Knife
+Spoon
+Bowl
+Banana
+Orange
+Carrot
+Donut
+Remote
+Book
+Teddy Bear
+Toothbrush
+Glove
+Fork
+Apple
+Cell Phone
+Cylindrical
+Rectangular
+Sphere
