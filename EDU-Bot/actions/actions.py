@@ -85,13 +85,17 @@ class ActionPlayGame(Action):
             # read items
             SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
             idx = random.randint(0, len(SimonDataItems)-1)
-            #test_data = ['fork']#, 'spoon', 'bottle']
-            #idx = random.randint(0, len(test_data)-1)  
+            # test_data = ['fork'] #, 'spoon', 'bottle']
+            #idx = random.randint(0, len(test_data)-1)
+            if SimonDataItems[idx][0] in ("a", "o", "e", "i", "u"):
+                particle = "an "
+            else:
+                particle = "a "
             if simonFlag == 0:
-                dispatcher.utter_message(text="Okay. Simon says, show me " + str(SimonDataItems[idx]))
+                dispatcher.utter_message(text="Okay, Simon says, show me " + particle + str(SimonDataItems[idx]) + ".")
                 return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
             else:
-                dispatcher.utter_message(text="Okay. Show me " + str(SimonDataItems[idx]))
+                dispatcher.utter_message(text="Okay, Show me " + particle + str(SimonDataItems[idx]) + ".")
                 return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
         elif game == "Word of the day":
             # if all words are learnt, move all learnt words back to database
