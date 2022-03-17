@@ -6,7 +6,7 @@ import time
 def SimonSays_item(selected_item,cam):
     starting_time = time.time()
 
-    lst = ["Cylindrical","Sphere","Rectangular"]
+    lst = ["rectangular object","cylindrical object","spherical object"]
     classes = []
     choose = selected_item
 
@@ -98,7 +98,7 @@ def SimonSays_item(selected_item,cam):
                         cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
                     # selected_item = random.choice(items_of_selection)
                     # status_level=0
-                    cam.release()
+                    # cam.release()
                     #out.release()
                     cv2.destroyAllWindows()
                     return True

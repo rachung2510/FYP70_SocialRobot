@@ -5,7 +5,7 @@ import time
 
 
 def SimonSays_nothing(selected_item,cam):
-    lst = ["Cylindrical","Sphere","Rectangular"]
+    lst = ["rectangular object","cylindrical object","spherical object"]
     choose = selected_item
     classes = []
 
