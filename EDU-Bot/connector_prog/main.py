@@ -76,7 +76,7 @@ def pred_emotion(vs, detector, predictor, models):
         if emotion_class != "neutral":
             c += 1 if emotion_class == pred else 0
             pred = emotion_class
-            if c==5:
+            if c==3:
                 message = emotion_class
                 print("Detected emotion: " + emotion_class)
                 finished.set()
