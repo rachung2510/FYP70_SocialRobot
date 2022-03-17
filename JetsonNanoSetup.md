@@ -169,11 +169,14 @@ sudo apt-get install espeak
 git clone https://github.com/mozilla/TTS
 cd TTS
 git checkout 72a6ac5
+```
+3. Remove the installation of tensorflow from the TTS setup by removing ```'tensorflow==2.3.0rc0,'``` from the ```'pip_install'``` list in line 106 of *setup.py*, then run
+```
 sudo python3.8 setup.py develop
 ```
-3. This is likely to terminate when Tensorflow can't be installed. Install the remaining packages manually.\
+4. Some packages may have to be installed. Install the remaining packages manually.\
 ```pip install torch librosa==0.7.2 phonemizer==3.0.1 unidecode==0.4.20 inflect```
-4. This version requires Numba v0.48, which requires llvmlite v0.31.0, which in turn requires LLVM 7+. We first install LLVM 7, then add the llvm-config to the path through a symbolic link. Then we install the source file for llvmlite v0.31.0, extract it and build it. After installing llvmlite, a pip install of Numba v0.48 should be successful.
+5. This version requires Numba v0.48, which requires llvmlite v0.31.0, which in turn requires LLVM 7+. We first install LLVM 7, then add the llvm-config to the path through a symbolic link. Then we install the source file for llvmlite v0.31.0, extract it and build it. After installing llvmlite, a pip install of Numba v0.48 should be successful.
 ```
 sudo apt-get install llvm-7 
 sudo ln -s /usr/bin/llvm-config-7 /usr/local/bin/llvm-config
@@ -183,7 +186,7 @@ cd llvmlite-0.31.0
 python3.8 setup.py build
 pip install numba==0.48.0
 ```
-5. PyTorch requires the updated version of Numpy. We'll have to ignore Tensorflow v2.6's warning of requiring a Numpy version ~=1.19.3.\
+6. PyTorch requires the updated version of Numpy. We'll have to ignore Tensorflow v2.6's warning of requiring a Numpy version ~=1.19.3.\
 ```pip install --upgrade numpy```
 
 ### Installing RASA
