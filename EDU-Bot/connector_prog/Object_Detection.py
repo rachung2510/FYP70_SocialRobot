@@ -7,14 +7,8 @@ def SimonSays_item(selected_item,cam):
     starting_time = time.time()
 
     lst = ["Cylindrical","Sphere","Rectangular"]
-
     classes = []
-    with open("./coco.names","r") as f:
-        classes = f.read().splitlines()
-    # print((classes))
-
     choose = selected_item
-    classes = []
 
     if choose not in lst:
         yolo = cv2.dnn.readNet('./object_data/yolov4.weights' , './object_data/yolov4.cfg')
