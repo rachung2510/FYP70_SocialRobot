@@ -188,6 +188,10 @@ pip install numba==0.48.0
 ```
 6. PyTorch requires the updated version of Numpy. We'll have to ignore Tensorflow v2.6's warning of requiring a Numpy version ~=1.19.3.\
 ```pip install --upgrade numpy```
+7. Copy the generated **TTS/** folder to your site-packages.
+```
+sudo cp -r TTS/ /usr/local/lib/python3.8/dist-packages/
+```
 
 ### Installing RASA
 1. Install dependencies.\
