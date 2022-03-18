@@ -81,7 +81,7 @@ class ActionPlayGame(Action):
         game = tracker.get_slot("game_choice")
         if game == "Simon says":
             # whether to say 'Simon says' before hand
-            simonFlag = random.randint(0,1)
+            simonFlag = 0 #random.randint(0,1)
             # read items
             SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
             idx = random.randint(0, len(SimonDataItems)-1)
@@ -146,18 +146,24 @@ class ActionChooseGame(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        randn = random.randint(0, 2)
+        randn = random.randint(0, 4)
         if randn == 0:
             dispatcher.utter_message(text="Let's play Simon says, shall we?")
             game = "Simon says"
         elif randn == 1:
             dispatcher.utter_message(text="Let's learn a word of the day, shall we?")
             game = "Word of the day"
+        elif randn == 2:
+            dispatcher.utter_message(text="Let's play scissor paper stone, shall we?")
+            game = "Scissor paper stone"
+        elif randn == 3:
+            dispatcher.utter_message(text="Let's play pop the bubble, shall we?")
+            game = "Pop the bubble"
         else:
-            dispatcher.utter_message(text="Let's learn a fun fact, shall we?")
-            game = "Fun fact"
+            dispatcher.utter_message(text="Let's play show me the number, shall we?")
+            game = "Show me the number"
         return [SlotSet(key = "game_choice", value = game)]
-
+    
 class ActionCheckItem(Action):
     def name(self) -> Text:
         return "action_check_item"
