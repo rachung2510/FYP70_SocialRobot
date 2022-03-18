@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import random
 from jetcam.usb_camera import USBCamera
 
-def countFingers(image, results ,computer_choice, status,draw=True, display=False):
+def countFingers(image, results, computer_choice, status, draw=False, display=False):
     '''
     This function will count the number of fingers up for each hand in the image.
     Args:
@@ -123,7 +123,7 @@ def countFingers(image, results ,computer_choice, status,draw=True, display=Fals
             cv2.putText(output_image, "You Won!" , (0, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
         elif status == 2: #draw
             cv2.putText(output_image, "Draw!" , (0, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
-        return status, human
+        return output_image, status, human
 
     # Check if the output image is specified to be displayed.
     if display:
@@ -133,11 +133,12 @@ def countFingers(image, results ,computer_choice, status,draw=True, display=Fals
     else:
         # Return the output image, the status of each finger and the count of the fingers up of both hands.
         return output_image, fingers_statuses, count
+#        return fingers_statuses, count
 
 
 
 
-def detectHandsLandmarks(image, hands, draw=True, display=False):
+def detectHandsLandmarks(image, hands, draw=False, display=False):
     '''
     This function performs hands landmarks detection on an image.
     Args:
@@ -150,7 +151,7 @@ def detectHandsLandmarks(image, hands, draw=True, display=False):
         output_image: A copy of input image with the detected hands landmarks drawn if it was specified.
         results:      The output of the hands landmarks detection on the input image.
     '''
-    time.sleep(1)
+#    time.sleep(1)
     # Create a copy of the input image to draw landmarks on.
     output_image = image.copy()
 
@@ -205,7 +206,7 @@ def scissorPaperStone(camera_video):
     # camera_video = cv2.VideoCapture(0)
 
     # Create named window for resizing purposes.
-    cv2.namedWindow('Fingers Counter', cv2.WINDOW_NORMAL)
+#    cv2.namedWindow('Fingers Counter', cv2.WINDOW_NORMAL)
 
     reference = {0 : "Rock" , 2 : "Scissors", 5 : "Paper"}
     choices = [0,2,5]
@@ -229,7 +230,7 @@ def scissorPaperStone(camera_video):
         # Check if the hands landmarks in the frame are detected.
         if results.multi_hand_landmarks:
             # Count the number of fingers up of each hand in the frame.
-            status, human = countFingers(frame, results,computer_choice, status , display=False)
+            frame, status, human = countFingers(frame, results, computer_choice, status, draw=True, display=False)
 
         if status == 0:
             text = "Oh no you lost, my choice was " + reference.get(computer_choice) + " and your choice was " + reference.get(human) + ", do you want to play again?"
@@ -238,15 +239,16 @@ def scissorPaperStone(camera_video):
         elif status == 2:
             text = "It was a draw, my choice was " + reference.get(computer_choice) + " and your choice was " + reference.get(human) + " too, do you want to play again?"
         if text != "":
-            cv2.destroyAllWindows()
+#            print(text)
+#            cv2.destroyAllWindows()
             return text
 
         # Display the frame.
-        cv2.imshow('Fingers Counter', frame)
-#        if cv2.waitKey(10) & 0xFF == ord('q'):
-#                break
+#        cv2.imshow('Fingers Counter', frame)
+#        if cv2.waitKey(1) & 0xFF == ord('q'):
+#            break
 
-    cv2.destroyAllWindows()
+#    cv2.destroyAllWindows()
     return
 
 

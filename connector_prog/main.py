@@ -10,7 +10,7 @@ from Nothing_Detection import SimonSays_nothing
 import Scissor_Paper_Stone as SPS
 import PopTheBubble as PTB
 import ShowMeTheNumber as SMTN
-from stt_tts import load_tts, tts
+#from stt_tts import load_tts, tts
 import speech_recognition as sr
 from play_audio import playsound
 from threading import Thread, Event
@@ -73,10 +73,6 @@ prev_game_mode = game_mode # whether it was previously game mode
 SimonsaysAns = "none"
 finished = Event() # input thread condition
 bye_list = ["Bye bye", "Goodbye", "See you again!", "Let's talk again next time!"]
-
-# Load TTS
-print("[INFO] Loading TTS model...")
-model, vocoder_model, speaker_id, TTS_CONFIG, use_cuda, ap, OUT_FILE = load_tts()
 
 # Load camera
 print("[INFO] camera sensor warming up...")
@@ -153,7 +149,9 @@ while True:
     # If there is a response, pass to TTS output
     if bot_message != "":
         sentence = bot_message
-        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
+#        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
+        tts = gTTS(sentence)
+        tts.save("bot_reply.wav")
         playsound("bot_reply.wav") # Playing the converted file
 
     # End program if bot said goodbye
