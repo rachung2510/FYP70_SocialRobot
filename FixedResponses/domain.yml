@@ -3,9 +3,11 @@ session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- play_Word_of_the_day
-- affirm
 - deny
+- play_unspecified_game
+- nlu_fallback
+- affirm
+- play_Word_of_the_day
 - play_Scissor_Paper_Stone
 - security_code_SPS
 - item_entry_none
@@ -14,7 +16,6 @@ intents:
 - play_Show_me_the_number
 - play_Simon_says
 - play_Pop_the_bubble
-- play_unspecified_game
 - ask_choose_game
 - how_to_play_Simon_says
 - how_to_play_Word_of_the_day
@@ -584,6 +585,7 @@ actions:
 - action_tell_fun_fact
 - action_tell_joke
 - utter_ask_need_instruction
+- utter_ask_what_game
 - validate_pronunciation_form
 forms:
   pronunciation_form:

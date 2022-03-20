@@ -83,17 +83,21 @@ class ActionPlayGame(Action):
         game = tracker.get_slot("game_choice")
         if game == "Simon says":
             # whether to say 'Simon says' before hand
-            simonFlag = random.randint(0,1)
+            simonFlag = 1 #random.randint(0,1)
             # read items
             # SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
             # idx = random.randint(0, len(SimonDataItems)-1)
-            test_data = ['fork']#, 'spoon', 'bottle']
+            test_data = ['umbrella']#, 'spoon', 'bottle']
             idx = random.randint(0, len(test_data)-1)  
+            if test_data[idx][0] in ("a", "o", "e", "i", "u"):
+                particle = "an "
+            else:
+                particle = "a "
             if simonFlag == 0:
-                dispatcher.utter_message(text="Okay. Simon says, show me " + str(test_data[idx]))
+                dispatcher.utter_message(text="Okay, Simon says, show me " + particle + str(test_data[idx]) + '.')
                 return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(test_data[idx]))]
             else:
-                dispatcher.utter_message(text="Okay. Show me " + str(test_data[idx]))
+                dispatcher.utter_message(text="Okay, Show me " + particle + str(test_data[idx]) + '.')
                 return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(test_data[idx]))]
         elif game == "Word of the day":
             # if all words are learnt, move all learnt words back to database
@@ -144,16 +148,22 @@ class ActionChooseGame(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        randn = random.randint(0, 2)
+        randn = random.randint(0, 4)
         if randn == 0:
             dispatcher.utter_message(text="Let's play Simon says, shall we?")
             game = "Simon says"
         elif randn == 1:
             dispatcher.utter_message(text="Let's learn a word of the day, shall we?")
             game = "Word of the day"
+        elif randn == 2:
+            dispatcher.utter_message(text="Let's play scissor paper stone, shall we?")
+            game = "Scissor paper stone"
+        elif randn == 3:
+            dispatcher.utter_message(text="Let's play pop the bubble, shall we?")
+            game = "Pop the bubble"
         else:
-            dispatcher.utter_message(text="Let's learn a fun fact, shall we?")
-            game = "Fun fact"
+            dispatcher.utter_message(text="Let's play show me the number, shall we?")
+            game = "Show me the number"
         return [SlotSet(key = "game_choice", value = game)]
 
 class ActionCheckItem(Action):

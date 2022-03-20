@@ -108,6 +108,7 @@ nlu:
     - You could say that again
     - you can say that again
     - because
+    - find
 - intent: deny
   examples: |
     - no
@@ -272,6 +273,7 @@ nlu:
     - I wanna play another game
     - play a different game
     - I wanna play a different game
+    - play game
 - intent: ask_choose_game
   examples: |
     - You choose a game for me
