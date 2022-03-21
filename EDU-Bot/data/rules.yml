@@ -44,7 +44,6 @@ rules:
     - intent: not_understand
     - intent: thanks
     - intent: chat
-    - intent: goodbye
     - intent: mood_great
     - intent: mood_unhappy
     - intent: mood_angry
