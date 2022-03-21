@@ -212,6 +212,17 @@ stories:
   - action: action_check_item
   - checkpoint: end_game
 
+- story: Word of the day
+  steps:
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+    - game_choice: Word of the day
+  - action: action_play_game
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+
 - story: scissor paper stone
   steps:
   - slot_was_set:
@@ -433,6 +444,31 @@ stories:
   - active_loop: pronunciation_form
   - slot_was_set:
     - word_spoken: null
+  - slot_was_set:
+    - requested_slot: word_spoken
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_exit_game_mode
+
+- story: interactive_story_1
+  steps:
+  - intent: play_unspecified_game
+  - action: utter_ask_what_game
+  - intent: deny
+  - action: action_choose_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: affirm
+  - action: utter_ask_need_instruction
+  - intent: deny
+  - action: action_enter_game_mode
+  - slot_was_set:
+    - game_mode: true
+  - action: action_play_game
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
   - slot_was_set:
     - requested_slot: word_spoken
   - slot_was_set:
