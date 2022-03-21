@@ -62,6 +62,7 @@ nlu:
     - y
     - indeed
     - of course
+    - because
     - that sounds good
     - correct
     - yep
@@ -78,6 +79,7 @@ nlu:
     - sounds good
     - sounds great
     - fine
+    - find
     - I think so
     - mm
     - mmhmm
@@ -254,6 +256,7 @@ nlu:
     - Play a game
     - Any game?
     - play
+    - play game
     - I wanna play
     - I want to play
     - I wanna play a game
@@ -638,6 +641,28 @@ nlu:
     - I am ill
     - I don't feel very well
     - I am not feeling well
+    - I have a stomach ache
+    - stomach ache
+    - stomach pain
+    - I stomach ache
+    - my stomach pain
+    - tummy ache
+    - I have tummy ache
+    - I have a tummy ache
+    - runny nose
+    - running nose
+    - I have runny nose
+    - I have running nose
+    - I have a runny nose
+    - I have a running nose
+    - feel very cold
+    - I feel very cold
+    - I feel cold
+    - I am cold
+    - I'm cold
+    - I have a cold
+    - I am freezing
+    - I'm freezing
 - intent: mood_hungry
   examples: |
     - I am hungry
