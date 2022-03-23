@@ -17,14 +17,15 @@ def init_emotion():
     predictor = dlib.shape_predictor(model_path+ 'shape_predictor_68_face_landmarks.dat')
 
     print("[INFO] loading emotion models...")
-    fcnn_fer = FCNNModel(68*4, 128, 7) # input, hidden, output
-    fcnn_fer.load_state_dict(torch.load(model_path + 'FCNN_norm_128_fer.pt', map_location='cpu')['state_dict'])
-    fcnn_fer.eval()
+    svm = pickle.load(open(model_path + 'svm_ck', 'rb'))
+    fcnn = FCNNModel(68*4, 128, 7) # input, hidden, output
+    fcnn.load_state_dict(torch.load(model_path + 'FCNN_norm_128_fer.pt', map_location='cpu')['state_dict'])
+    fcnn.eval()
 
-    return detector, predictor, (fcnn_fer,)
+    return detector, predictor, (svm, fcnn)
 
 def get_emotion_class(frame, detector, predictor, models, display=False):
-    fcnn_fer = models[0]
+    svm, fcnn = models[0], models[1]
     emotion_class = "neutral"
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -76,10 +77,21 @@ def get_emotion_class(frame, detector, predictor, models, display=False):
     Vector = np.dstack((vectors, coords)).reshape(1, -1) # shape=(samples, vectors+coords)
 
     # prediction
+    pred_svm = svm.predict(Vector)[0]
     with torch.no_grad():
-        pred_tensor_fer = fcnn_fer(torch.Tensor(Vector)).argmax()
-        pred_fer = pred_tensor_fer.cpu().numpy().item()
-        emotion_class = emotion_classes[pred_fer]
+        pred_tensor_fcnn = fcnn(torch.Tensor(Vector))
+        pred_fcnn = pred_tensor_fcnn.argmax().numpy().item()
+
+    pred = 6 # default=neutral
+    if pred_svm==4: # sadness
+        if pred_tensor_fcnn[0][4]>=1.45 or pred_tensor_fcnn[0][6]<=1.9:
+            pred = 4
+    elif pred_svm == pred_fcnn: # happiness, surprise, neutral
+        pred = pred_svm
+    elif pred_svm<3 or pred_fcnn==0: # anger, disgust, fear
+        pred = pred_svm if pred_fcnn==6 else pred_fcnn
+    emotion_class = emotion_classes[pred]
+
 
     if display:
         cv2.putText(frame, emotion_class.upper(), (rx-20,ry+rh+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
