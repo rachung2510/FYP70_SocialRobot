@@ -4,7 +4,7 @@
 ## rasa run actions
 
 import sklearn
-from emotion_recognition import init_emotion, get_emotion_class
+from Emotion_Recognition import init_emotion, get_emotion_class
 from Object_Detection import SimonSays_item
 from Nothing_Detection import SimonSays_nothing
 import Scissor_Paper_Stone as SPS
@@ -16,7 +16,8 @@ from play_audio import playsound
 from threading import Thread, Event
 import requests
 import subprocess
-from jetcam.usb_camera import USBCamera
+#from jetcam.usb_camera import USBCamera
+from VideoCapture import VideoCapture
 from gtts import gTTS
 
 import argparse
@@ -76,7 +77,8 @@ bye_list = ["Bye bye", "Goodbye", "See you again!", "Let's talk again next time!
 
 # Load camera
 print("[INFO] camera sensor warming up...")
-vs = USBCamera(capture_device=args.cam, width=640, height=480)
+vs = VideoCapture(args.cam, width=640, height=480)
+#vs = USBCamera(capture_device=args.cam, width=820, height=480)
 
 # Load emotion model
 detector, predictor, models = init_emotion()
@@ -113,13 +115,13 @@ while True:
     # Choosing input message
     if emo_mode and game_mode == "none": # emotion detection and STT
         # print("Reading Emotion and STT")
-        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
+#        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
         while not finished.isSet():
             worker = Thread(target=get_input) # STT thread
             worker.setDaemon(True)
             worker.start()
             emotion_class = pred_emotion(vs, detector, predictor, models)
-        p.kill()
+#        p.kill()
     elif SimonsaysAns != "none": # if Simon says object detected
         # print("Sending Simon says security code")
         message = "dfgdyttvyhtf1559716hkyk"
@@ -134,9 +136,9 @@ while True:
         message = "hgjtytn5t2GHEBLLOUIEKVF6565"
     else: # STT only
         # print("Reading STT only")
-        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
+#        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
         get_input()
-        p.kill()
+#        p.kill()
 
     # If there is a message, pass to rasa and print response
     if message != "":

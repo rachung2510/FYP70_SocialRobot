@@ -3,7 +3,6 @@ import numpy as np
 import random
 import time
 
-
 def SimonSays_nothing(selected_item,cam):
 
     WINDOW = "Simon Says"
@@ -34,16 +33,18 @@ def SimonSays_nothing(selected_item,cam):
 #    items_of_selection = ["bottle","sports ball","cell phone"]
 #    selected_item = random.choice(items_of_selection)
 
-    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+#    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+#    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while(True):
         frame = cam.read()
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-#        if time.time() - starting_time > 30:
-#            break
+        if time.time() - starting_time > 60:
+            print("Time's Up!")
+            print('Time taken: %.2f' % (time.time() - starting_time))
+            break
 
         blob = cv2.dnn.blobFromImage(frame,1/255, (320,320), (0,0,0), swapRB=True, crop=False)
         yolo.setInput(blob)
@@ -76,7 +77,7 @@ def SimonSays_nothing(selected_item,cam):
 
         color = (0, 0, 255)
 
-        cv2.putText(frame, "Please find this Item: " + choose, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0))
+#        cv2.putText(frame, "Please find this Item: " + choose, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0))
         font = cv2.FONT_HERSHEY_PLAIN
         colors = np.random.uniform(0,255,size=(len(boxes),3))
         if len(indexes) >0:
@@ -89,22 +90,22 @@ def SimonSays_nothing(selected_item,cam):
                 if label not in sample:
                     sample.append(label)
 
-                cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                cv2.putText(frame, label + " " + confi, (x,y+20), font, 2, (255,255,255), 2)
+#                cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
+#                cv2.putText(frame, label + " " + confi, (x,y+20), font, 2, (255,255,255), 2)
 
         if time.time() - starting_time > 10:
             if choose not in sample:
-                cv2.putText(frame, "Well Done!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
+#                cv2.putText(frame, "Well Done!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0))
                 ans = True
             else:
-                cv2.putText(frame, "Wrong!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
+#                cv2.putText(frame, "Wrong!!!", (0, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255))
                 ans = False
             break
         # print(sample)
 
-        cv2.imshow(WINDOW, frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+#        cv2.imshow(WINDOW, frame)
+#        if cv2.waitKey(1) & 0xFF == ord('q'):
+#            break
 
     return ans
 

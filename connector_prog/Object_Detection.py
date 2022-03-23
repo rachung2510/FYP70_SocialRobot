@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import time
 from jetcam.usb_camera import USBCamera
+import random
+from VideoCapture import VideoCapture
 
 def SimonSays_item(selected_item, cam):
 
@@ -26,7 +28,7 @@ def SimonSays_item(selected_item, cam):
         # print((classes))
 
 #    items_of_selection = ["bottle","sports ball","spoon","fork"]
-#    items_of_selection = ["bottle","sports ball","cell phone"]
+    items_of_selection = ["bottle","sports ball","cell phone","backpack"]
 #    selected_item = random.choice(items_of_selection)
 
     cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
@@ -36,8 +38,10 @@ def SimonSays_item(selected_item, cam):
 
         frame = cam.read()
 
-#        if (time.time() - starting_time) > 30:
-#            break
+        if (time.time() - starting_time) > 60:
+            print("\nTime's Up!")
+            print('Time taken: %.2f' % (time.time() - starting_time))
+            break
 
         blob = cv2.dnn.blobFromImage(frame, 1/255, (320,320), (0,0,0), swapRB=True, crop=False)
         yolo.setInput(blob)
@@ -71,9 +75,10 @@ def SimonSays_item(selected_item, cam):
 
         color = (0, 0, 255)
 
-        cv2.putText(frame, "Please find this Item: " + selected_item, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
+#        cv2.putText(frame, "Please find this Item: " + selected_item, (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255))
         font = cv2.FONT_HERSHEY_PLAIN
         colors = np.random.uniform(0,255,size=(len(boxes),3))
+        print('Detected: ', end="")
         if len(indexes) > 0:
             for i in indexes.flatten():
                 x,y,w,h = boxes[i]
@@ -81,25 +86,31 @@ def SimonSays_item(selected_item, cam):
                 label = str(classes[class_ids[i]])
                 confi = str(round(confidences[i],2))
                 #color = colors[i]
+                print(label, end=", ")
                 if label == selected_item:
+                    print('\nMatch!')
+                    print('Time taken: %.2f' % (time.time() - starting_time))
                     color = (0, 255, 0)
-                    cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                    start = time.time()
+#                    cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
+#                    time.sleep(2)
+#                    start = time.time()
 #                    while (time.time() - start > 5000000):
 #                        cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                    selected_item = random.choice(items_of_selection)
+#                    selected_item = random.choice(items_of_selection)
                     status_level=0
-                    cam.cap.release()
-                    cv2.destroyAllWindows()
+#                    cv2.destroyAllWindows()
                     return True
 
-                cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
-                cv2.putText(frame, label + " " + confi, (x,y+20), font, 2, (255,255,255), 2)
+#                cv2.rectangle(frame,(x,y),(x+w,y+h),color,2)
+#                cv2.putText(frame, label + " " + confi, (x,y+20), font, 2, (255,255,255), 2)
 
-        cv2.imshow(WINDOW, frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+#        cv2.imshow(WINDOW, frame)
+#        if cv2.waitKey(1) & 0xFF == ord('q'):
+#            break
 
+        print(" "*100, end="\r")
+
+#    cv2.destroyAllWindows()
     return False
 
 def get_time(prev):
@@ -107,7 +118,7 @@ def get_time(prev):
     print("Time:", curr - prev)
     return curr
 
-#cam = USBCamera(capture_device=0, width=640, height=480)
-#SimonSays_item("cell phone", cam)
-#cam.cap.release()
+#cam = VideoCapture(1)
+#SimonSays_item("backpack", cam)
+#cam.release()
 #cv2.destroyAllWindows()

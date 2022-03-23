@@ -6,7 +6,7 @@ import mediapipe as mp
 import matplotlib.pyplot as plt
 from random import randrange
 import time
-from jetcam.usb_camera import USBCamera
+from VideoCapture import VideoCapture
 
 def countFingers(image, results, random_number,counter,status,draw=True, display=False):
     '''
@@ -190,16 +190,17 @@ def showMeTheNumber(camera_video):
 
         # Perform Hands landmarks detection on the frame.
         frame, results = detectHandsLandmarks(frame, hands_videos, display=False)
-        cv2.putText(frame, " Please show me the number: " + str(random_number) , (10, 25),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+        cv2.putText(frame, " Please show me the number: " + str(random_number) , (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
         # Check if the hands landmarks in the frame are detected.
-        if counter == 5:
+        if counter == 10:
+            cv2.putText(frame, "You Win!", (180,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 8)
             print("You Win")
             variable = 1
             duration = time.time() - start
-            time.sleep(3)
             break
 
         if time.time() - start >= 60:
+            cv2.putText(frame, "Time out :(", (130,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,255), 8)
             print("Time Out")
             variable = 0
             duration = time.time() - start
@@ -208,7 +209,7 @@ def showMeTheNumber(camera_video):
         if results.multi_hand_landmarks:
 
             # Count the number of fingers up of each hand in the frame.
-            frame, fingers_statuses, count, status, counter = countFingers(frame, results,random_number,counter, status,display=False)
+            frame, fingers_statuses, count, status, counter = countFingers(frame, results, random_number, counter, status, display=False)
             if status == 1:
                 random_number= randrange(11)
                 status = 0
@@ -218,12 +219,14 @@ def showMeTheNumber(camera_video):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+    cv2.imshow(WINDOW, frame)
+    cv2.waitKey(1)
+    time.sleep(3)
     cv2.destroyAllWindows()
     return variable, duration
 
 
-#↓camera_video = USBCamera(capture_device=0, width=640, height=480)
+#camera_video = VideoCapture(0)
 #showMeTheNumber(camera_video)
-#camera_video.cap.release()
-#cv2.destroyAllWindows()
+#camera_video.release()
 

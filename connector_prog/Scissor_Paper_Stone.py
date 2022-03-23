@@ -6,7 +6,7 @@ import numpy as np
 import mediapipe as mp
 import matplotlib.pyplot as plt
 import random
-from jetcam.usb_camera import USBCamera
+from VideoCapture import VideoCapture
 
 def countFingers(image, results, computer_choice, status, draw=False, display=False):
     '''
@@ -191,6 +191,9 @@ def detectHandsLandmarks(image, hands, draw=False, display=False):
 
 
 def scissorPaperStone(camera_video):
+
+    WINDOW = "Scissors Paper Stone!"
+
     global mp_hands, mp_drawing, hands, hands_videos
     # Initialize the mediapipe hands class.
     mp_hands = mp.solutions.hands
@@ -206,7 +209,8 @@ def scissorPaperStone(camera_video):
     # camera_video = cv2.VideoCapture(0)
 
     # Create named window for resizing purposes.
-#    cv2.namedWindow('Fingers Counter', cv2.WINDOW_NORMAL)
+    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty(WINDOW,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
     reference = {0 : "Rock" , 2 : "Scissors", 5 : "Paper"}
     choices = [0,2,5]
@@ -239,20 +243,23 @@ def scissorPaperStone(camera_video):
         elif status == 2:
             text = "It was a draw, my choice was " + reference.get(computer_choice) + " and your choice was " + reference.get(human) + " too, do you want to play again?"
         if text != "":
-#            print(text)
-#            cv2.destroyAllWindows()
+            print(text)
+            cv2.imshow(WINDOW, frame)
+            cv2.waitKey(1)
+            time.sleep(3)
+            cv2.destroyAllWindows()
             return text
 
         # Display the frame.
-#        cv2.imshow('Fingers Counter', frame)
-#        if cv2.waitKey(1) & 0xFF == ord('q'):
-#            break
+        cv2.imshow(WINDOW, frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-#    cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
     return
 
 
 #camera_video = USBCamera(capture_device=0, width=640, height=480)
+#camera_video = VideoCapture(0)
 #scissorPaperStone(camera_video)
 #camera_video.cap.release()
-#cv2.destroyAllWindows()

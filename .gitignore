@@ -7,4 +7,6 @@ connector_prog/test.wav
 connector_prog/emotion_data/shape_predictor_68_face_landmarks.dat
 connector_prog/object_data/yolov4.weights
 connector_prog/stt_tts_data/tts_model.pth.tar
+connector_prog/object_data/iteration3_final.weights
+connector_prog/object_data/*test.py
 builds/tensorflow-2.6.0-cp38-cp38-linux_aarch64.whl
