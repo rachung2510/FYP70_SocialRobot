@@ -4,6 +4,9 @@ class VideoCapture:
 
     def __init__(self, dev=0, width=640, height=480):
         self.cap = cv2.VideoCapture("/dev/video" + str(dev))
+        if not self.cap.isOpened():
+            print("Cannot initialize camera. Check device number.")
+            return None
         self.set_dims(width, height)
         self.q = queue.Queue()
         self.t = threading.Thread(target=self._reader)
