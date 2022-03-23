@@ -243,7 +243,6 @@ def scissorPaperStone(camera_video):
         elif status == 2:
             text = "It was a draw, my choice was " + reference.get(computer_choice) + " and your choice was " + reference.get(human) + " too, do you want to play again?"
         if text != "":
-            print(text)
             cv2.imshow(WINDOW, frame)
             cv2.waitKey(1)
             time.sleep(3)
