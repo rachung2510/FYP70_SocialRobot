@@ -15,6 +15,8 @@ def enemy(image, x_enemy, y_enemy):
 
 def PopTheBubble(video):
 
+    WINDOW = "Pop the Bubble!"
+
     start = time.time()
     score = 0
     mp_drawing = mp.solutions.drawing_utils
@@ -24,7 +26,8 @@ def PopTheBubble(video):
     y_enemy=random.randint(50,400)
 
     # Create named window for resizing purposes.
-    cv2.namedWindow('Hand Tracking', cv2.WINDOW_NORMAL)
+    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty(WINDOW,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
     with mp_hands.Hands(min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands: 
         while True:
@@ -89,7 +92,7 @@ def PopTheBubble(video):
                             except:
                                 pass
 
-            cv2.imshow('Hand Tracking', image)
+            cv2.imshow(WINDOW, image)
 #           time.sleep(1)
 
             if cv2.waitKey(1) & 0xFF == ord('q') :

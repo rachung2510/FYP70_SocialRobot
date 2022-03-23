@@ -153,6 +153,9 @@ def detectHandsLandmarks(image, hands, draw=True, display=False):
 #-------------------------------------------MAIN CODE ----------------------------------------
 
 def showMeTheNumber(camera_video):
+
+    WINDOW = "Show Me the Number!"
+
     global mp_hands, hands, mp_drawing, hands_videos
     start = time.time()
 
@@ -167,7 +170,8 @@ def showMeTheNumber(camera_video):
     mp_drawing = mp.solutions.drawing_utils
 
     # Create named window for resizing purposes.
-    cv2.namedWindow('Fingers Counter', cv2.WINDOW_NORMAL)
+    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     random_number = randrange(11)
     global counter
@@ -210,7 +214,7 @@ def showMeTheNumber(camera_video):
                 status = 0
 
         # Display the frame.
-        cv2.imshow('Fingers Counter', frame)
+        cv2.imshow(WINDOW, frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 

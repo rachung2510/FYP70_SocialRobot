@@ -5,6 +5,9 @@ import time
 
 
 def SimonSays_nothing(selected_item,cam):
+
+    WINDOW = "Simon Says"
+
     lst = ["rectangular object","cylindrical object","spherical object"]
     choose = selected_item
     classes = []
@@ -31,6 +34,8 @@ def SimonSays_nothing(selected_item,cam):
 #    items_of_selection = ["bottle","sports ball","cell phone"]
 #    selected_item = random.choice(items_of_selection)
 
+    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while(True):
         frame = cam.read()
@@ -97,7 +102,9 @@ def SimonSays_nothing(selected_item,cam):
             break
         # print(sample)
 
-        cv2.imshow("Video",frame)
+        cv2.imshow(WINDOW, frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
     return ans
 

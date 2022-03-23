@@ -113,13 +113,13 @@ while True:
     # Choosing input message
     if emo_mode and game_mode == "none": # emotion detection and STT
         # print("Reading Emotion and STT")
-#        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
+        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
         while not finished.isSet():
             worker = Thread(target=get_input) # STT thread
             worker.setDaemon(True)
             worker.start()
             emotion_class = pred_emotion(vs, detector, predictor, models)
-#        p.kill()
+        p.kill()
     elif SimonsaysAns != "none": # if Simon says object detected
         # print("Sending Simon says security code")
         message = "dfgdyttvyhtf1559716hkyk"
@@ -134,10 +134,9 @@ while True:
         message = "hgjtytn5t2GHEBLLOUIEKVF6565"
     else: # STT only
         # print("Reading STT only")
-#        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
-        # message = input("Your input: \n")
+        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
         get_input()
-#        p.kill()
+        p.kill()
 
     # If there is a message, pass to rasa and print response
     if message != "":
