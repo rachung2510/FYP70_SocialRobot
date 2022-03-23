@@ -8,7 +8,7 @@ def process(file, mono):
 #    sound = am.from_mp3("myfile.mp3", frame_rate=22050)
     if mono:
         sound = am.from_mono_audiosegments(sound, sound)
-    sound = sound.set_frame_rate(44000)
+    sound = sound.set_frame_rate(42000)
     sound.export(processed, format='wav')
 
 def playsound(file, mono=True):
