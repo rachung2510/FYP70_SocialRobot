@@ -38,6 +38,7 @@ def get_input():
         with sr.Microphone(device_index=args.mic) as source:
             r.adjust_for_ambient_noise(source)
             print("Speak Anything :")
+            playsound("siri_start.wav", inform=False)
             audio = r.listen(source)  # listen to the source
             try:
                 message = r.recognize_google(audio)  # use google recognizer to convert our audio into text
@@ -121,6 +122,7 @@ while True:
             worker.setDaemon(True)
             worker.start()
             emotion_class = pred_emotion(vs, detector, predictor, models)
+            playsound("siri_stop.wav", inform=False)
 #        p.kill()
     elif SimonsaysAns != "none": # if Simon says object detected
         # print("Sending Simon says security code")
@@ -138,6 +140,7 @@ while True:
         # print("Reading STT only")
 #        p = subprocess.Popen(['python3.8', 'display_img.py']) # display listening img
         get_input()
+        playsound("siri_stop.wav", inform=False)
 #        p.kill()
 
     # If there is a message, pass to rasa and print response
@@ -152,8 +155,8 @@ while True:
         sentence = bot_message
 #        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
         tts = gTTS(sentence)
-        tts.save("bot_reply.wav")
-        playsound("bot_reply.wav") # Playing the converted file
+        tts.save("bot_reply.mp3")
+        playsound("bot_reply.mp3", mono=True, frame_rate=42000) # Playing the converted file
 
     # End program if bot said goodbye
     if bot_message in bye_list:
