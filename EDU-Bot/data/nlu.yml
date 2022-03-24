@@ -62,7 +62,6 @@ nlu:
     - y
     - indeed
     - of course
-    - because
     - that sounds good
     - correct
     - yep
@@ -79,7 +78,6 @@ nlu:
     - sounds good
     - sounds great
     - fine
-    - find
     - I think so
     - mm
     - mmhmm
@@ -109,12 +107,8 @@ nlu:
     - yahoo
     - You could say that again
     - you can say that again
-    - ready
-    - I'm ready
-    - I am ready
-    - yes I am
-    - yes I am ready
-    - yes I'm ready
+    - because
+    - find
 - intent: deny
   examples: |
     - no
@@ -213,31 +207,31 @@ nlu:
 - intent: play_Simon_says
   examples: |
     - play Simon says
-    - Can we play Simon says
+    - Can we play Simon says?
     - I want to play Simon says
     - play simon says
 - intent: play_Word_of_the_day
   examples: |
     - play word of the day
     - play were ofter day
-    - Can we play word of the day
+    - Can we play word of the day?
     - I want to learn a new word
     - I want to let a knew word
 - intent: play_Pop_the_bubble
   examples: |
     - play pop the bubble
-    - can we play pop the bubble
+    - can we play pop the bubble?
     - I want to play pop the bubble
 - intent: play_Show_me_the_number
   examples: |
     - show me the number
     - play show me the number
-    - can we play show me the number
+    - can we play show me the number?
     - I want to play show me the number
 - intent: play_Scissor_Paper_Stone
   examples: |
     - play scissor paper stone
-    - Can we play scissor paper stone
+    - Can we play scissor paper stone?
     - I want to play scissor paper stone
     - scissor paper stone
     - rock paper scissors
@@ -246,17 +240,16 @@ nlu:
 - intent: play_Fun_fact
   examples: |
     - play fun fact
-    - Can you tell me a fun fact
+    - Can you tell me a fun fact?
     - I want to know a fun fact
     - Tell me a fun fact
 - intent: play_unspecified_game
   examples: |
-    - Can we play a game
+    - Can we play a game?
     - I want to play a game
     - Play a game
-    - Any game
+    - Any game?
     - play
-    - play game
     - I wanna play
     - I want to play
     - I wanna play a game
@@ -280,6 +273,7 @@ nlu:
     - I wanna play another game
     - play a different game
     - I wanna play a different game
+    - play game
 - intent: ask_choose_game
   examples: |
     - You choose a game for me
@@ -288,39 +282,34 @@ nlu:
     - I don't know which game to choose
 - intent: how_to_play_Simon_says
   examples: |
-    - how to play Simon says
-    - May I know how to play Simon says
-    - How does Simon says work
+    - how to play Simon says?
+    - May I know how to play Simon says?
+    - How does Simon says work?
     - Instructions for Simon says
 - intent: how_to_play_Word_of_the_day
   examples: |
-    - How does Word of the day work
-    - How to play Word of the day
+    - How does Word of the day work?
+    - How to play Word of the day?
     - Instructions for word of the day
-    - May I know how to play Word of the day
-- intent: how_to_play_Fun_fact
-  examples: |
-    - How to play fun fact
-    - Instructions for fun fact
-    - How does fun fact work
+    - May I know how to play Word of the day?
 - intent: how_to_play_PTB
   examples: |
-    - How to play pop the bubble
+    - How to play pop the bubble?
     - Instructions for pop the bubble
-    - How does pop the bubble work
+    - How does pop the bubble work?
 - intent: how_to_play_SMTN
   examples: |
-    - How to play show me the number
+    - How to play show me the number?
     - Instructions for show me the number
-    - How does show me the number work
+    - How does show me the number work?
 - intent: how_to_play_SPS
   examples: |
-    - How to play scissor paper stone
+    - How to play scissor paper stone?
     - Instructions for scissor paper stone
-    - How does scissor paper stone work
+    - How does scissor paper stone work?
     - how to play paper scissor stone
     - Instructions for paper scissor stone
-    - How does paper scissor stone work
+    - How does paper scissor stone work?
 - intent: quit_game
   examples: |
     - exit game
@@ -345,25 +334,28 @@ nlu:
   examples: |
     - play again
     - I want to play again
-    - Can we play again
+    - Can we play again?
     - let's play again
 - intent: ask_available_game
   examples: |
-    - Can you tell me what games you have
-    - What games do you have
-    - What games are available
-    - Are there any games available
-    - What games can I choose
-    - what games can we play
-    - what games you have
-    - What are the games
-    - What are the games you can play
-    - what games
-    - several games
-    - can you play hangman
-    - can you play pretend
-    - can you play draw something
-    - can you play pictionary
+    - Can you tell me what games you have?
+    - What games do you have?
+    - What games are available?
+    - Are there any games available?
+    - What games can I choose?
+    - what games can we play?
+    - what games you have?
+    - What are the three games?
+    - What are the three games you can play?
+    - what 3 games?
+    - what three games?
+    - 3 games?
+    - three games?
+    - what games?
+    - can you play hangman?
+    - can you play pretend?
+    - can you play draw something?
+    - can you play pictionary?
 - intent: item_entry_none
   examples: |
     - do nothing
@@ -641,28 +633,6 @@ nlu:
     - I am ill
     - I don't feel very well
     - I am not feeling well
-    - I have a stomach ache
-    - stomach ache
-    - stomach pain
-    - I stomach ache
-    - my stomach pain
-    - tummy ache
-    - I have tummy ache
-    - I have a tummy ache
-    - runny nose
-    - running nose
-    - I have runny nose
-    - I have running nose
-    - I have a runny nose
-    - I have a running nose
-    - feel very cold
-    - I feel very cold
-    - I feel cold
-    - I am cold
-    - I'm cold
-    - I have a cold
-    - I am freezing
-    - I'm freezing
 - intent: mood_hungry
   examples: |
     - I am hungry
@@ -714,24 +684,24 @@ nlu:
     - I am little tired
 - intent: do_you_like
   examples: |
-    - what do you like
-    - what animals do you like
-    - what sports do you like
-    - what food do you like
-    - what kind of things do you like
-    - what kind of toys you like
-    - do you like animals
-    - do you like sports
-    - do you like food
-    - do you like mushroom
-    - do you like science
-    - do you like math
-    - you like mushrooms
-    - you like cats
-    - you like dogs
-    - what is your favourite animal
-    - what is your favorite food
-    - what is your fav colour
+    - what do you like?
+    - what animals do you like?
+    - what sports do you like?
+    - what food do you like?
+    - what kind of things do you like?
+    - what kind of toys you like?
+    - do you like animals?
+    - do you like sports?
+    - do you like food?
+    - do you like mushroom?
+    - do you like science?
+    - do you like math?
+    - you like mushrooms?
+    - you like cats?
+    - you like dogs?
+    - what is your favourite animal?
+    - what is your favorite food?
+    - what is your fav colour?
     - what do you like
     - what animals do you like
     - what sports do you like
@@ -786,31 +756,31 @@ nlu:
     - do you hate me
 - intent: do_you_dislike
   examples: |
-    - do you dislike cats
-    - do you dislike talking
+    - do you dislike cats?
+    - do you dislike talking?
     - do you dislike hair
     - do you dislike claire
     - do you dislike work
-    - do you hate humans
+    - do you hate humans?
     - do you hate food
     - do you hate the sun
     - do you hate insects
-    - do you think school sucks
+    - do you think school sucks?
     - do you think he sucks
     - do you think socks suck
     - do you think work sucks
-    - do you not like football
+    - do you not like football?
     - do you not like noodle
     - do you not like drawing
     - do you not like games
     - do you not like the colour
-    - you no like dogs
-    - you no like insect
+    - you no like dogs?
+    - you no like insect?
     - you no like snow
     - you no like leaves
     - you no like moving
     - you no like cartoon
-    - you not like flowers
+    - you not like flowers?
     - you not like toys
     - you not like money
     - you not like blue
@@ -922,20 +892,20 @@ nlu:
     - don't like cleaning
     - actually I don't like that
     - actually I don't like reading
-    - do you like shoes I don't
-    - you like tomato I don't like
-    - I don't like studying. Do you
-    - don't cats suck
-    - don't cockroaches suck
-    - doesn't facebook suck
-    - doesn't twitter suck
-    - aren't dogs bad bad
-    - aren't dogs bad
-    - aren't birds very bad
-    - isn't cheese disgusting
-    - isn't corn disgusting
-    - aren't peas yucky
-    - aren't tomatoes yucky
+    - do you like shoes? I don't
+    - you like tomato? I don't like
+    - I don't like studying. Do you?
+    - don't cats suck?
+    - don't cockroaches suck?
+    - doesn't facebook suck?
+    - doesn't twitter suck?
+    - aren't dogs bad bad?
+    - aren't dogs bad?
+    - aren't birds very bad?
+    - isn't cheese disgusting?
+    - isn't corn disgusting?
+    - aren't peas yucky?
+    - aren't tomatoes yucky?
     - my friend like games but I don't like
     - auntie likes mahjong but I don't like
     - my friend like lego, I don't
@@ -1366,21 +1336,22 @@ nlu:
     - let's talk
 - intent: why_know
   examples: |
-    - why do you want to know
-    - why must you know
-    - why you wanna know
-    - why you ask
-    - why do you ask
+    - why do you want to know?
+    - why must you know?
+    - why you wanna know?
+    - why you ask?
+    - why do you ask?
 - intent: do_you_want_to
   examples: |
-    - do you want to hear a joke
-    - you know a joke
-    - wanna hear a funny joke
-    - want to hear something funny
-    - do you want to know something funny
-    - do you want to play with me
-    - wanna draw with me
-    - can we keep quiet for a while
+    - do you want to hear a joke?
+    - you know a joke?
+    - wanna hear a funny joke?
+    - want to hear something funny?
+    - do you want to know something funny?
+    - do you want to play with me?
+    - wanna draw with me?
+    - want to eat?
+    - can we keep quiet for a while?
     - let's play lego together
     - I have a question
     - I have an idea
@@ -1396,123 +1367,123 @@ nlu:
     - huhuhu
     - huehue
     - ahahaha
-    - isn't that funny
-    - funny right
+    - isn't that funny?
+    - funny right?
     - so funny!
     - you're funny
 - intent: out_of_scope
   examples: |
-    - what is coding
-    - what is minion
-    - what is the time
-    - what is cello
-    - what is boomer
-    - what is oesophagus
-    - what is my name
-    - what are panthers
-    - what are magnets
-    - what are dinosaurs
-    - what are crayons made of
-    - what are vaccines
-    - what are vacuums
-    - what does this mean
-    - what does it look like
-    - what does he do
-    - what does censorship mean
-    - what does the cat eat
-    - what does a dinosaur look like
-    - what does that vaccine do
-    - what does she like
-    - what will happen
-    - what will my friends do
-    - what will this mean
-    - what will santa look like
-    - what will the future be
-    - what will I do when I grow up
-    - what can I do when I grow up
-    - what can pokemon do
-    - what can I watch on tv
-    - what could happen
-    - why chair can roll around
-    - why durian smell funny
-    - why bubble tea not good
-    - why need mask
-    - why must eat medicine
-    - why paint must add water
-    - why before eating must wash hand
-    - why cannot go out
-    - why is the sky blue
-    - why is there covid
-    - why is it raining
-    - why is the sun in the sky
-    - why is the moon following me
-    - why is my dog sick
-    - why is green made of yellow and blue
-    - why are fireworks different colours
-    - why are masks important
-    - why are guns illegal
-    - why are lemons sour
-    - why are cuts painful
-    - why are jellyfish translucent
-    - why are ants small
-    - why does the sun go on shining
-    - why does the sea rush to shore
-    - why does the virus not go away
-    - why does the fridge stay cold
-    - why does bubble pop
-    - why does phone ring
-    - why does blood clot
-    - why does she keep quiet
-    - who is Obama
-    - who is Lee
-    - who is Spider-man
-    - who is Superman
-    - who is Wolverine
-    - who is the actor in this movie
-    - who is the teacher at this school
-    - who is the prime minister
-    - who are they
-    - who are the X-men
-    - who are the Winx club
-    - who are they talking about
-    - who are we going to meet
-    - who are the people in our house
-    - who are the minions
-    - who does she mean
-    - who does Spider-man marry
-    - who does it refer to
-    - who does that man want to talk to
-    - who doesn't like pokemon
-    - who's the strongest hero
-    - who's the oldest person in the world
-    - whose house is beside mine
-    - whose toy got left behind
-    - when is the next eclipse
-    - when is Christmas
-    - when is the new year
-    - when's the cartoon airing
-    - when's she coming back
-    - when does the sun set
-    - when does the star appear
-    - when does the show start
-    - when will holiday begin
-    - when will this end
-    - when will I get my present
-    - how is it going to end
-    - how is she doing
-    - how is the tv running
-    - how are the planes flying
-    - how are the cats purring
-    - how are the flowers so big
-    - how does the car move
+    - what is coding?
+    - what is minion?
+    - what is the time?
+    - what is cello?
+    - what is boomer?
+    - what is oesophagus?
+    - what is my name?
+    - what are panthers?
+    - what are magnets?
+    - what are dinosaurs?
+    - what are crayons made of?
+    - what are vaccines?
+    - what are vacuums?
+    - what does this mean?
+    - what does it look like?
+    - what does he do?
+    - what does censorship mean?
+    - what does the cat eat?
+    - what does a dinosaur look like?
+    - what does that vaccine do?
+    - what does she like?
+    - what will happen?
+    - what will my friends do?
+    - what will this mean?
+    - what will santa look like?
+    - what will the future be?
+    - what will I do when I grow up?
+    - what can I do when I grow up?
+    - what can pokemon do?
+    - what can I watch on tv?
+    - what could happen?
+    - why chair can roll around?
+    - why durian smell funny?
+    - why bubble tea not good?
+    - why need mask?
+    - why must eat medicine?
+    - why paint must add water?
+    - why before eating must wash hand?
+    - why cannot go out?
+    - why is the sky blue?
+    - why is there covid?
+    - why is it raining?
+    - why is the sun in the sky?
+    - why is the moon following me?
+    - why is my dog sick?
+    - why is green made of yellow and blue?
+    - why are fireworks different colours?
+    - why are masks important?
+    - why are guns illegal?
+    - why are lemons sour?
+    - why are cuts painful?
+    - why are jellyfish translucent?
+    - why are ants small?
+    - why does the sun go on shining?
+    - why does the sea rush to shore?
+    - why does the virus not go away?
+    - why does the fridge stay cold?
+    - why does bubble pop?
+    - why does phone ring?
+    - why does blood clot?
+    - why does she keep quiet?
+    - who is Obama?
+    - who is Lee?
+    - who is Spider-man?
+    - who is Superman?
+    - who is Wolverine?
+    - who is the actor in this movie?
+    - who is the teacher at this school?
+    - who is the prime minister?
+    - who are they?
+    - who are the X-men?
+    - who are the Winx club?
+    - who are they talking about?
+    - who are we going to meet?
+    - who are the people in our house?
+    - who are the minions?
+    - who does she mean?
+    - who does Spider-man marry?
+    - who does it refer to?
+    - who does that man want to talk to?
+    - who doesn't like pokemon?
+    - who's the strongest hero?
+    - who's the oldest person in the world?
+    - whose house is beside mine?
+    - whose toy got left behind?
+    - when is the next eclipse?
+    - when is Christmas?
+    - when is the new year?
+    - when's the cartoon airing?
+    - when's she coming back?
+    - when does the sun set?
+    - when does the star appear?
+    - when does the show start?
+    - when will holiday begin?
+    - when will this end?
+    - when will I get my present?
+    - how is it going to end?
+    - how is she doing?
+    - how is the tv running?
+    - how are the planes flying?
+    - how are the cats purring?
+    - how are the flowers so big?
+    - how does the car move?
     - how does the singer do that/
-    - how does he feel
-    - how will I know
-    - how will my exam go
-    - how will the show end
-    - how come jelly is soft
-    - how come the plant won't die
-    - how come cannot go out
+    - how does he feel?
+    - how will I know?
+    - how will my exam go?
+    - how will the show end?
+    - how come jelly is soft?
+    - how come the plant won't die?
+    - how come cannot go out?
     - how do birds fly
 - intent: bot_joke
   examples: |
@@ -1539,64 +1510,64 @@ nlu:
     - what's a good joke
 - intent: bot_challenge
   examples: |
-    - are you a bot
-    - are you a human
-    - am I talking to a bot
-    - am I talking to a human
-    - are you a robot
-    - am I talking to an actual person
-    - you're a bot aren't you
-    - are you even a real person
-    - who are you
-    - what are you
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+    - are you a robot?
+    - am I talking to an actual person?
+    - you're a bot aren't you?
+    - are you even a real person?
+    - who are you?
+    - what are you?
     - you don't seem like a robot
     - you are like human
-    - are you real
+    - are you real?
 - intent: bot_purpose
   examples: |
-    - what can you do
-    - what are your skills
-    - what do you do
-    - what can robot do
-    - what is your purpose
-    - what kind of things can you do
+    - what can you do?
+    - what are your skills?
+    - what do you do?
+    - what can robot do?
+    - what is your purpose?
+    - what kind of things can you do?
 - intent: bot_how_see
   examples: |
-    - how do you see me
-    - how can you see me
-    - do you have eyes
-    - what can you see
-    - do you know what you see
-    - do you know what you're seeing
-    - how come you can see
-    - can you see me
-    - can you see
-    - where are your eyes
-    - where is your eye
+    - how do you see me?
+    - how can you see me?
+    - do you have eyes?
+    - what can you see?
+    - do you know what you see?
+    - do you know what you're seeing?
+    - how come you can see?
+    - can you see me?
+    - can you see?
+    - where are your eyes?
+    - where is your eye?
 - intent: bot_how_hear
   examples: |
-    - how do you hear
-    - how come you can hear me
-    - how you hear me
-    - do you hear me
-    - can you hear me
-    - can you hear
-    - where is your ear
-    - do you have ears
+    - how do you hear?
+    - how come you can hear me?
+    - how you hear me?
+    - do you hear me?
+    - can you hear me?
+    - can you hear?
+    - where is your ear?
+    - do you have ears?
 - intent: bot_how_are_you
   examples: |
-    - how are you
-    - how about you
-    - how do you feel
-    - what about you
-    - what are you feeling
-    - are you good
-    - are you good too
-    - are you feeling good
-    - are you ok
-    - are you alright
-    - are you okay
-    - how's it going
+    - how are you?
+    - how about you?
+    - how do you feel?
+    - what about you?
+    - what are you feeling?
+    - are you good?
+    - are you good too?
+    - are you feeling good?
+    - are you ok?
+    - are you alright?
+    - are you okay?
+    - how's it going?
 - intent: bot_do_you
   examples: |
     - do you have children
@@ -1668,69 +1639,69 @@ nlu:
     - do you sleep
 - intent: bot_age
   examples: |
-    - how old are you
-    - what is your age
-    - are you very old
-    - are you very young
-    - when is your birthday
-    - do you have a birthday
-    - do you grow old
-    - will you grow up
+    - how old are you?
+    - what is your age?
+    - are you very old?
+    - are you very young?
+    - when is your birthday?
+    - do you have a birthday?
+    - do you grow old?
+    - will you grow up?
     - you don't sound like a kid
     - you don't sound young
     - you sound like an adult
     - you sound old
 - intent: bot_name
   examples: |
-    - what is your name
-    - what's your name
-    - do you have a name
-    - can I name you
-    - can I call you something else
-    - can I call you Jane
-    - is your name edubot
-    - is your name robot
-    - do you have a robot name
-    - what do I call you
-    - what are you called
-    - how should I address you
-    - how do I call you
-    - do you have a nickname
-    - what is your nickname
+    - what is your name?
+    - what's your name?
+    - do you have a name?
+    - can I name you?
+    - can I call you something else?
+    - can I call you Jane?
+    - is your name edubot?
+    - is your name robot?
+    - do you have a robot name?
+    - what do I call you?
+    - what are you called?
+    - how should I address you?
+    - how do I call you?
+    - do you have a nickname?
+    - what is your nickname?
 - intent: bot_parents
   examples: |
-    - do you have parents
-    - do you have daddy
-    - do you have papa
-    - do you have dad
-    - do you have mummy
-    - do you have mama
-    - do you have mum
-    - do you have papa and mama
-    - do you have a daddy and mummy
-    - do you have a dad and mum
-    - who are your parents
-    - who is your daddy
-    - who's your papa
-    - who is your dad
-    - who is your mummy
-    - who's your mama
-    - who is your mum
-    - who are your papa and mama
-    - who are your daddy and mummy
-    - who are your dad and mum
-    - where are your parents
-    - where are your papa and mama
-    - where are your daddy and mummy
-    - where are your dad and mum
-    - where's your papa and mama
-    - where is your daddy and mummy
-    - where your dad and mum
-    - who created you
-    - who gave birth to you
-    - who made you
-    - who program you
-    - who programmed you
-    - who named you
-    - who gave you your name
-    - who gave you that name
+    - do you have parents?
+    - do you have daddy?
+    - do you have papa?
+    - do you have dad?
+    - do you have mummy?
+    - do you have mama?
+    - do you have mum?
+    - do you have papa and mama?
+    - do you have a daddy and mummy?
+    - do you have a dad and mum?
+    - who are your parents?
+    - who is your daddy?
+    - who's your papa?
+    - who is your dad?
+    - who is your mummy?
+    - who's your mama?
+    - who is your mum?
+    - who are your papa and mama?
+    - who are your daddy and mummy?
+    - who are your dad and mum?
+    - where are your parents?
+    - where are your papa and mama?
+    - where are your daddy and mummy?
+    - where are your dad and mum?
+    - where's your papa and mama?
+    - where is your daddy and mummy?
+    - where your dad and mum?
+    - who created you?
+    - who gave birth to you?
+    - who made you?
+    - who program you?
+    - who programmed you?
+    - who named you?
+    - who gave you your name?
+    - who gave you that name?
