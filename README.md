@@ -99,7 +99,7 @@ pip install mediapipe
 pip install matplotlib
 ```
 Cutomised Object Detection:
-Weights:[iteration3_final.weights](https://drive.google.com/file/d/1BQF_CJWqCWHoAAl4iFkeKmAzQBwGDYXy/view?usp=sharing) and put in FYP70_SocialRobot/EDU-Bot/connector_prog/object_data.
+Weights: [iteration3_final.weights](https://drive.google.com/file/d/1BQF_CJWqCWHoAAl4iFkeKmAzQBwGDYXy/view?usp=sharing) and put in FYP70_SocialRobot/EDU-Bot/connector_prog/object_data.
 
 ## Run EDU-Bot
 Open 3 terminals. In terminal 1:
