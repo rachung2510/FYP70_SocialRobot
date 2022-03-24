@@ -16,8 +16,6 @@ stories:
   - action: utter_tell_instruction
   - intent: affirm
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -52,8 +50,6 @@ stories:
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -87,8 +83,6 @@ stories:
   - action: utter_tell_instruction
   - intent: affirm
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -125,8 +119,6 @@ stories:
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -145,8 +137,6 @@ stories:
   - action: utter_tell_instruction
   - intent: affirm
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -179,8 +169,6 @@ stories:
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -297,8 +285,6 @@ stories:
   - action: utter_tell_instruction
   - intent: affirm
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -359,14 +345,12 @@ stories:
   - slot_was_set:
     - SPSmessage: none
 
-- story: interactive_story_1 (User interrupts the pronunciation form and doesn't want to continue)
+- story: interactive_story_1 (User interrupts the pronunciaiton form and doesn't want to continue)
   steps:
   - intent: play_Word_of_the_day
   - slot_was_set:
     - game_choice: Word of the day
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_enter_game_mode
@@ -391,14 +375,12 @@ stories:
     - requested_slot: null
   - action: action_exit_game_mode
 
-- story: interactive_story_2 (User interrupts the pronunciation form and doesn't want to continue)
+- story: interactive_story_2 (User interrupts the pronunciaiton form and doesn't want to continue)
   steps:
   - intent: play_Word_of_the_day
   - slot_was_set:
     - game_choice: Word of the day
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: utter_ask_need_instruction
   - intent: affirm
   - action: utter_tell_instruction
@@ -484,8 +466,6 @@ stories:
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
@@ -515,8 +495,6 @@ stories:
   - action: utter_ask_need_instruction
   - intent: deny
   - action: action_exit_emo_mode
-  - slot_was_set:
-    - emo_mode: false
   - action: action_enter_game_mode
   - slot_was_set:
     - game_mode: true
