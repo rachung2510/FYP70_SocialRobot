@@ -86,48 +86,12 @@ rules:
     - intent: bot_age
     - intent: bot_name
     - intent: bot_parents
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Show_me_the_number
+    - intent: play_Word_of_the_day
+    - intent: play_Pop_the_bubble
+    - intent: play_Simon_says
   - action: utter_quit_game_first
-
-- rule: tell a fun fact
-  steps:
-  - intent: play_Fun_fact
-  - action: action_tell_fun_fact
-
-- rule: Activate Pronunciation form
-  steps:
-  - action: action_play_game
-  - slot_was_set:
-    - game_choice: Word of the day
-  - intent: affirm
-  - action: pronunciation_form
-  - active_loop: pronunciation_form
-
-- rule: Submit Pronunciation form
-  condition:
-  - active_loop: pronunciation_form
-  steps:
-  - action: pronunciation_form
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_exit_game_mode
-
-- rule: User interrupts the pronunciation form and doesn't want to continue
-  steps:
-  - action: pronunciation_form
-  - active_loop: pronunciation_form
-  - slot_was_set:
-    - word_spoken: quit
-  - intent: affirm
-  - action: action_deactivate_loop
-  - action: action_exit_game_mode
-
-- rule: quit game
-  steps:
-  - slot_was_set:
-    - game_mode: true
-  - intent: quit_game
-  - action: action_exit_game_mode
 
 - rule: user is hungry
   steps:
@@ -233,3 +197,43 @@ rules:
   steps:
   - intent: bot_parents
   - action: utter_bot_parents
+- rule: tell a fun fact
+  steps:
+  - intent: play_Fun_fact
+  - action: action_tell_fun_fact
+
+- rule: Activate Pronunciation form
+  steps:
+  - action: action_play_game
+  - slot_was_set:
+    - game_choice: Word of the day
+  - intent: affirm
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+
+- rule: Submit Pronunciation form
+  condition:
+  - active_loop: pronunciation_form
+  steps:
+  - action: pronunciation_form
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_exit_game_mode
+
+- rule: quit game
+  steps:
+  - slot_was_set:
+    - game_mode: true
+  - intent: quit_game
+  - action: action_exit_game_mode
+
+- rule: User interrupts the pronunciaiton form and doesn't want to continue
+  steps:
+  - action: pronunciation_form
+  - active_loop: pronunciation_form
+  - slot_was_set:
+    - word_spoken: quit
+  - intent: affirm
+  - action: action_deactivate_loop
+  - action: action_exit_game_mode
