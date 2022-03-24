@@ -92,7 +92,7 @@ conda install -c conda-forge dlib
 conda install -c conda-forge pickle5
 ```
 
-## Install library for Object Detection games
+## Install libraries for Object Detection games
 For Finger Detection and Plotting of Hand Land Marks:
 ```bash
 pip install mediapipe
