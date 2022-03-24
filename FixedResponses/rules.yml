@@ -44,7 +44,6 @@ rules:
     - intent: not_understand
     - intent: thanks
     - intent: chat
-    - intent: goodbye
     - intent: mood_great
     - intent: mood_unhappy
     - intent: mood_angry
@@ -87,6 +86,11 @@ rules:
     - intent: bot_age
     - intent: bot_name
     - intent: bot_parents
+    - intent: play_Scissor_Paper_Stone
+    - intent: play_Show_me_the_number
+    - intent: play_Word_of_the_day
+    - intent: play_Pop_the_bubble
+    - intent: play_Simon_says
   - action: utter_quit_game_first
 
 - rule: user is hungry
