@@ -292,11 +292,6 @@ nlu:
     - How to play Word of the day?
     - Instructions for word of the day
     - May I know how to play Word of the day?
-- intent: how_to_play_Fun_fact
-  examples: |
-    - How to play fun fact?
-    - Instructions for fun fact
-    - How does fun fact work?
 - intent: how_to_play_PTB
   examples: |
     - How to play pop the bubble?
