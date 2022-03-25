@@ -81,7 +81,7 @@ class ActionPlayGame(Action):
         game = tracker.get_slot("game_choice")
         if game == "Simon says":
             # whether to say 'Simon says' before hand
-            simonFlag = 0 #random.randint(0,1)
+            simonFlag = random.randint(0,1)
             # read items
             SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
             idx = random.randint(0, len(SimonDataItems)-1)
