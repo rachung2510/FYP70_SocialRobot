@@ -12,9 +12,10 @@ parser.add_argument("-fr", "--frame_rate", type=int, default=48000)
 args = parser.parse_args()
 
 if args.tts:
-    tts = gTTS("Sorry I don't understand that, let's try talking about something else")
+#    tts = gTTS("Sorry I don't understand. Could you please repeat yourself?", lang="zh-CN")
+    tts = gTTS("Sorry I don't understand. Could you please repeat yourself?", tld='ca')
     tts.save('msg.mp3')
-    playsound('msg.mp3', mono=True, frame_rate=42000)
+    playsound('msg.mp3', mono=True, frame_rate=44000)
 else:
     if args.file == default:
         playsound(args.file, mono=True, frame_rate=42000)
