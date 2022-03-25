@@ -154,9 +154,9 @@ while True:
     if bot_message != "":
         sentence = bot_message
 #        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
-        tts = gTTS(sentence)
+        tts = gTTS(sentence, tld='ca')
         tts.save("bot_reply.mp3")
-        playsound("bot_reply.mp3", mono=True, frame_rate=42000) # Playing the converted file
+        playsound("bot_reply.mp3", mono=True, frame_rate=43000) # Playing the converted file
 
     # End program if bot said goodbye
     if bot_message in bye_list:
