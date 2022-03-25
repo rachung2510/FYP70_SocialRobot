@@ -190,9 +190,9 @@ def showMeTheNumber(camera_video):
 
         # Perform Hands landmarks detection on the frame.
         frame, results = detectHandsLandmarks(frame, hands_videos, display=False)
-        cv2.putText(frame, " Please show me the number: " + str(random_number) , (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+        cv2.putText(frame, " Please show me the number: " + str(random_number) , (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,255), 2)
         # Check if the hands landmarks in the frame are detected.
-        if counter == 10:
+        if counter == 5:
             cv2.putText(frame, "You Win!", (180,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 8)
             print("You Win")
             variable = 1
