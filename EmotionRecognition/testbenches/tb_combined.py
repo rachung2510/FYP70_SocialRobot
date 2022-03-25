@@ -5,6 +5,7 @@ import torch
 import numpy as np
 from math import pi
 import os, sys, pickle
+from warnings import simplefilter
 
 sys.path.append(os.path.abspath('../'))
 from helper_functions import mag, angle
@@ -13,18 +14,28 @@ from helper_classes import FCNNModel
 # define constants
 model_path = '../models/'
 emotion_classes = ['anger','disgust','fear','happiness','sadness','surprise','neutral']
+simplefilter(action='ignore', category=UserWarning)
+
+def get_time(prev, tag=""):
+    now = time.time()
+    print("[%s] Time: %.2fs" % (tag, now-prev))
+    return now
 
 # initialize dlib's face detector (HOG-based) and then create the facial landmark predictor
 print("[INFO] loading facial landmark predictor...")
+start = time.time()
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('../shape_predictor_68_face_landmarks.dat')
+##now = get_time(start, "Dlib")
 
 # load models
 print("[INFO] loading models...")
+now = time.time()
 svm_ck = pickle.load(open(model_path+'svm_ck', 'rb'))
 fcnn_ck = FCNNModel(68*4, 128, 7) # input, hidden, output
 fcnn_ck.load_state_dict(torch.load(model_path + 'FCNN_norm_128_fer.pt', map_location='cpu')['state_dict'])
 fcnn_ck.eval()
+##get_time(now, 'Models')
 
 def start():
     # initialize the video stream and allow the cammera sensor to warmup
@@ -34,7 +45,9 @@ def start():
 
     c, d = 0, 0
     label_ck, label_fer = '', ''
+    now = None
     while True:
+##        now = get_time(now, 'Read') if now else time.time()
         vectors, coords = [], []
         pred = 6
 
@@ -78,8 +91,12 @@ def start():
         with torch.no_grad():
             pred_tensor_fcnn = fcnn_ck(torch.Tensor(Vector))
             pred_fcnn = pred_tensor_fcnn.argmax().numpy().item()
-
-        if pred_svm==4:
+		
+#        print('Prediction scores: %.3f (fear)' % pred_tensor_fcnn[0][2].item())
+        if pred_tensor_fcnn[0][2] >= 0.4:
+            pred = 2
+        elif pred_svm==4:
+##            print('Prediction scores: %.3f (sadness), %.3f (neutral)' % (pred_tensor_fcnn[0][4].item(), pred_tensor_fcnn[0][6].item()))
             if pred_tensor_fcnn[0][4]>=1.45 or pred_tensor_fcnn[0][6]<=1.9:
                 pred = 4            
         elif pred_svm == pred_fcnn: # happiness, surprise, neutral
@@ -99,17 +116,6 @@ def start():
             c = c+1 if pred_label_ck else 0
         cv2.putText(image, label_ck, (x,y+h+20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
 
-##        if not d:
-##            pred_label_fer = emotion_classes[pred_fcnn]
-##            d += 1
-##        elif d == 3:
-##            label_fer = pred_label_fer
-##            d = 0
-##        else:
-##            pred_label_fer = emotion_classes[pred_fcnn] if (pred_label_fer == emotion_classes[pred_fcnn]) else ''            
-##            d = d+1 if pred_label_fer else 0
-##        cv2.putText(image, 'FCNN: %s'%label_fer, (x,y+h+40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 2)
-            
         # show frame            
         cv2.imshow("Frame", image)
 
