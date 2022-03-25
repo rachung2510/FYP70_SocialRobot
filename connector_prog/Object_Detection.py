@@ -31,14 +31,14 @@ def SimonSays_item(selected_item, cam):
     items_of_selection = ["bottle","sports ball","cell phone","backpack"]
 #    selected_item = random.choice(items_of_selection)
 
-    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+#    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
+#    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while(True):
 
         frame = cam.read()
 
-        if (time.time() - starting_time) > 60:
+        if (time.time() - starting_time) > 120:
             print("\nTime's Up!")
             print('Time taken: %.2f' % (time.time() - starting_time))
             break

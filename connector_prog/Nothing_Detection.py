@@ -41,7 +41,7 @@ def SimonSays_nothing(selected_item,cam):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-        if time.time() - starting_time > 60:
+        if time.time() - starting_time > 30:
             print("Time's Up!")
             print('Time taken: %.2f' % (time.time() - starting_time))
             break
