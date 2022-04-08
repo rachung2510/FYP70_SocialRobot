@@ -16,7 +16,6 @@ from play_audio import playsound
 from threading import Thread, Event
 import requests
 import subprocess
-#from jetcam.usb_camera import USBCamera
 from VideoCapture import VideoCapture
 from gtts import gTTS
 
