@@ -13,7 +13,6 @@ import os
 from rasa_sdk.events import SlotSet, AllSlotsReset, EventType
 from rasa_sdk.types import DomainDict
 
-        
 class ActionTellJoke(Action):
     def name(self) -> Text:
         return "action_tell_joke"
@@ -31,7 +30,7 @@ class ActionTellJoke(Action):
 class ActionEnterEmoMode(Action):
     def name(self) -> Text:
         return "action_enter_emo_mode"
-    
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -41,7 +40,7 @@ class ActionEnterEmoMode(Action):
 class ActionExitEmoMode(Action):
     def name(self) -> Text:
         return "action_exit_emo_mode"
-    
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -51,7 +50,7 @@ class ActionExitEmoMode(Action):
 class ActionEnterGameMode(Action):
     def name(self) -> Text:
         return "action_enter_game_mode"
-    
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -61,7 +60,7 @@ class ActionEnterGameMode(Action):
 class ActionExitGameMode(Action):
     def name(self) -> Text:
         return "action_exit_game_mode"
-    
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -83,20 +82,21 @@ class ActionPlayGame(Action):
             # whether to say 'Simon says' before hand
             simonFlag = random.randint(0,1)
             # read items
-            SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
-            idx = random.randint(0, len(SimonDataItems)-1)
-            # test_data = ['fork'] #, 'spoon', 'bottle']
-            #idx = random.randint(0, len(test_data)-1)
-            if SimonDataItems[idx][0] in ("a", "o", "e", "i", "u"):
+            # SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
+
+            #idx = random.randint(0, len(SimonDataItems)-1)
+            test_data = ['fork', 'spoon', 'bottle', 'sports ball', 'rectangular object', 'cylindrical object', 'spherical object']
+            idx = random.randint(0, len(test_data)-1)
+            if test_data[idx][0] in ("a", "o", "e", "i", "u"):
                 particle = "an "
             else:
                 particle = "a "
             if simonFlag == 0:
-                dispatcher.utter_message(text="Okay, Simon says, show me " + particle + str(SimonDataItems[idx]) + ".")
-                return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
+                dispatcher.utter_message(text="Okay, Simon says, show me " + particle + str(test_data[idx]) + ".")
+                return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(test_data[idx]))]
             else:
                 dispatcher.utter_message(text="Okay, Show me " + particle + str(SimonDataItems[idx]) + ".")
-                return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(SimonDataItems[idx]))]
+                return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(test_data[idx]))]
         elif game == "Word of the day":
             # if all words are learnt, move all learnt words back to database
             if os.stat("data/Word_of_the_day.txt").st_size == 0:
@@ -107,7 +107,7 @@ class ActionPlayGame(Action):
                         f1.close()
                         f2.close()
             WordData = Path('data/Word_of_the_day.txt').read_text().split('\n')
-            
+
             # randomly select a word
             randn = random.randint(0, len(WordData)-1)
             word = WordData[randn].split('/')[0]
@@ -142,7 +142,7 @@ class ActionTellFunFact(Action):
 class ActionChooseGame(Action):
     def name(self) -> Text:
         return "action_choose_game"
-    
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
@@ -163,7 +163,7 @@ class ActionChooseGame(Action):
             dispatcher.utter_message(text="Let's play show me the number, shall we?")
             game = "Show me the number"
         return [SlotSet(key = "game_choice", value = game)]
-    
+
 class ActionCheckItem(Action):
     def name(self) -> Text:
         return "action_check_item"

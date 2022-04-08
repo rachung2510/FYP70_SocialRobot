@@ -12,6 +12,10 @@ def SimonSays_item(selected_item, cam):
     starting_time = time.time()
     width, height = 640, 480
 
+#items_of_selection = ["bottle","sports ball","spoon","fork"]
+#    items_of_selection = ["bottle","sports ball","cell phone","backpack", 'cylindrical object', 'rectangular object', 'spherical object']
+#    selected_item = random.choice(items_of_selection)
+
     lst = ["rectangular object","cylindrical object","spherical object"]
     classes = []
     choose = selected_item
@@ -26,10 +30,6 @@ def SimonSays_item(selected_item, cam):
         with open("./object_data/obj.names","r") as f:
             classes = f.read().splitlines()
         # print((classes))
-
-#    items_of_selection = ["bottle","sports ball","spoon","fork"]
-    items_of_selection = ["bottle","sports ball","cell phone","backpack"]
-#    selected_item = random.choice(items_of_selection)
 
 #    cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
 #    cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
@@ -118,7 +118,7 @@ def get_time(prev):
     print("Time:", curr - prev)
     return curr
 
-#cam = VideoCapture(1)
-#SimonSays_item("backpack", cam)
+#cam = VideoCapture(0)
+#SimonSays_item(None, cam)
 #cam.release()
 #cv2.destroyAllWindows()
