@@ -2,6 +2,7 @@ import torch
 from torch import nn
 from imutils import face_utils
 import imutils, time, pickle, math
+from warnings import simplefilter
 import dlib, cv2
 import numpy as np
 from VideoCapture import VideoCapture
@@ -11,16 +12,22 @@ model_path = 'emotion_data/'
 emotion_classes = ['anger','disgust','fear','happiness','sadness','surprise','neutral']
 WINDOW = "Emotion Recognition"
 
+# ignore sklearn version warnings
+simplefilter(action='ignore', category=UserWarning)
+
 def init_emotion():
+#    start = time.time()
     print("[INFO] loading facial landmark predictor...")
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(model_path+ 'shape_predictor_68_face_landmarks.dat')
+#    now = get_time(start, "Dlib")
 
     print("[INFO] loading emotion models...")
     svm = pickle.load(open(model_path + 'svm_ck', 'rb'))
     fcnn = FCNNModel(68*4, 128, 7) # input, hidden, output
     fcnn.load_state_dict(torch.load(model_path + 'FCNN_norm_128_fer.pt', map_location='cpu')['state_dict'])
     fcnn.eval()
+#    get_time(now, "Models")
 
     return detector, predictor, (svm, fcnn)
 
@@ -81,14 +88,17 @@ def get_emotion_class(frame, detector, predictor, models, display=False):
     with torch.no_grad():
         pred_tensor_fcnn = fcnn(torch.Tensor(Vector))
         pred_fcnn = pred_tensor_fcnn.argmax().numpy().item()
+#    print(emotion_classes[pred_svm], emotion_classes[pred_fcnn])
 
     pred = 6 # default=neutral
-    if pred_svm==4: # sadness
+    if pred_tensor_fcnn[0][2] >= 0.45: # fear
+        pred = 2
+    elif pred_svm==4: # sadness
         if pred_tensor_fcnn[0][4]>=1.45 or pred_tensor_fcnn[0][6]<=1.9:
             pred = 4
     elif pred_svm == pred_fcnn: # happiness, surprise, neutral
         pred = pred_svm
-    elif pred_svm<3 or pred_fcnn==0: # anger, disgust, fear
+    elif (pred_svm<3 and pred_svm!=2) or pred_fcnn==0: # anger, disgust
         pred = pred_svm if pred_fcnn==6 else pred_fcnn
     emotion_class = emotion_classes[pred]
 
@@ -140,13 +150,19 @@ class FCNNModel(nn.Module):
         logits = self.linear_relu_stack(x)
         return logits
 
+def get_time(prev, tag=""):
+    now = time.time()
+    print("[%s] Time: %.2fs" % (tag, now-prev))
+    return now
 
 
 #vs = VideoCapture(0)
 #detector, predictor, models = init_emotion()
 #cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
 #cv2.setWindowProperty(WINDOW, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+#now = None
 #while True:
+##    now = get_time(now, "Read") if now else time.time()
 #    frame = vs.read()
 #    get_emotion_class(frame, detector, predictor, models, display=True)
 #    if cv2.waitKey(1) & 0xFF == ord('q'):
