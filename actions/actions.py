@@ -82,7 +82,7 @@ class ActionPlayGame(Action):
             # whether to say 'Simon says' before hand
             simonFlag = random.randint(0,1)
             # read items
-            # SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
+#            SimonDataItems = Path('data/SimonSays.txt').read_text().split('\n')
 
             #idx = random.randint(0, len(SimonDataItems)-1)
             test_data = ['fork', 'spoon', 'bottle', 'sports ball', 'rectangular object', 'cylindrical object', 'spherical object']
@@ -95,7 +95,7 @@ class ActionPlayGame(Action):
                 dispatcher.utter_message(text="Okay, Simon says, show me " + particle + str(test_data[idx]) + ".")
                 return [SlotSet(key = "object_detection", value = "yes"), SlotSet(key = "item", value = str(test_data[idx]))]
             else:
-                dispatcher.utter_message(text="Okay, Show me " + particle + str(SimonDataItems[idx]) + ".")
+                dispatcher.utter_message(text="Okay, Show me " + particle + str(test_data[idx]) + ".")
                 return [SlotSet(key = "object_detection", value = "no"), SlotSet(key = "item", value = str(test_data[idx]))]
         elif game == "Word of the day":
             # if all words are learnt, move all learnt words back to database
