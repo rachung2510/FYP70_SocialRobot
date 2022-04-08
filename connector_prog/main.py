@@ -22,7 +22,7 @@ from gtts import gTTS
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--mic", type=int, nargs="?", default=13)
+parser.add_argument("--mic", type=int, nargs="?", default=14)
 parser.add_argument("--cam", type=int, nargs="?", default=0)
 args = parser.parse_args()
 

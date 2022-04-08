@@ -4,7 +4,7 @@ import cv2
 import pyaudio
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--dev", type=int, default=13)
+parser.add_argument("--dev", type=int, default=14)
 parser.add_argument("--list", action='store_true')
 args = parser.parse_args()
 
