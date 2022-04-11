@@ -68,7 +68,7 @@ def get_emotion_class(frame, detector, predictor, models, display=False):
         vectors.append([mag(cog, (x,y)), angle(cog, (x,y))]) # get vector magnitude and direction
         coords.append([x,y]) # append coordinates relative to cog
         if display:
-            cv2.line(frame, (x,y), cog, (255,0,0), 1) # draw vector lines
+#            cv2.line(frame, (x,y), cog, (255,0,0), 1) # draw vector lines
             cv2.circle(frame, (x,y), 1, (0,0,255), -1) # draw markers
             cv2.circle(frame, cog, 5, (255,255,0), -1) # draw center of gravity
 
@@ -91,9 +91,9 @@ def get_emotion_class(frame, detector, predictor, models, display=False):
 #    print(emotion_classes[pred_svm], emotion_classes[pred_fcnn])
 
     pred = 6 # default=neutral
-    if pred_tensor_fcnn[0][2] >= 0.45: # fear
+    if pred_tensor_fcnn[0][2] >= 1.4: # fear
         pred = 2
-    elif pred_svm==4: # sadness
+    if pred_svm==4: # sadness
         if pred_tensor_fcnn[0][4]>=1.45 or pred_tensor_fcnn[0][6]<=1.9:
             pred = 4
     elif pred_svm == pred_fcnn: # happiness, surprise, neutral

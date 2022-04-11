@@ -12,7 +12,7 @@ def SimonSays_item(selected_item, cam):
     width, height = 640, 480
 
 #    items_of_selection = ["bottle","sports ball","cell phone","spoon","fork"]
-#    items_of_selection = ["bottle","sports ball","cell phone","backpack","cylindrical object","rectangular object","spherical object"]
+##    items_of_selection = ["bottle","sports ball","cell phone","backpack","cylindrical object","rectangular object","spherical object"]
 #    selected_item = random.choice(items_of_selection)
 
     lst = ["rectangular object","cylindrical object","spherical object"]
