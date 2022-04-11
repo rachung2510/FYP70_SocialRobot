@@ -100,7 +100,7 @@ def SimonSays_nothing(selected_item,cam):
 #            choose = random.choice(items_of_selection)
 #            sample = []
 #            continue
-        elif time.time() - starting_time > 20:
+        elif time.time() - starting_time > 10:
 #            print("\nTime's up! You won!")
             cv2.putText(frame, "Well Done!", (130,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 6)
             ans = True
