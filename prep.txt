@@ -1,0 +1,23 @@
+1. Check ~/.bashrc that export DISPLAY is commented out
+2. Check mic_test.py for list of devices and make sure pulseaudio is #13.
+3. Open pavucontrol on new terminal.
+4. Run mic_test.py and set recording device to mic input.
+5. pulseaudio -k
+6. Run cam_test.py and sound_test.py
+7. Rerun sound_test.py till device not busy.
+8. Tune Emotion_Recognition.py
+9. Tune ObjectDetection.py (lines 14-16, 31-32, 96-98, 105-108, 112-115, end)
+10. Run ./run.sh
+11. Run show me the number and bye-bye.
+
+Demo
+1. Hello > I want to talk
+2. Happiness -  I got a present
+   Sadness -    I fell down
+   Anger -      I angry with my friend
+3. What is your name? > Are you my friend?
+4. I want to play a game > Simon Says + instructions + repeat
+5. I want to play another game > Pop the bubble, no instructions
+6. I want to play scissors paper stone, no instructions
+7. No, I want to talk > Tell me a joke > Happiness
+10. Bye
