@@ -90,7 +90,7 @@ def countFingers(image, results, computer_choice, status, draw=False, display=Fa
         reference = {0 : "Rock" , 2 : "Scissors", 5 : "Paper"}
 
         # Write the total count of the fingers of both hands on the output image.
-        cv2.putText(output_image, " Computer Choice: " + reference[computer_choice], (0, 25),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+        cv2.putText(output_image, " Computer Choice: " + reference[computer_choice], (0, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
         human = sum(count.values())
 
         if computer_choice == 0: #computer stone
@@ -118,11 +118,11 @@ def countFingers(image, results, computer_choice, status, draw=False, display=Fa
                 status =  0 #Lose
 
         if status == 0: #lose
-            cv2.putText(output_image, "You Lost!" , (0, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+            cv2.putText(output_image, "You Lost!", (150,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,255), 6)
         elif status == 1: #win
-            cv2.putText(output_image, "You Won!" , (0, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+            cv2.putText(output_image, "You Won!", (150,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 6)
         elif status == 2: #draw
-            cv2.putText(output_image, "Draw!" , (0, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
+            cv2.putText(output_image, "Draw!", (240,240), cv2.FONT_HERSHEY_COMPLEX, 2, (255,255,255), 6)
         return output_image, status, human
 
     # Check if the output image is specified to be displayed.
@@ -205,9 +205,6 @@ def scissorPaperStone(camera_video):
     # Initialize the mediapipe drawing class.
     mp_drawing = mp.solutions.drawing_utils
 
-    # Initialize the VideoCapture object to read from the webcam.
-    # camera_video = cv2.VideoCapture(0)
-
     # Create named window for resizing purposes.
     cv2.namedWindow(WINDOW, cv2.WND_PROP_FULLSCREEN)
     cv2.setWindowProperty(WINDOW,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
@@ -245,9 +242,14 @@ def scissorPaperStone(camera_video):
         if text != "":
             cv2.imshow(WINDOW, frame)
             cv2.waitKey(1)
-            time.sleep(3)
+            time.sleep(2)
             cv2.destroyAllWindows()
             return text
+#            print(text)
+#            computer_choice = random.choice(choices)
+#            status = 99
+#            text = ""
+#            continue
 
         # Display the frame.
         cv2.imshow(WINDOW, frame)
@@ -258,7 +260,6 @@ def scissorPaperStone(camera_video):
     return
 
 
-#camera_video = USBCamera(capture_device=0, width=640, height=480)
 #camera_video = VideoCapture(0)
 #scissorPaperStone(camera_video)
-#camera_video.cap.release()
+#camera_video.release()

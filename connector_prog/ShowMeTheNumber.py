@@ -83,7 +83,7 @@ def countFingers(image, results, random_number,counter,status,draw=True, display
 
         # Write the total count of the fingers of both hands on the output image.
         if sum(count.values()) == random_number:
-            cv2.putText(output_image, " Correct!", (10, 50),cv2.FONT_HERSHEY_COMPLEX, 1, (20,255,155), 2)
+            cv2.putText(output_image, " Correct!", (10, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (20,255,155), 2)
             counter+=1
             status = 1
 
@@ -192,15 +192,15 @@ def showMeTheNumber(camera_video):
         frame, results = detectHandsLandmarks(frame, hands_videos, display=False)
         cv2.putText(frame, " Please show me the number: " + str(random_number) , (10, 25), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), 2)
         # Check if the hands landmarks in the frame are detected.
-        if counter == 10:
-            cv2.putText(frame, "You Win!", (180,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 8)
+        if counter == 5:
+            cv2.putText(frame, "You Win!", (180,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,255,0), 6)
             print("You Win")
             variable = 1
             duration = time.time() - start
             break
 
         if time.time() - start >= 60:
-            cv2.putText(frame, "Time out :(", (130,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,255), 8)
+            cv2.putText(frame, "Time out :(", (130,240), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,255), 6)
             print("Time Out")
             variable = 0
             duration = time.time() - start
@@ -221,7 +221,7 @@ def showMeTheNumber(camera_video):
 
     cv2.imshow(WINDOW, frame)
     cv2.waitKey(1)
-    time.sleep(3)
+    time.sleep(2)
     cv2.destroyAllWindows()
     return variable, duration
 
@@ -229,4 +229,3 @@ def showMeTheNumber(camera_video):
 #camera_video = VideoCapture(0)
 #showMeTheNumber(camera_video)
 #camera_video.release()
-

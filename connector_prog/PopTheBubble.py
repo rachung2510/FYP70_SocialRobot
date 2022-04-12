@@ -32,10 +32,10 @@ def PopTheBubble(video):
 
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            font = cv2.FONT_HERSHEY_SIMPLEX
+            font = cv2.FONT_HERSHEY_COMPLEX
             color = (255,0,255)
-            cv2.putText(image,"Score",(480,30),font,1,color,4,cv2.LINE_AA)
-            cv2.putText(image,str(score),(590,30),font,1,color,4,cv2.LINE_AA)
+            cv2.putText(image, "Score", (480,30), font, 1, color, 2, cv2.LINE_AA)
+            cv2.putText(image, str(score), (590,30), font, 1, (color if score < 10 else (0,255,0)), 2, cv2.LINE_AA)
 
             cv2.circle(image, (x_enemy,y_enemy), 25, (0, 255, 0), 5)
 
@@ -43,7 +43,7 @@ def PopTheBubble(video):
                 cv2.putText(image, "You Win!", (200,240), font, 2, (0,255,0), 8)
                 status = 1
                 duration = time.time() - start
-                print("Your time taken is: ", duration)
+                print("Time taken: %.2fs" % duration)
                 break
 
             if time.time() - start >= 60:
@@ -86,12 +86,10 @@ def PopTheBubble(video):
 
     cv2.imshow(WINDOW, image)
     cv2.waitKey(1)
-    time.sleep(3)
+    time.sleep(2)
     cv2.destroyAllWindows()
     return (status, duration)
 
-
-#video = USBCamera(capture_device=0, width=820, height=480)
 #video = VideoCapture(0)
 #(status, duration) = PopTheBubble(video)
 #video.release()

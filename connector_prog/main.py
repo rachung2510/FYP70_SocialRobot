@@ -16,13 +16,12 @@ from play_audio import playsound
 from threading import Thread, Event
 import requests
 import subprocess
-#from jetcam.usb_camera import USBCamera
 from VideoCapture import VideoCapture
 from gtts import gTTS
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument("--mic", type=int, nargs="?", default=13)
+parser.add_argument("--mic", type=int, nargs="?", default=14)
 parser.add_argument("--cam", type=int, nargs="?", default=0)
 args = parser.parse_args()
 
@@ -154,9 +153,9 @@ while True:
     if bot_message != "":
         sentence = bot_message
 #        align, spec, stop_tokens, wavform = tts(model, vocoder_model, speaker_id, sentence, TTS_CONFIG, use_cuda, ap, OUT_FILE, use_gl=False)
-        tts = gTTS(sentence)
+        tts = gTTS(sentence, tld='ca')
         tts.save("bot_reply.mp3")
-        playsound("bot_reply.mp3", mono=True, frame_rate=42000) # Playing the converted file
+        playsound("bot_reply.mp3", mono=True, frame_rate=43000) # Playing the converted file
 
     # End program if bot said goodbye
     if bot_message in bye_list:
