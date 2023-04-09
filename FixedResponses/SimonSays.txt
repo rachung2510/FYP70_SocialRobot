@@ -1,5 +1,22 @@
-Round object
-Pencil
-Pen
-Retangular object
-Tissue
+Backpack
+Umbrella
+Sports Ball
+Cup
+Knife
+Spoon
+Bowl
+Banana
+Orange
+Carrot
+Donut
+Remote
+Book
+Teddy Bear
+Toothbrush
+Glove
+Fork
+Apple
+Cell Phone
+Cylindrical
+Rectangular
+Sphere

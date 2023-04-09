@@ -7,7 +7,10 @@ import scipy.io.wavfile as wav
 import wave
 import os
 import time
-
+import subprocess
+import Scissor_Paper_Stone as SPS
+import PopTheBubble as PTB
+import ShowMeTheNumber as SMTN
 
 # WAVE_OUTPUT_FILENAME = "test_audio.wav"
 # model_file_path = 'deepspeech/deepspeech-0.9.3-models.pbmm'
@@ -62,14 +65,31 @@ while bot_message != "Bye" or bot_message!='thanks':
 	s = requests.request("GET", url, headers={}, data={})
 	j = s.json()
 	SimonsaysAns = j['slots']['SimonsaysAns']
-	print("SimonsaysAns:")
-	if SimonsaysAns == "none" or SimonsaysAns == None:
+	s = requests.request("GET", url, headers={}, data={})
+	j = s.json()
+	SPSmessage = j['slots']['SPSmessage']
+	s = requests.request("GET", url, headers={}, data={})
+	j = s.json()
+	PTBstatus = j['slots']['PTBstatus']
+	s = requests.request("GET", url, headers={}, data={})
+	j = s.json()
+	SMTNstatus = j['slots']['SMTNstatus']
+	if SPSmessage != "none":
+		message = "BVHGGTHY4665fger45225"
+	elif PTBstatus != "none":
+		message = "sagrnyfvyutccreqwbtrth0t658dfb0"
+	elif SMTNstatus != "none":
+		message = "hgjtytn5t2GHEBLLOUIEKVF6565"
+	elif SimonsaysAns != "none":
+		message = "dfgdyttvyhtf1559716hkyk"
+	else:
 		message = input("Input: ")
 		# repeat if no input
 		if len(message)==0:
 			continue
-	else:
-		message = "dfgdyttvyhtf1559716hkyk"
+		
+	
+		
 	# connect to RASA server
 	r = requests.post('http://localhost:5005/webhooks/rest/webhook', json={"message": message})
 
@@ -86,15 +106,12 @@ while bot_message != "Bye" or bot_message!='thanks':
 	s = requests.request("GET", url, headers={}, data={})
 	j = s.json()
 	object_detection = j['slots']['object_detection']
-	print("object_detection: ", object_detection)
 	if object_detection == "yes":
 		item = j['slots']['item']
 		ans = SimonSays_item(item)
 		if ans:
-			print("here1")
 			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SimonsaysAns","value":True, "timestamp":0})
 		else:
-			print("here2")
 			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SimonsaysAns","value":False, "timestamp":0})
 	elif object_detection == "no":
 		item = j['slots']['item']
@@ -103,3 +120,25 @@ while bot_message != "Bye" or bot_message!='thanks':
 			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SimonsaysAns","value":True, "timestamp":0})
 		else:
 			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SimonsaysAns","value":False, "timestamp":0})
+	else:
+		s = requests.request("GET", url, headers={}, data={})
+		j = s.json()
+		SPSflag = j['slots']['SPSflag']
+		s = requests.request("GET", url, headers={}, data={})
+		j = s.json()
+		PTBflag = j['slots']['PTBflag']
+		s = requests.request("GET", url, headers={}, data={})
+		j = s.json()
+		SMTNflag = j['slots']['SMTNflag']
+		print("flags: ", SPSflag, PTBflag, SMTNflag)
+		if SPSflag == True:
+			SPSmessage = SPS.scissorPaperStone()
+			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SPSmessage","value":SPSmessage, "timestamp":0})
+		elif PTBflag == True:
+			status, duration = PTB.PopTheBubble()
+			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"PTBstatus","value":str(status), "timestamp":0})
+			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"PTBduration","value":duration, "timestamp":0})
+		elif SMTNflag == True:
+			status, duration = SMTN.showMeTheNumber()
+			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SMTNstatus","value":str(status), "timestamp":0})
+			r = requests.post('http://localhost:5005/conversations/default/tracker/events?include_events=NONE', json={"event":"slot","name":"SMTNduration","value":duration, "timestamp":0})
