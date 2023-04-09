@@ -4,11 +4,12 @@ This is a guide on how to install the necessary packages and run EDU-Bot on Wind
 
 ## Contents
 - [Environment](#environment)
-- [Install Rasa](#install-rasa)
-- [Install STT](#install-stt)
-- [Install TTS](#install-tts)
-- [Install libraries for emotion recognition](#install-libraries-for-emotion-recognition)
-- [Install libraries for object detection games](#install-libraries-for-object-detection-games)
+- [Installation](#installation)
+   - [Rasa](#install-rasa)
+   - [STT](#install-stt)
+   - [TTS](#install-tts)
+   - [Emotion Recognition](#emotion-recognition)
+   - [Object Detection](#object-detection)
 - [Run EDU-Bot](#run-edu-bot)
 - [Customise main file](#customise-main-file)
 
@@ -23,7 +24,8 @@ Clone this repository and switch branch.
 git clone https://github.com/rachung2510/FYP70_SocialRobot
 ```
 
-## Install Rasa
+## Installation
+### Rasa
 1. Install [Visual Studio Redistributable](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist?view=msvc-170). Choose x64 for 64-bit system.
 2. Install some dependencies
 ```bash
@@ -40,7 +42,7 @@ pip install rasa==3.0.4
 pip install sanic==21.9.3
 ```
 
-## Install STT
+### STT
 1. Install _speechrecognition_ and _pyaudio_
 ```bash
 pip install SpeechRecognition PyAudio
@@ -52,7 +54,7 @@ pip install deepspeech
 2. Download the deepspeech .pbmm model from [here](https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and
 put in FYP70_SocialRobot/connector_prog/stt_tts_data.
 
-## Install TTS
+### TTS
 1. Download [espeak-ng](https://github.com/espeak-ng/espeak-ng/releases) for Windows. Choose x64.msi for 64-bit system.
 2. Go to the control panel and edit environment variables. Add a system variable PHONEMIZER_ESPEAK_LIBRARY with the value
 C:\...\eSpeak NG\libespeak-ng.dll. For example if espeak-ng is installed in C:\Program Files, then the value is 
@@ -81,7 +83,7 @@ conda install -c conda-forge libsndfile
 name them as tts_model.pth.tar and vocoder_model.pth.tar respectively, then
 place them in FYP70_SocialRobot/connector_prog/stt_tts_data.
 
-## Install libraries for emotion recognition
+### Emotion Recognition
 1. Install Pytorch. For CPU only:
 ```bash
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
@@ -101,7 +103,7 @@ conda install -c conda-forge dlib
 conda install -c conda-forge pickle5
 ```
 
-## Install libraries for Object Detection games
+### Object Detection
 For Finger Detection and Plotting of Hand Land Marks:
 ```bash
 pip install mediapipe
