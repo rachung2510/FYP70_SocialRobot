@@ -5,9 +5,9 @@ This is a guide on how to install the necessary packages and run EDU-Bot on Wind
 ## Contents
 - [Environment](#environment)
 - [Installation](#installation)
-   - [Rasa](#install-rasa)
-   - [STT](#install-stt)
-   - [TTS](#install-tts)
+   - [Rasa](#rasa)
+   - [STT](#stt)
+   - [TTS](#tts)
    - [Emotion Recognition](#emotion-recognition)
    - [Object Detection](#object-detection)
 - [Run EDU-Bot](#run-edu-bot)
