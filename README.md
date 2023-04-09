@@ -2,6 +2,16 @@
 
 This is a guide on how to install the necessary packages and run EDU-Bot on Windows with conda.
 
+## Contents
+- [Environment](#environment)
+- [Install Rasa](#install-rasa)
+- [Install STT](#install-stt)
+- [Install TTS](#install-tts)
+- [Install libraries for emotion recognition](#install-libraries-for-emotion-recognition)
+- [Install libraries for object detection games](#install-libraries-for-object-detection-games)
+- [Run EDU-Bot](#run-edu-bot)
+- [Customise main file](#customise-main-file)
+
 ## Environment
 Create a virtual environment with Anaconda for Python 3.8.
 ```bash
@@ -11,7 +21,6 @@ conda activate venv
 Clone this repository and switch branch.
 ```bash
 git clone https://github.com/rachung2510/FYP70_SocialRobot
-git checkout EDU-Bot
 ```
 
 ## Install Rasa
@@ -41,7 +50,7 @@ If you want to use _deepspeech_ instead, you can install it
 pip install deepspeech
 ```
 2. Download the deepspeech .pbmm model from [here](https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and
-put in FYP70_SocialRobot/EDU-Bot/connector_prog/stt_tts_data.
+put in FYP70_SocialRobot/connector_prog/stt_tts_data.
 
 ## Install TTS
 1. Download [espeak-ng](https://github.com/espeak-ng/espeak-ng/releases) for Windows. Choose x64.msi for 64-bit system.
@@ -70,7 +79,7 @@ conda install -c conda-forge libsndfile
 7. Download the mozilla [TTS](https://drive.google.com/file/d/1dntzjWFg7ufWaTaFy80nRz-Tu02xWZos/view?usp=sharing) and 
 [vocoder](https://drive.google.com/file/d/1Ty5DZdOc0F7OTGj9oJThYbL5iVu_2G0K/view?usp=sharing) models;
 name them as tts_model.pth.tar and vocoder_model.pth.tar respectively, then
-place them in FYP70_SocialRobot/EDU-Bot/connector_prog/stt_tts_data.
+place them in FYP70_SocialRobot/connector_prog/stt_tts_data.
 
 ## Install libraries for emotion recognition
 1. Install Pytorch. For CPU only:
@@ -98,22 +107,22 @@ For Finger Detection and Plotting of Hand Land Marks:
 pip install mediapipe
 pip install matplotlib
 ```
-Weights: Download [iteration3_final.weights](https://drive.google.com/file/d/1BQF_CJWqCWHoAAl4iFkeKmAzQBwGDYXy/view?usp=sharing) and put in FYP70_SocialRobot/EDU-Bot/connector_prog/object_data.
+Weights: Download [iteration3_final.weights](https://drive.google.com/file/d/1BQF_CJWqCWHoAAl4iFkeKmAzQBwGDYXy/view?usp=sharing) and put in FYP70_SocialRobot/connector_prog/object_data.
 
 ## Run EDU-Bot
 Open 3 terminals. In terminal 1:
 ```bash
-cd FYP70_SocialRobot/EDU-Bot
+cd FYP70_SocialRobot/
 rasa run actions
 ```
 In terminal 2:
 ```bash
-cd FYP70_SocialRobot/EDU-Bot
+cd FYP70_SocialRobot/
 rasa run --enable-api
 ```
 In terminal 3:
 ```bash
-cd FYP70_SocialRobot/EDU-Bot/connector_prog
+cd FYP70_SocialRobot/connector_prog
 python main.py
 ```
 
