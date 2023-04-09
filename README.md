@@ -39,7 +39,7 @@ During casual conversation, the robot constantly detects the child's facial expr
 <p align="center">
   <img src="./images/emotion-recognition.jpg" alt="Emotion Recognition" width="800" />
   <br>
-  <sup>Eight emotions detected by model</sup>
+  <sup>Seven emotions detected by model</sup>
 </p>
 
 ## Deployment
