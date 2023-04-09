@@ -1,5 +1,5 @@
 
-#import pyaudio
+import pyaudio
 ##from deepspeech import Model
 import scipy.io.wavfile as wav
 import wave
