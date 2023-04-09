@@ -29,6 +29,19 @@ SYS >>> I want to be your friend too!
 ### Object Detection
 Object detection was integrated to make games more interactive and educational for the child. Hands detection in games like Pop the Bubble, Show Me the Number and Scissors Paper Stone used Google's Mediapipe library for rapid and accurate hand detection at close proximity. In the game Simon Says, children were tasked to bring objects according to what "Simon says"; the YOLOv4 model was used for detecting household objects like balls, bottles, spoons, or object shapes like "rectangular". 
 
+| ![Pop the Bubble](./images/pop-the-bubble.gif) | ![Show Me the Number](./images/show-me-the-number.gif) | ![Scissors Paper Stone](./images/scissors-paper-stone.jpg) | ![Simon Says](./images/simon-says.jpg) |
+|:--:|:--:|:--:|:--:|
+| *Pop the Bubble* | *Show me the Number* | *Scissors Paper Stone* | *Simon Says* |
+
 ### Emotion Recognition
 During casual conversation, the robot constantly detects the child's facial expressions for signs of happiness, sadness, etc. When a "non-neutral" expression is detected, the robot will output an appropriate response, e.g. "You look happy! Did something good happen?"
+
+<p align="center">
+  <img src="./images/emotion-recognition.jpg" alt="Emotion Recognition" width="800" />
+  <br>
+  <sup>Seven emotions detected by model</sup>
+</p>
+
+## Deployment
+The program was executed on a Jetson Nano with the attached microphone, speaker and camera peripherals, encased within a custom-built casing. For more information on running the code, see [Installation.md](https://github.com/rachung2510/FYP70_SocialRobot/blob/master/Installation.md).
 
