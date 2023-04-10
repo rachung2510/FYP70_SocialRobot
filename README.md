@@ -1,6 +1,4 @@
 # EDU-Bot - An Eductional Social Robot for Toddlers
-
-## Overview 
 This is the undergraduate final year project for Group 70 under the Department of Electrical Engineering at the National University of Singapore.
 
 In this project, an educational social robot, EDU-Bot, was developed with the aim to teach and guild young children between ages 4 to 6 to communicate effectively through social interaction and fun yet informative games. 
