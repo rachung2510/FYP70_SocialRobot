@@ -8,7 +8,7 @@ The EDU-Bot uses natural language processing (NLP), speech processing, object de
 1. Casual conversation - the robot converses naturally with the child and reacts appropriately to the child's facial expressions.
 2. Interactive games - the robot engages the child in a variety of fun games that utilize object detection to increase interactivity.
 
-Its games include: Pop the bubble, Simon Says, Scissors Paper Stone (the Singaporean name for Rock Paper Scissors), Show Me the Number and Word of the Day
+Its games include: Pop the bubble, Simon Says, Scissors Paper Stone (the Singaporean name for Rock Paper Scissors), Show Me the Number and Word of the Day.
 
 ## Modules
 ### Natural Language Processing
