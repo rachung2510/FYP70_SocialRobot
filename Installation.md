@@ -19,7 +19,7 @@ Create a virtual environment with Anaconda for Python 3.8.
 conda create -n venv python=3.8
 conda activate venv
 ```
-Clone this repository and switch branch.
+Clone this repository.
 ```bash
 git clone https://github.com/rachung2510/FYP70_SocialRobot
 ```
@@ -51,19 +51,16 @@ If you want to use _deepspeech_ instead, you can install it
 ```bash
 pip install deepspeech
 ```
-2. Download the deepspeech .pbmm model from [here](https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and
-put in FYP70_SocialRobot/connector_prog/stt_tts_data.
+2. Download the deepspeech .pbmm model from [here](https://github.com/mozilla/DeepSpeech/releases/tag/v0.9.3) and place in FYP70_SocialRobot/connector_prog/stt_tts_data.
 
 ### TTS
 1. Download [espeak-ng](https://github.com/espeak-ng/espeak-ng/releases) for Windows. Choose x64.msi for 64-bit system.
-2. Go to the control panel and edit environment variables. Add a system variable PHONEMIZER_ESPEAK_LIBRARY with the value
-C:\...\eSpeak NG\libespeak-ng.dll. For example if espeak-ng is installed in C:\Program Files, then the value is 
-C:\Program Files\eSpeak NG\libespeak-ng.dll.
+2.  variable PHONEMIZER_ESPEAK_LIBRARY with the value **C:\...\eSpeak NG\libespeak-ng.dll**. For example, if espeak-ng is installed in C:\Program Files, then the value is **C:\Program Files\eSpeak NG\libespeak-ng.dll**.
 3. Add a conda environment variable to prevent a unicode error.
 ```bash
 conda env config vars set PYTHONUTF8=1
 ```
-4. Install git if necessary, clone TTS repository, git checkout to a previous commit as code uses old commit
+4. Install git if necessary, clone the TTS repository, then checkout to a previous commit
 ```bash
 conda install git
 git clone https://github.com/mozilla/TTS
@@ -81,7 +78,7 @@ conda install -c conda-forge libsndfile
 7. Download the mozilla [TTS](https://drive.google.com/file/d/1dntzjWFg7ufWaTaFy80nRz-Tu02xWZos/view?usp=sharing) and 
 [vocoder](https://drive.google.com/file/d/1Ty5DZdOc0F7OTGj9oJThYbL5iVu_2G0K/view?usp=sharing) models;
 name them as tts_model.pth.tar and vocoder_model.pth.tar respectively, then
-place them in FYP70_SocialRobot/connector_prog/stt_tts_data.
+place them in **FYP70_SocialRobot/connector_prog/stt_tts_data**.
 
 ### Emotion Recognition
 1. Install Pytorch. For CPU only:
